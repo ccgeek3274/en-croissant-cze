@@ -8,6 +8,11 @@ import { createStore, useStore } from "zustand";
 import type { Outcome } from "@/bindings";
 import type { GameHeaders } from "@/utils/treeReducer";
 import FideInfo from "../databases/FideInfo";
+import {
+  ChessczPlayerAutocomplete,
+  chessczMemberElo,
+  chessczMemberName,
+} from "./ChessczPlayerAutocomplete";
 import classes from "./GameInfo.module.css";
 import { InlineInput } from "./InlineInput";
 import { TreeStateContext } from "./TreeStateContext";
@@ -147,17 +152,19 @@ function GameInfo({
       )}
       {!simplified && (
         <SimpleGrid cols={3} spacing={0}>
-          <input
+          <ChessczPlayerAutocomplete
             className={classes.textInput}
             placeholder="?"
             value={headers.white}
-            onChange={(e) =>
+            disabled={disabled}
+            onChange={(white) => setHeaders({ ...headers, white })}
+            onPick={(p) =>
               setHeaders({
                 ...headers,
-                white: e.currentTarget.value,
+                white: chessczMemberName(p),
+                white_elo: chessczMemberElo(p) ?? headers.white_elo,
               })
             }
-            disabled={disabled}
           />
           <Group justify="center">
             {headers.site.startsWith("https://lichess.org") ||
@@ -199,17 +206,19 @@ function GameInfo({
               className={classes.dateInput}
             />
           </Group>
-          <input
+          <ChessczPlayerAutocomplete
             className={cx(classes.textInput, classes.right)}
             placeholder="?"
             value={headers.black}
-            onChange={(e) =>
+            disabled={disabled}
+            onChange={(black) => setHeaders({ ...headers, black })}
+            onPick={(p) =>
               setHeaders({
                 ...headers,
-                black: e.currentTarget.value,
+                black: chessczMemberName(p),
+                black_elo: chessczMemberElo(p) ?? headers.black_elo,
               })
             }
-            disabled={disabled}
           />
           <input
             className={classes.textInput}

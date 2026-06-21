@@ -171,6 +171,8 @@
     "Board.Tabs.Database": "Database",
     "Board.Tabs.Info": "Info",
     "Board.Tabs.Practice": "Practice",
+    "Chesscz.SearchError": "Search failed",
+    "Chesscz.Searching": "Searching…",
     "Common.Add": "Add",
     "Common.AddNew": "Add New",
     "Common.BLACK": "BLACK",
