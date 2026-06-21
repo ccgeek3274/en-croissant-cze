@@ -1,4 +1,4 @@
-import { Button, Modal, SimpleGrid, Stack, Text, Textarea, TextInput } from "@mantine/core";
+import { Button, Group, Modal, SimpleGrid, Stack, Text, Textarea, TextInput } from "@mantine/core";
 import { useLoaderData } from "@tanstack/react-router";
 import { resolve, dirname } from "@tauri-apps/api/path";
 import { exists, mkdir, rename, writeTextFile } from "@tauri-apps/plugin-fs";
@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { createFile } from "@/utils/files";
 import GenericCard from "../common/GenericCard";
+import { ChessczImportDialog } from "./ChessczImportDialog";
 import type { Directory, FileMetadata, FileType } from "./file";
 
 const FILE_TYPES = [
@@ -37,6 +38,7 @@ export function CreateModal({
   const [filetype, setFiletype] = useState<FileType>("game");
   const [pgn, setPgn] = useState("");
   const [error, setError] = useState("");
+  const [importOpened, setImportOpened] = useState(false);
   const { documentDir } = useLoaderData({ from: "/files" });
 
   async function addFile() {
@@ -109,10 +111,17 @@ export function CreateModal({
             ))}
           </SimpleGrid>
 
+          <Group justify="space-between" align="flex-end">
+            <Text fz="sm" fw="bold">
+              {t("Common.PGNGame")}
+            </Text>
+            <Button variant="light" size="xs" onClick={() => setImportOpened(true)}>
+              {t("Chesscz.Import.Button")}
+            </Button>
+          </Group>
           <Textarea
             value={pgn}
             onChange={(event) => setPgn(event.currentTarget.value)}
-            label={t("Common.PGNGame")}
             placeholder={t("Files.Create.PGNPlaceholder")}
             rows={10}
           />
@@ -122,6 +131,16 @@ export function CreateModal({
           </Button>
         </Stack>
       </form>
+
+      <ChessczImportDialog
+        opened={importOpened}
+        onClose={() => setImportOpened(false)}
+        onImport={(importedPgn, suggestedName) => {
+          setPgn(importedPgn);
+          setFiletype("tournament");
+          if (!filename.trim()) setFilename(suggestedName);
+        }}
+      />
     </Modal>
   );
 }
