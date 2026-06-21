@@ -1,10 +1,16 @@
 import { Badge, Combobox, Group, Loader, Text, useCombobox } from "@mantine/core";
 import { useTranslation } from "react-i18next";
 import { MIN_QUERY_LEN, useChessczSearch } from "@/utils/chesscz/useChessczSearch";
-import type { ChessczMember } from "@/utils/chesscz/pgn";
+import { type ChessczMember, toPgnPlayerName } from "@/utils/chesscz/pgn";
 
-export function chessczMemberName(p: ChessczMember): string {
+/** Natural "Surname Given" form, for display in the dropdown. */
+export function chessczMemberDisplayName(p: ChessczMember): string {
   return (p.fullName ?? "").trim().replace(/\s+/g, " ");
+}
+
+/** PGN "Surname, Given" form, for the header field value. */
+export function chessczMemberName(p: ChessczMember): string {
+  return toPgnPlayerName(p.fullName);
 }
 
 /** Preferred Elo for a member: FIDE standard if rated, otherwise national (ČŠS). */
@@ -47,7 +53,7 @@ export function ChessczPlayerAutocomplete({
         <Group justify="space-between" wrap="nowrap" gap="xs">
           <div style={{ minWidth: 0 }}>
             <Text size="sm" fw={600} truncate>
-              {chessczMemberName(p)}
+              {chessczMemberDisplayName(p)}
               {p.birthYear ? (
                 <Text span c="dimmed" fw={400}>
                   {" "}
