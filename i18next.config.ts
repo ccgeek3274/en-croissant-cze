@@ -18,6 +18,7 @@ export default defineConfig({
         "ko-KR",
         "zh-TW",
         "de-DE",
+        "cs-CZ",
     ],
     extract: {
         input: ["src/**/*.{ts,tsx}"],

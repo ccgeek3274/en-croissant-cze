@@ -400,6 +400,7 @@ export default function Page() {
             allowDeselect={false}
             data={[
               { value: "be_BY", label: "Belarusian" },
+              { value: "cs_CZ", label: "Čeština" },
               { value: "zh_CN", label: "Chinese (Simplified)" },
               { value: "zh_TW", label: "Chinese (Traditional)" },
               { value: "en_GB", label: "English (UK)" },

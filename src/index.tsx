@@ -6,6 +6,7 @@ import { initReactI18next } from "react-i18next";
 import App from "./App";
 
 import be_BY from "./translation/be-BY.json";
+import cs_CZ from "./translation/cs-CZ.json";
 import de_DE from "./translation/de-DE.json";
 import en_GB from "./translation/en-GB.json";
 import en_US from "./translation/en-US.json";
@@ -45,6 +46,7 @@ i18n
       "ko-KR": ko_KR,
       "zh-TW": zh_TW,
       "de-DE": de_DE,
+      "cs-CZ": cs_CZ,
     },
     detection: {
       order: ["localStorage"],
