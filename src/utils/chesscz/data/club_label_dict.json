@@ -1,0 +1,3946 @@
+[
+  {
+    "clubId": 40103,
+    "clubName": "1. Novoborský ŠK",
+    "label": "Novoborsky",
+    "count": 53,
+    "confidence": 0.923,
+    "source": "dict"
+  },
+  {
+    "clubId": 50608,
+    "clubName": "2222 ŠK Polabiny, z.s.",
+    "label": "Polabiny",
+    "count": 342,
+    "confidence": 0.95,
+    "source": "dict"
+  },
+  {
+    "clubId": 80207,
+    "clubName": "Agentura 64 Grygov",
+    "label": "Grygov",
+    "count": 131,
+    "confidence": 0.95,
+    "source": "dict"
+  },
+  {
+    "clubId": 80015,
+    "clubName": "ASK Blansko",
+    "label": "ASK",
+    "count": 5,
+    "confidence": 0.828,
+    "source": "dict"
+  },
+  {
+    "clubId": 40603,
+    "clubName": "ASK Lovosice",
+    "label": "ASK",
+    "count": 5,
+    "confidence": 0.828,
+    "source": "dict"
+  },
+  {
+    "clubId": 30204,
+    "clubName": "AVZO-STSČ Františkovy Lázně",
+    "label": "KHSS TJ CIS Lazne Belohrad",
+    "count": 5,
+    "confidence": 0.265,
+    "source": "dict"
+  },
+  {
+    "clubId": 80090,
+    "clubName": "Beskydská šachová škola z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80653,
+    "clubName": "Bíločerný Ořechov, z.s.",
+    "label": "Orechov",
+    "count": 55,
+    "confidence": 0.925,
+    "source": "dict"
+  },
+  {
+    "clubId": 80448,
+    "clubName": "CAISSA Roztoky",
+    "label": "Roztoky",
+    "count": 26,
+    "confidence": 0.893,
+    "source": "dict"
+  },
+  {
+    "clubId": 11204,
+    "clubName": "Český lev Kolešovice-šachový klub, z.s.",
+    "label": "Kolesovice",
+    "count": 69,
+    "confidence": 0.935,
+    "source": "dict"
+  },
+  {
+    "clubId": 80630,
+    "clubName": "Chess club Písek, z.s.",
+    "label": "Pisek",
+    "count": 51,
+    "confidence": 0.922,
+    "source": "dict"
+  },
+  {
+    "clubId": 80658,
+    "clubName": "Chess Institute Ostrava, z. s.",
+    "label": "Ostrava",
+    "count": 83,
+    "confidence": 0.942,
+    "source": "dict"
+  },
+  {
+    "clubId": 80553,
+    "clubName": "CHESS MOST",
+    "label": "Most",
+    "count": 84,
+    "confidence": 0.943,
+    "source": "dict"
+  },
+  {
+    "clubId": 80638,
+    "clubName": "Chess Queen",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 70003,
+    "clubName": "Cizinci",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80644,
+    "clubName": "CZECH INN CHESS",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80526,
+    "clubName": "DDM Budík Moravské Budějovice",
+    "label": "C.Budejovice",
+    "count": 56,
+    "confidence": 0.462,
+    "source": "dict"
+  },
+  {
+    "clubId": 40903,
+    "clubName": "DDM Osek",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 60034,
+    "clubName": "DDM Praha 6",
+    "label": "Praha",
+    "count": 10,
+    "confidence": 0.854,
+    "source": "dict"
+  },
+  {
+    "clubId": 10805,
+    "clubName": "DDM Sokol Nymburk",
+    "label": "Nymburk",
+    "count": 28,
+    "confidence": 0.896,
+    "source": "dict"
+  },
+  {
+    "clubId": 40905,
+    "clubName": "Dům dětí a mládeže Cvrček",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80258,
+    "clubName": "Dynamo DP Ostrava",
+    "label": "Ostrava",
+    "count": 83,
+    "confidence": 0.942,
+    "source": "dict"
+  },
+  {
+    "clubId": 80407,
+    "clubName": "Fatra Slavia Napajedla",
+    "label": "Napajedla",
+    "count": 39,
+    "confidence": 0.91,
+    "source": "dict"
+  },
+  {
+    "clubId": 80437,
+    "clubName": "GPOA Znojmo, spolek",
+    "label": "GPOA Znojmo",
+    "count": 7,
+    "confidence": 0.84,
+    "source": "dict"
+  },
+  {
+    "clubId": 80069,
+    "clubName": "Granitol Mor.Beroun",
+    "label": "Mor. Trebova",
+    "count": 5,
+    "confidence": 0.323,
+    "source": "dict"
+  },
+  {
+    "clubId": 60029,
+    "clubName": "GROP Praha",
+    "label": "GROP Praha",
+    "count": 9,
+    "confidence": 0.9,
+    "source": "dict"
+  },
+  {
+    "clubId": 80361,
+    "clubName": "Gumárny Zubří",
+    "label": "Zubri",
+    "count": 14,
+    "confidence": 0.868,
+    "source": "dict"
+  },
+  {
+    "clubId": 80260,
+    "clubName": "HTJ Odra Ostrava",
+    "label": "Ostrava",
+    "count": 83,
+    "confidence": 0.942,
+    "source": "dict"
+  },
+  {
+    "clubId": 70001,
+    "clubName": "Individuální člen",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 70022,
+    "clubName": "Individuální člen JmŠS",
+    "label": "CZE KP JmSS",
+    "count": 2,
+    "confidence": 0.257,
+    "source": "dict"
+  },
+  {
+    "clubId": 70013,
+    "clubName": "Individuální člen JŠS",
+    "label": "CZE 1div JSS",
+    "count": 1,
+    "confidence": 0.257,
+    "source": "dict"
+  },
+  {
+    "clubId": 70018,
+    "clubName": "Individuální člen KHŠS",
+    "label": "KHSS",
+    "count": 4,
+    "confidence": 0.82,
+    "source": "dict"
+  },
+  {
+    "clubId": 70015,
+    "clubName": "Individuální člen KŠSKV",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 70021,
+    "clubName": "Individuální člen KŠSV",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 70025,
+    "clubName": "Individuální člen MKŠS",
+    "label": "MKSS",
+    "count": 2,
+    "confidence": 0.798,
+    "source": "dict"
+  },
+  {
+    "clubId": 70019,
+    "clubName": "Individuální člen PDŠS",
+    "label": "PDSS",
+    "count": 115,
+    "confidence": 0.95,
+    "source": "dict"
+  },
+  {
+    "clubId": 70011,
+    "clubName": "Individuální člen PŠS",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 70017,
+    "clubName": "Individuální člen ŠSLK",
+    "label": "CZE KP SSLK",
+    "count": 3,
+    "confidence": 0.269,
+    "source": "dict"
+  },
+  {
+    "clubId": 70024,
+    "clubName": "Individuální člen ŠSOK",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 70014,
+    "clubName": "Individuální člen ŠSPK",
+    "label": "SSPK KP I",
+    "count": 6,
+    "confidence": 0.262,
+    "source": "dict"
+  },
+  {
+    "clubId": 70012,
+    "clubName": "Individuální člen SŠS",
+    "label": "SSS",
+    "count": 123,
+    "confidence": 0.95,
+    "source": "dict"
+  },
+  {
+    "clubId": 70023,
+    "clubName": "Individuální člen ŠSZK",
+    "label": "CZE KP SSZK",
+    "count": 3,
+    "confidence": 0.269,
+    "source": "dict"
+  },
+  {
+    "clubId": 70016,
+    "clubName": "Individuální člen ÚŠS",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80566,
+    "clubName": "Interchess z.s.",
+    "label": "Interchess",
+    "count": 31,
+    "confidence": 0.901,
+    "source": "dict"
+  },
+  {
+    "clubId": 80290,
+    "clubName": "Jevíčko",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80577,
+    "clubName": "Jezdci Jundrov",
+    "label": "Jundrov",
+    "count": 56,
+    "confidence": 0.926,
+    "source": "dict"
+  },
+  {
+    "clubId": 50311,
+    "clubName": "Jiskra Heřmanův Městec",
+    "label": "Hermanuv Mestec",
+    "count": 2,
+    "confidence": 0.798,
+    "source": "dict"
+  },
+  {
+    "clubId": 80094,
+    "clubName": "Jiskra Strážnice",
+    "label": "Straznice",
+    "count": 4,
+    "confidence": 0.82,
+    "source": "dict"
+  },
+  {
+    "clubId": 30301,
+    "clubName": "Karlovarský šachklub Tietz",
+    "label": "Tietz",
+    "count": 45,
+    "confidence": 0.916,
+    "source": "dict"
+  },
+  {
+    "clubId": 80565,
+    "clubName": "Kbelská sportovní",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 30903,
+    "clubName": "KD Chemie Sokolov",
+    "label": "Sokolov",
+    "count": 26,
+    "confidence": 0.893,
+    "source": "dict"
+  },
+  {
+    "clubId": 80386,
+    "clubName": "KH Zašová",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80353,
+    "clubName": "KK-ŠK Osvětimany",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 10904,
+    "clubName": "Klub šachistů Říčany 1925",
+    "label": "Ricany",
+    "count": 373,
+    "confidence": 0.95,
+    "source": "dict"
+  },
+  {
+    "clubId": 40605,
+    "clubName": "Klub šachistů Štětí",
+    "label": "Klub sachistu",
+    "count": 1,
+    "confidence": 0.441,
+    "source": "dict"
+  },
+  {
+    "clubId": 80604,
+    "clubName": "Krásnodvorská MYSLIVNA",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80552,
+    "clubName": "KVASACO Vacenovice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80650,
+    "clubName": "Magma Chess Bílina",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80646,
+    "clubName": "Maják - SVČ Vyškov",
+    "label": "Vyskov",
+    "count": 40,
+    "confidence": 0.911,
+    "source": "dict"
+  },
+  {
+    "clubId": 80543,
+    "clubName": "Matadoor Přáslavice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 11003,
+    "clubName": "Městský šachový klub Libčice nad Vltavou z. s.",
+    "label": "Libcice",
+    "count": 35,
+    "confidence": 0.906,
+    "source": "dict"
+  },
+  {
+    "clubId": 80364,
+    "clubName": "MEZ Vsetín",
+    "label": "Vsetin",
+    "count": 56,
+    "confidence": 0.926,
+    "source": "dict"
+  },
+  {
+    "clubId": 80640,
+    "clubName": "MINT Chess Academy, z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80001,
+    "clubName": "Mír Velké Bílovice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80657,
+    "clubName": "OCTOPUS CHESS z. s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80283,
+    "clubName": "Oddíl šachů Sportovního klubu Prostějov",
+    "label": "Prostejov",
+    "count": 37,
+    "confidence": 0.908,
+    "source": "dict"
+  },
+  {
+    "clubId": 70004,
+    "clubName": "Online Aréna",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80427,
+    "clubName": "Optika Medek TJ Hodonice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80229,
+    "clubName": "Orel Opava",
+    "label": "Orel Opava",
+    "count": 12,
+    "confidence": 0.911,
+    "source": "dict"
+  },
+  {
+    "clubId": 70005,
+    "clubName": "Pedagogové individuální",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80567,
+    "clubName": "Pravý Hradec, z.s.",
+    "label": "Hradec Kralove",
+    "count": 64,
+    "confidence": 0.488,
+    "source": "dict"
+  },
+  {
+    "clubId": 60028,
+    "clubName": "PSK Union Praha",
+    "label": "OAZA Praha",
+    "count": 94,
+    "confidence": 0.532,
+    "source": "dict"
+  },
+  {
+    "clubId": 20103,
+    "clubName": "QCC České Budějovice",
+    "label": "QCC Ceske Budejovice",
+    "count": 13,
+    "confidence": 0.915,
+    "source": "dict"
+  },
+  {
+    "clubId": 80468,
+    "clubName": "Region Panda, z.s.",
+    "label": "Region Panda",
+    "count": 12,
+    "confidence": 0.869,
+    "source": "dict"
+  },
+  {
+    "clubId": 80145,
+    "clubName": "Rychvaldský spolek šachový 1945",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80463,
+    "clubName": "Š.K. 1923 Sokol Kyjov",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80622,
+    "clubName": "Šach Mělník",
+    "label": "Melnik",
+    "count": 34,
+    "confidence": 0.904,
+    "source": "dict"
+  },
+  {
+    "clubId": 50806,
+    "clubName": "Šachklub Jilemnice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 10702,
+    "clubName": "Šachklub města Dobrovice, z.s.",
+    "label": "Dobrovice",
+    "count": 91,
+    "confidence": 0.946,
+    "source": "dict"
+  },
+  {
+    "clubId": 80612,
+    "clubName": "Šachklub Sokol Sušice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80497,
+    "clubName": "ŠACHklub Tábor z.s.",
+    "label": "Tabor",
+    "count": 99,
+    "confidence": 0.95,
+    "source": "dict"
+  },
+  {
+    "clubId": 80597,
+    "clubName": "Šachová akademie VŠTE, z.s.",
+    "label": "VSTE",
+    "count": 20,
+    "confidence": 0.882,
+    "source": "dict"
+  },
+  {
+    "clubId": 80613,
+    "clubName": "Šachová škola Bohumín, z.s.",
+    "label": "Bohumin",
+    "count": 8,
+    "confidence": 0.845,
+    "source": "dict"
+  },
+  {
+    "clubId": 80621,
+    "clubName": "Šachová škola HŘÍBATA",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80603,
+    "clubName": "Šachová škola STAMAT, z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 10701,
+    "clubName": "Šachový klub Bakov nad Jizerou",
+    "label": "Bakov nad Jizerou",
+    "count": 1,
+    "confidence": 0.78,
+    "source": "dict"
+  },
+  {
+    "clubId": 80472,
+    "clubName": "Šachový klub Bohnice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80218,
+    "clubName": "Šachový klub Bohuňovice, z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80570,
+    "clubName": "Šachový klub Bruntál z.s.",
+    "label": "Bruntal",
+    "count": 14,
+    "confidence": 0.868,
+    "source": "dict"
+  },
+  {
+    "clubId": 80489,
+    "clubName": "Šachový klub Červený Kostelec z.s.",
+    "label": "Kostelec",
+    "count": 75,
+    "confidence": 0.938,
+    "source": "dict"
+  },
+  {
+    "clubId": 50507,
+    "clubName": "Šachový klub Česká Skalice, z.s.",
+    "label": "Str. Skalice",
+    "count": 2,
+    "confidence": 0.346,
+    "source": "dict"
+  },
+  {
+    "clubId": 51105,
+    "clubName": "Šachový klub Choceň, z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80534,
+    "clubName": "Šachový klub DM Klášterského 4, Brno",
+    "label": "Loko Brno",
+    "count": 90,
+    "confidence": 0.43,
+    "source": "dict"
+  },
+  {
+    "clubId": 80517,
+    "clubName": "Šachový klub Dolní Čermná, z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80045,
+    "clubName": "Šachový klub Duras Brno, z.s.",
+    "label": "Duras Brno",
+    "count": 38,
+    "confidence": 0.909,
+    "source": "dict"
+  },
+  {
+    "clubId": 80559,
+    "clubName": "Šachový klub Frýdlant, z.s.",
+    "label": "SK Frydlant",
+    "count": 2,
+    "confidence": 0.481,
+    "source": "dict"
+  },
+  {
+    "clubId": 80600,
+    "clubName": "Šachový klub Galerie Závodný Mikulov, za",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80117,
+    "clubName": "Šachový klub Jeseník, z.s.",
+    "label": "Jesenik",
+    "count": 5,
+    "confidence": 0.828,
+    "source": "dict"
+  },
+  {
+    "clubId": 50401,
+    "clubName": "Šachový klub Jičín z.s.",
+    "label": "Jicin",
+    "count": 97,
+    "confidence": 0.949,
+    "source": "dict"
+  },
+  {
+    "clubId": 80558,
+    "clubName": "Šachový klub Karviná",
+    "label": "Karvina",
+    "count": 48,
+    "confidence": 0.919,
+    "source": "dict"
+  },
+  {
+    "clubId": 11105,
+    "clubName": "Šachový klub KDJS Sedlčany, z.s.",
+    "label": "Sedlcany",
+    "count": 26,
+    "confidence": 0.893,
+    "source": "dict"
+  },
+  {
+    "clubId": 80030,
+    "clubName": "Šachový klub Kunštát, z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80628,
+    "clubName": "Šachový klub Letovice, z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 50206,
+    "clubName": "Šachový klub Lípa, z.s.",
+    "label": "Lipa",
+    "count": 89,
+    "confidence": 0.945,
+    "source": "dict"
+  },
+  {
+    "clubId": 50902,
+    "clubName": "Šachový klub Litomyšl",
+    "label": "Litomysl",
+    "count": 36,
+    "confidence": 0.907,
+    "source": "dict"
+  },
+  {
+    "clubId": 60010,
+    "clubName": "Šachový klub Loko Praha",
+    "label": "Praha",
+    "count": 10,
+    "confidence": 0.854,
+    "source": "dict"
+  },
+  {
+    "clubId": 80034,
+    "clubName": "Šachový klub Lokomotiva Brno, z.s.",
+    "label": "Brno",
+    "count": 59,
+    "confidence": 0.928,
+    "source": "dict"
+  },
+  {
+    "clubId": 50805,
+    "clubName": "Šachový klub Lomnice nad Popelkou, z.s.",
+    "label": "Lomnice",
+    "count": 10,
+    "confidence": 0.854,
+    "source": "dict"
+  },
+  {
+    "clubId": 40701,
+    "clubName": "Šachový klub Louny z.s.",
+    "label": "Louny",
+    "count": 14,
+    "confidence": 0.868,
+    "source": "dict"
+  },
+  {
+    "clubId": 80307,
+    "clubName": "Šachový klub Mohelnice, z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80035,
+    "clubName": "Šachový klub Moravská Slavia",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80633,
+    "clubName": "Šachový klub Na Smetance, z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 50511,
+    "clubName": "Šachový klub Nové Město nad Metují, z.s.",
+    "label": "Stare Mesto",
+    "count": 82,
+    "confidence": 0.942,
+    "source": "dict"
+  },
+  {
+    "clubId": 80208,
+    "clubName": "Šachový klub Olomouc z.s.",
+    "label": "Olomouc",
+    "count": 9,
+    "confidence": 0.85,
+    "source": "dict"
+  },
+  {
+    "clubId": 80616,
+    "clubName": "Šachový klub Ostrava-Jih",
+    "label": "Ostrava",
+    "count": 83,
+    "confidence": 0.942,
+    "source": "dict"
+  },
+  {
+    "clubId": 80245,
+    "clubName": "Šachový klub Píšť z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 40703,
+    "clubName": "Šachový klub Postoloprty, z.s.",
+    "label": "Postoloprty",
+    "count": 6,
+    "confidence": 0.835,
+    "source": "dict"
+  },
+  {
+    "clubId": 80649,
+    "clubName": "Šachový klub Práče",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80581,
+    "clubName": "Šachový klub Praha 4",
+    "label": "Praha",
+    "count": 10,
+    "confidence": 0.854,
+    "source": "dict"
+  },
+  {
+    "clubId": 10207,
+    "clubName": "Šachový klub při MĚÚ Hostomice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 11101,
+    "clubName": "Šachový klub Příbram-Baník, spolek",
+    "label": "Pribram",
+    "count": 46,
+    "confidence": 0.917,
+    "source": "dict"
+  },
+  {
+    "clubId": 50604,
+    "clubName": "Šachový klub Rapid Pardubice, z.s.",
+    "label": "Rapid Pardubice",
+    "count": 20,
+    "confidence": 0.882,
+    "source": "dict"
+  },
+  {
+    "clubId": 80584,
+    "clubName": "Šachový klub Rožďalovice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 40302,
+    "clubName": "Šachový klub Slovan Jirkov",
+    "label": "Jirkov",
+    "count": 2,
+    "confidence": 0.798,
+    "source": "dict"
+  },
+  {
+    "clubId": 80535,
+    "clubName": "Šachový klub Sobotka 2009, o.s.",
+    "label": "Sobotka",
+    "count": 9,
+    "confidence": 0.85,
+    "source": "dict"
+  },
+  {
+    "clubId": 50103,
+    "clubName": "Šachový klub Světlá nad Sázavou",
+    "label": "Svetla nad Sazavou",
+    "count": 21,
+    "confidence": 0.884,
+    "source": "dict"
+  },
+  {
+    "clubId": 80620,
+    "clubName": "Šachový klub Teplice",
+    "label": "Teplice",
+    "count": 71,
+    "confidence": 0.936,
+    "source": "dict"
+  },
+  {
+    "clubId": 51113,
+    "clubName": "Šachový klub Ústí nad Orlicí, z.s.",
+    "label": "Usti nad Orlici",
+    "count": 33,
+    "confidence": 0.903,
+    "source": "dict"
+  },
+  {
+    "clubId": 80417,
+    "clubName": "Šachový klub Valašské Klobouky z.s.",
+    "label": "Valasske Mez",
+    "count": 1,
+    "confidence": 0.327,
+    "source": "dict"
+  },
+  {
+    "clubId": 10307,
+    "clubName": "Šachový klub Velvary",
+    "label": "Velvary",
+    "count": 3,
+    "confidence": 0.81,
+    "source": "dict"
+  },
+  {
+    "clubId": 60012,
+    "clubName": "Šachový klub Viktoria Žižkov",
+    "label": "Zizkov",
+    "count": 29,
+    "confidence": 0.898,
+    "source": "dict"
+  },
+  {
+    "clubId": 80387,
+    "clubName": "Šachový klub Vsetín, z.s.",
+    "label": "Vsetin",
+    "count": 56,
+    "confidence": 0.926,
+    "source": "dict"
+  },
+  {
+    "clubId": 10206,
+    "clubName": "Šachový klub Zdice",
+    "label": "Zdice",
+    "count": 39,
+    "confidence": 0.91,
+    "source": "dict"
+  },
+  {
+    "clubId": 80479,
+    "clubName": "Šachový klub Zlonice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 51104,
+    "clubName": "Šachový oddíl Horní Čermná z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80627,
+    "clubName": "Šachový oddíl Křižánky",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80351,
+    "clubName": "Šachový oddíl Mařatice, z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80524,
+    "clubName": "Šachový oddíl Miřetice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80639,
+    "clubName": "Šachový oddíl při TYMY Holešov",
+    "label": "Holesov",
+    "count": 62,
+    "confidence": 0.93,
+    "source": "dict"
+  },
+  {
+    "clubId": 10306,
+    "clubName": "Šachový oddíl Stochov z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80525,
+    "clubName": "Šachový oddíl TJ DUKLA Praha",
+    "label": "Praha",
+    "count": 10,
+    "confidence": 0.854,
+    "source": "dict"
+  },
+  {
+    "clubId": 80625,
+    "clubName": "Šachový oddíl TJ Sokol Voznice, z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 20802,
+    "clubName": "Šachový spolek Bechyně",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 10404,
+    "clubName": "Šachový spolek Kostelec nad Černými lesy",
+    "label": "Kostelec",
+    "count": 75,
+    "confidence": 0.938,
+    "source": "dict"
+  },
+  {
+    "clubId": 80266,
+    "clubName": "Šachový spolek Polanka",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80520,
+    "clubName": "Šachový spolek Újezd nad Lesy",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80576,
+    "clubName": "Šachový spolek Železné hory",
+    "label": "Zelezne hory",
+    "count": 14,
+    "confidence": 0.868,
+    "source": "dict"
+  },
+  {
+    "clubId": 80647,
+    "clubName": "Šachy Bowling Brno, z.s.",
+    "label": "Brno",
+    "count": 59,
+    "confidence": 0.928,
+    "source": "dict"
+  },
+  {
+    "clubId": 80403,
+    "clubName": "Šachy Brankovice z.s.",
+    "label": "Brankovice",
+    "count": 10,
+    "confidence": 0.854,
+    "source": "dict"
+  },
+  {
+    "clubId": 80641,
+    "clubName": "Šachy Bukovany",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80608,
+    "clubName": "Šachy Hošťálková z.s.",
+    "label": "Hostalkova",
+    "count": 85,
+    "confidence": 0.943,
+    "source": "dict"
+  },
+  {
+    "clubId": 80626,
+    "clubName": "Šachy Krnov, z.s.",
+    "label": "Krnov",
+    "count": 21,
+    "confidence": 0.884,
+    "source": "dict"
+  },
+  {
+    "clubId": 80202,
+    "clubName": "Šachy Nový Jičín, z.s.",
+    "label": "Novy Jicin",
+    "count": 4,
+    "confidence": 0.82,
+    "source": "dict"
+  },
+  {
+    "clubId": 80643,
+    "clubName": "Šachy Polabí, z.s.",
+    "label": "Polabi",
+    "count": 6,
+    "confidence": 0.835,
+    "source": "dict"
+  },
+  {
+    "clubId": 41003,
+    "clubName": "Šachy Povrly",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80656,
+    "clubName": "ŠACHY PRO RADOST!!",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80602,
+    "clubName": "Šachy Štěpán",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80445,
+    "clubName": "Šachy Vyškov",
+    "label": "Vyskov",
+    "count": 40,
+    "confidence": 0.911,
+    "source": "dict"
+  },
+  {
+    "clubId": 80065,
+    "clubName": "Šachy Zastávka",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80582,
+    "clubName": "ŠK 1921 Zábřeh",
+    "label": "Zabreh",
+    "count": 19,
+    "confidence": 0.88,
+    "source": "dict"
+  },
+  {
+    "clubId": 80243,
+    "clubName": "ŠK 1935 Bolatice, z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80041,
+    "clubName": "ŠK 64 Brno",
+    "label": "Brno",
+    "count": 59,
+    "confidence": 0.928,
+    "source": "dict"
+  },
+  {
+    "clubId": 80575,
+    "clubName": "ŠK 64 Plzeň",
+    "label": "Plzen",
+    "count": 52,
+    "confidence": 0.922,
+    "source": "dict"
+  },
+  {
+    "clubId": 80648,
+    "clubName": "ŠK AuHa Gladiators",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80551,
+    "clubName": "ŠK Aurora",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80572,
+    "clubName": "ŠK AZ CENTRUM Havlíčkův Brod",
+    "label": "Havlickuv Brod",
+    "count": 1,
+    "confidence": 0.78,
+    "source": "dict"
+  },
+  {
+    "clubId": 80513,
+    "clubName": "ŠK Bohemia Pardubice z.s.",
+    "label": "Bohemia",
+    "count": 67,
+    "confidence": 0.933,
+    "source": "dict"
+  },
+  {
+    "clubId": 80332,
+    "clubName": "SK Boršice",
+    "label": "Borsice",
+    "count": 145,
+    "confidence": 0.95,
+    "source": "dict"
+  },
+  {
+    "clubId": 80016,
+    "clubName": "ŠK Boskovice",
+    "label": "Boskovice",
+    "count": 3,
+    "confidence": 0.817,
+    "source": "dict"
+  },
+  {
+    "clubId": 80036,
+    "clubName": "ŠK Bystrc Oilers",
+    "label": "Bystrc",
+    "count": 31,
+    "confidence": 0.901,
+    "source": "dict"
+  },
+  {
+    "clubId": 80505,
+    "clubName": "SK Bystřice nad Olší",
+    "label": "Val.Bystrice",
+    "count": 20,
+    "confidence": 0.426,
+    "source": "dict"
+  },
+  {
+    "clubId": 80153,
+    "clubName": "ŠK Bystřice pod Hostýnem",
+    "label": "Val.Bystrice",
+    "count": 20,
+    "confidence": 0.407,
+    "source": "dict"
+  },
+  {
+    "clubId": 30309,
+    "clubName": "ŠK Caissa Nová Role",
+    "label": "Caissa",
+    "count": 17,
+    "confidence": 0.876,
+    "source": "dict"
+  },
+  {
+    "clubId": 80494,
+    "clubName": "ŠK Caissa Třebíč z.s.",
+    "label": "Caissa Trebic",
+    "count": 20,
+    "confidence": 0.882,
+    "source": "dict"
+  },
+  {
+    "clubId": 40101,
+    "clubName": "ŠK Česká Lípa",
+    "label": "Ceska Lipa",
+    "count": 9,
+    "confidence": 0.861,
+    "source": "dict"
+  },
+  {
+    "clubId": 10402,
+    "clubName": "ŠK Český Brod",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 20201,
+    "clubName": "ŠK Český Krumlov",
+    "label": "Cesky Krumlov",
+    "count": 25,
+    "confidence": 0.91,
+    "source": "dict"
+  },
+  {
+    "clubId": 80247,
+    "clubName": "ŠK Darkovičky",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 50705,
+    "clubName": "ŠK DDM Kostelec nad Orlicí",
+    "label": "Kostelec",
+    "count": 75,
+    "confidence": 0.938,
+    "source": "dict"
+  },
+  {
+    "clubId": 31008,
+    "clubName": "ŠK DDM Planá u Mar.Lázní",
+    "label": "Plana",
+    "count": 5,
+    "confidence": 0.828,
+    "source": "dict"
+  },
+  {
+    "clubId": 10305,
+    "clubName": "SK DDM Slaný",
+    "label": "Slany",
+    "count": 9,
+    "confidence": 0.85,
+    "source": "dict"
+  },
+  {
+    "clubId": 80414,
+    "clubName": "ŠK DDM Slavičín",
+    "label": "Slavicin",
+    "count": 7,
+    "confidence": 0.84,
+    "source": "dict"
+  },
+  {
+    "clubId": 50210,
+    "clubName": "ŠK DDM Třebechovice pod Orebem",
+    "label": "Trebechovice",
+    "count": 47,
+    "confidence": 0.918,
+    "source": "dict"
+  },
+  {
+    "clubId": 40201,
+    "clubName": "SK Děčín",
+    "label": "Decin",
+    "count": 28,
+    "confidence": 0.896,
+    "source": "dict"
+  },
+  {
+    "clubId": 80325,
+    "clubName": "ŠK Dolňácko, z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80476,
+    "clubName": "ŠK Dolní Bojanovice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 60004,
+    "clubName": "ŠK Dopravní podnik Praha",
+    "label": "Dopravni podnik",
+    "count": 3,
+    "confidence": 0.81,
+    "source": "dict"
+  },
+  {
+    "clubId": 50709,
+    "clubName": "ŠK Doudleby nad Orlicí",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80590,
+    "clubName": "ŠK Dvorec",
+    "label": "Dvorec",
+    "count": 14,
+    "confidence": 0.868,
+    "source": "dict"
+  },
+  {
+    "clubId": 80455,
+    "clubName": "SK EMKaD Holešov",
+    "label": "Holesov",
+    "count": 62,
+    "confidence": 0.93,
+    "source": "dict"
+  },
+  {
+    "clubId": 80606,
+    "clubName": "ŠK Garde Kaznějov",
+    "label": "Garde Olomouc",
+    "count": 3,
+    "confidence": 0.367,
+    "source": "dict"
+  },
+  {
+    "clubId": 80029,
+    "clubName": "ŠK GARDE Lipovec",
+    "label": "Lipovec",
+    "count": 63,
+    "confidence": 0.931,
+    "source": "dict"
+  },
+  {
+    "clubId": 80629,
+    "clubName": "ŠK Hartenberg",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 50101,
+    "clubName": "ŠK Havlíčkův Brod z.s.",
+    "label": "Havlickuv Brod",
+    "count": 1,
+    "confidence": 0.78,
+    "source": "dict"
+  },
+  {
+    "clubId": 80111,
+    "clubName": "ŠK Hodonín",
+    "label": "Hodonin",
+    "count": 13,
+    "confidence": 0.865,
+    "source": "dict"
+  },
+  {
+    "clubId": 80155,
+    "clubName": "ŠK Holešov",
+    "label": "Holesov",
+    "count": 62,
+    "confidence": 0.93,
+    "source": "dict"
+  },
+  {
+    "clubId": 80410,
+    "clubName": "SK Horní Lhota",
+    "label": "Fr. Lhota",
+    "count": 15,
+    "confidence": 0.478,
+    "source": "dict"
+  },
+  {
+    "clubId": 80270,
+    "clubName": "ŠK Hošťálkovice, z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80013,
+    "clubName": "ŠK Hustopeče",
+    "label": "Hustopece",
+    "count": 39,
+    "confidence": 0.917,
+    "source": "dict"
+  },
+  {
+    "clubId": 80098,
+    "clubName": "SK Ježov",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 10811,
+    "clubName": "ŠK JOLY Lysá nad Labem, z.s.",
+    "label": "Lysa nad Labem",
+    "count": 27,
+    "confidence": 0.895,
+    "source": "dict"
+  },
+  {
+    "clubId": 80619,
+    "clubName": "ŠK Kapličák Liberec, spolek",
+    "label": "Liberec",
+    "count": 118,
+    "confidence": 0.95,
+    "source": "dict"
+  },
+  {
+    "clubId": 10704,
+    "clubName": "ŠK Karbo Benátky nad Jizerou",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 30302,
+    "clubName": "ŠK Karlovy Vary",
+    "label": "Karlovy Vary",
+    "count": 13,
+    "confidence": 0.881,
+    "source": "dict"
+  },
+  {
+    "clubId": 30103,
+    "clubName": "ŠK Kdyně",
+    "label": ": Kdyne",
+    "count": 6,
+    "confidence": 0.835,
+    "source": "dict"
+  },
+  {
+    "clubId": 10301,
+    "clubName": "ŠK Kladno",
+    "label": "Kladno",
+    "count": 47,
+    "confidence": 0.918,
+    "source": "dict"
+  },
+  {
+    "clubId": 11108,
+    "clubName": "ŠK Kovohutě Příbram",
+    "label": "Pribram",
+    "count": 46,
+    "confidence": 0.917,
+    "source": "dict"
+  },
+  {
+    "clubId": 80242,
+    "clubName": "SK Kravaře",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80056,
+    "clubName": "ŠK Kuřim, z.s.",
+    "label": "Kurim",
+    "count": 143,
+    "confidence": 0.95,
+    "source": "dict"
+  },
+  {
+    "clubId": 50803,
+    "clubName": "ŠK Libštát",
+    "label": "Libstat",
+    "count": 13,
+    "confidence": 0.865,
+    "source": "dict"
+  },
+  {
+    "clubId": 30702,
+    "clubName": "ŠK Líně",
+    "label": "Line",
+    "count": 28,
+    "confidence": 0.896,
+    "source": "dict"
+  },
+  {
+    "clubId": 60052,
+    "clubName": "SK LISA",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80514,
+    "clubName": "SK Lokomotiva Radlice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80320,
+    "clubName": "ŠK Loštice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80177,
+    "clubName": "ŠK Loukov",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 40704,
+    "clubName": "ŠK Magic Žatec",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 60020,
+    "clubName": "ŠK Mahrla Praha z.s.",
+    "label": "Mahrla Praha",
+    "count": 21,
+    "confidence": 0.884,
+    "source": "dict"
+  },
+  {
+    "clubId": 80492,
+    "clubName": "ŠK Medvědi Zvole",
+    "label": "Zvole",
+    "count": 24,
+    "confidence": 0.89,
+    "source": "dict"
+  },
+  {
+    "clubId": 80399,
+    "clubName": "ŠK Merta Slavkov u Brna",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80550,
+    "clubName": "ŠK Mlejn",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80519,
+    "clubName": "ŠK Mníšek pod Brdy",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80618,
+    "clubName": "ŠK Molekula",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80654,
+    "clubName": "ŠK Monte Berani",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80502,
+    "clubName": "ŠK Most",
+    "label": "Most",
+    "count": 84,
+    "confidence": 0.943,
+    "source": "dict"
+  },
+  {
+    "clubId": 60014,
+    "clubName": "SK OAZA Praha",
+    "label": "OAZA Praha",
+    "count": 94,
+    "confidence": 0.959,
+    "source": "dict"
+  },
+  {
+    "clubId": 80213,
+    "clubName": "SK Olomouc Sigma MŽ",
+    "label": "Olomouc",
+    "count": 9,
+    "confidence": 0.85,
+    "source": "dict"
+  },
+  {
+    "clubId": 80595,
+    "clubName": "ŠK Olympia České Budějovice, z.s.",
+    "label": "Ceske Budejovice",
+    "count": 22,
+    "confidence": 0.886,
+    "source": "dict"
+  },
+  {
+    "clubId": 30507,
+    "clubName": "SK Petřín Plzeň",
+    "label": "Plzen Petrin",
+    "count": 8,
+    "confidence": 0.845,
+    "source": "dict"
+  },
+  {
+    "clubId": 80205,
+    "clubName": "ŠK Petřvald u NJ",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80109,
+    "clubName": "SK Podlužan Prušánky z.s.",
+    "label": "Prusanky",
+    "count": 69,
+    "confidence": 0.935,
+    "source": "dict"
+  },
+  {
+    "clubId": 80477,
+    "clubName": "ŠK POGO Budišov n/B.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 60030,
+    "clubName": "ŠK Praha-Smíchov",
+    "label": "Smichov",
+    "count": 63,
+    "confidence": 0.931,
+    "source": "dict"
+  },
+  {
+    "clubId": 30601,
+    "clubName": "ŠK Přeštice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80154,
+    "clubName": "ŠK Prusinovice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 11201,
+    "clubName": "ŠK Rakovník",
+    "label": "Rakovnik",
+    "count": 9,
+    "confidence": 0.853,
+    "source": "dict"
+  },
+  {
+    "clubId": 60022,
+    "clubName": "SK Rapid Praha",
+    "label": "Rapid",
+    "count": 53,
+    "confidence": 0.923,
+    "source": "dict"
+  },
+  {
+    "clubId": 80113,
+    "clubName": "SK Řetězárna",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80623,
+    "clubName": "ŠK Řetůvka",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80447,
+    "clubName": "ŠK Řevnice",
+    "label": "Revnice",
+    "count": 70,
+    "confidence": 0.935,
+    "source": "dict"
+  },
+  {
+    "clubId": 80454,
+    "clubName": "SK ROŠÁDA Prostějov, z.s.",
+    "label": "Prostejov",
+    "count": 37,
+    "confidence": 0.908,
+    "source": "dict"
+  },
+  {
+    "clubId": 20102,
+    "clubName": "SK ROYAL",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80158,
+    "clubName": "SK Rusava",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 41009,
+    "clubName": "SK Šachy Chlumec",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80048,
+    "clubName": "ŠK Salesiáni Žabiny",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80321,
+    "clubName": "ŠK SDH Stavenice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80434,
+    "clubName": "ŠK Sebranci RH",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80271,
+    "clubName": "ŠK Šenov",
+    "label": "Senov",
+    "count": 51,
+    "confidence": 0.922,
+    "source": "dict"
+  },
+  {
+    "clubId": 20804,
+    "clubName": "SK Sezimovo Ústí, z.s. oddíl šachy",
+    "label": "Usti",
+    "count": 48,
+    "confidence": 0.919,
+    "source": "dict"
+  },
+  {
+    "clubId": 80221,
+    "clubName": "ŠK SIGMIA Olomouc",
+    "label": "Olomouc",
+    "count": 9,
+    "confidence": 0.85,
+    "source": "dict"
+  },
+  {
+    "clubId": 80611,
+    "clubName": "ŠK SLAVIA Liberec, z.s.",
+    "label": "Liberec",
+    "count": 118,
+    "confidence": 0.95,
+    "source": "dict"
+  },
+  {
+    "clubId": 80146,
+    "clubName": "SK Slavia Orlová",
+    "label": "Orlova",
+    "count": 194,
+    "confidence": 0.95,
+    "source": "dict"
+  },
+  {
+    "clubId": 40203,
+    "clubName": "ŠK Slavie Děčín",
+    "label": "Decin",
+    "count": 28,
+    "confidence": 0.896,
+    "source": "dict"
+  },
+  {
+    "clubId": 40601,
+    "clubName": "ŠK Slavoj Litoměřice, z.s.",
+    "label": "Litomerice",
+    "count": 44,
+    "confidence": 0.915,
+    "source": "dict"
+  },
+  {
+    "clubId": 80272,
+    "clubName": "ŠK Slavoj Poruba",
+    "label": "Poruba",
+    "count": 85,
+    "confidence": 0.943,
+    "source": "dict"
+  },
+  {
+    "clubId": 80451,
+    "clubName": "ŠK Slavoj Velké Pavlovice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 30401,
+    "clubName": "ŠK Sokol Klatovy",
+    "label": "Klatovy",
+    "count": 132,
+    "confidence": 0.95,
+    "source": "dict"
+  },
+  {
+    "clubId": 60002,
+    "clubName": "ŠK Sokol Vyšehrad",
+    "label": "Vysehrad",
+    "count": 154,
+    "confidence": 0.95,
+    "source": "dict"
+  },
+  {
+    "clubId": 10906,
+    "clubName": "ŠK Spartak Čelákovice",
+    "label": "Celakovice",
+    "count": 23,
+    "confidence": 0.888,
+    "source": "dict"
+  },
+  {
+    "clubId": 30906,
+    "clubName": "ŠK Spartak Chodov",
+    "label": "Chodov",
+    "count": 36,
+    "confidence": 0.907,
+    "source": "dict"
+  },
+  {
+    "clubId": 41001,
+    "clubName": "ŠK Spartak Ústí nad Labem",
+    "label": "Usti nad Labem",
+    "count": 3,
+    "confidence": 0.81,
+    "source": "dict"
+  },
+  {
+    "clubId": 80439,
+    "clubName": "ŠK Staré Město",
+    "label": "Stare Mesto",
+    "count": 82,
+    "confidence": 0.956,
+    "source": "dict"
+  },
+  {
+    "clubId": 80222,
+    "clubName": "ŠK Šternberk",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80147,
+    "clubName": "SK Stonava",
+    "label": "Stonava",
+    "count": 10,
+    "confidence": 0.854,
+    "source": "dict"
+  },
+  {
+    "clubId": 40108,
+    "clubName": "ŠK Stráž pod Ralskem",
+    "label": "Straz p.R",
+    "count": 6,
+    "confidence": 0.371,
+    "source": "dict"
+  },
+  {
+    "clubId": 80060,
+    "clubName": "ŠK Střelice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80179,
+    "clubName": "ŠK Sulimov",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 50903,
+    "clubName": "ŠK Svitavy",
+    "label": "Svitavy",
+    "count": 10,
+    "confidence": 0.854,
+    "source": "dict"
+  },
+  {
+    "clubId": 80549,
+    "clubName": "ŠK Svornost Rousínovec",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80546,
+    "clubName": "ŠK Tachov",
+    "label": "Tachov",
+    "count": 26,
+    "confidence": 0.893,
+    "source": "dict"
+  },
+  {
+    "clubId": 80067,
+    "clubName": "ŠK Tišnov",
+    "label": "Tisnov",
+    "count": 12,
+    "confidence": 0.861,
+    "source": "dict"
+  },
+  {
+    "clubId": 80227,
+    "clubName": "ŠK TJ Dolní Benešov",
+    "label": "Dolni Benesov",
+    "count": 28,
+    "confidence": 0.896,
+    "source": "dict"
+  },
+  {
+    "clubId": 20104,
+    "clubName": "ŠK Týn nad Vltavou",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80580,
+    "clubName": "ŠK Valdštejn Cheb",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80310,
+    "clubName": "ŠK Velké Losiny",
+    "label": "Velke Losiny",
+    "count": 11,
+    "confidence": 0.875,
+    "source": "dict"
+  },
+  {
+    "clubId": 20807,
+    "clubName": "ŠK Veselí n.L.",
+    "label": "Veseli",
+    "count": 84,
+    "confidence": 0.943,
+    "source": "dict"
+  },
+  {
+    "clubId": 80110,
+    "clubName": "ŠK Veselí n/M",
+    "label": "Veseli",
+    "count": 84,
+    "confidence": 0.943,
+    "source": "dict"
+  },
+  {
+    "clubId": 80049,
+    "clubName": "ŠK Vinohrady Brno",
+    "label": "Vinohrady",
+    "count": 21,
+    "confidence": 0.884,
+    "source": "dict"
+  },
+  {
+    "clubId": 51114,
+    "clubName": "ŠK Vysoké Mýto",
+    "label": "Vysoke Myto",
+    "count": 60,
+    "confidence": 0.943,
+    "source": "dict"
+  },
+  {
+    "clubId": 51115,
+    "clubName": "SK Žamberk",
+    "label": "Zamberk",
+    "count": 74,
+    "confidence": 0.938,
+    "source": "dict"
+  },
+  {
+    "clubId": 80568,
+    "clubName": "ŠK ZAS",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 50801,
+    "clubName": "ŠK ZIKUDA Turnov, z.s.",
+    "label": "Zikuda Turnov",
+    "count": 9,
+    "confidence": 0.85,
+    "source": "dict"
+  },
+  {
+    "clubId": 80651,
+    "clubName": "ŠK Zličín z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80421,
+    "clubName": "ŠK Zlín, z.s.",
+    "label": "Zlin",
+    "count": 121,
+    "confidence": 0.95,
+    "source": "dict"
+  },
+  {
+    "clubId": 80442,
+    "clubName": "ŠK Zlín-Malenovice, z.s.",
+    "label": "Zlin",
+    "count": 121,
+    "confidence": 0.95,
+    "source": "dict"
+  },
+  {
+    "clubId": 80583,
+    "clubName": "ŠK ZŠ Horka nad Moravou",
+    "label": "Veseli nad Moravou",
+    "count": 3,
+    "confidence": 0.5,
+    "source": "dict"
+  },
+  {
+    "clubId": 80491,
+    "clubName": "ŠK ZŠ Hrabišín",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 70002,
+    "clubName": "SKŠ",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80249,
+    "clubName": "ŠKTP Hrabyně",
+    "label": "SKTP Hrabyne",
+    "count": 2,
+    "confidence": 0.848,
+    "source": "dict"
+  },
+  {
+    "clubId": 80569,
+    "clubName": "Slávia České Budějovice",
+    "label": "Ceske Budejovice",
+    "count": 22,
+    "confidence": 0.886,
+    "source": "dict"
+  },
+  {
+    "clubId": 80160,
+    "clubName": "Slavia Kroměříž",
+    "label": "Kromeriz",
+    "count": 73,
+    "confidence": 0.937,
+    "source": "dict"
+  },
+  {
+    "clubId": 80149,
+    "clubName": "Slavoj Český Těšín",
+    "label": "Cesky Tesin",
+    "count": 2,
+    "confidence": 0.798,
+    "source": "dict"
+  },
+  {
+    "clubId": 80228,
+    "clubName": "Slezan Opava",
+    "label": "Slezan Opava",
+    "count": 15,
+    "confidence": 0.92,
+    "source": "dict"
+  },
+  {
+    "clubId": 80265,
+    "clubName": "Slovan Ostrava",
+    "label": "Ostrava",
+    "count": 83,
+    "confidence": 0.942,
+    "source": "dict"
+  },
+  {
+    "clubId": 80120,
+    "clubName": "ŠO Gordic Jihlava",
+    "label": "Gordic Jihlava",
+    "count": 4,
+    "confidence": 0.841,
+    "source": "dict"
+  },
+  {
+    "clubId": 50304,
+    "clubName": "ŠO Hlinsko",
+    "label": "Hlinsko",
+    "count": 24,
+    "confidence": 0.89,
+    "source": "dict"
+  },
+  {
+    "clubId": 80541,
+    "clubName": "ŠO Hraničář Horní Stropnice",
+    "label": "Stropnice",
+    "count": 17,
+    "confidence": 0.876,
+    "source": "dict"
+  },
+  {
+    "clubId": 80075,
+    "clubName": "ŠO Jiskra Rýmařov",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80328,
+    "clubName": "ŠO Kunovice",
+    "label": "Kunovice",
+    "count": 24,
+    "confidence": 0.892,
+    "source": "dict"
+  },
+  {
+    "clubId": 51108,
+    "clubName": "ŠO Kunvaldská a.s. Kunvald",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80389,
+    "clubName": "ŠO MKS Vyškov",
+    "label": "Vyskov",
+    "count": 40,
+    "confidence": 0.911,
+    "source": "dict"
+  },
+  {
+    "clubId": 60016,
+    "clubName": "ŠO Praga Praha",
+    "label": "Praga Praha",
+    "count": 60,
+    "confidence": 0.943,
+    "source": "dict"
+  },
+  {
+    "clubId": 80470,
+    "clubName": "ŠO SK Pozlovice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80385,
+    "clubName": "ŠO TJ Karolinka",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80457,
+    "clubName": "ŠO TJ Sokol Lužná",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80446,
+    "clubName": "ŠO TJ Sokol Mosty u Jablunkova",
+    "label": "Mosty",
+    "count": 17,
+    "confidence": 0.876,
+    "source": "dict"
+  },
+  {
+    "clubId": 80615,
+    "clubName": "ŠO TJ Sokol Oudoleň",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 20601,
+    "clubName": "ŠO TJ Tatran Prachatice",
+    "label": "Prachatice",
+    "count": 15,
+    "confidence": 0.87,
+    "source": "dict"
+  },
+  {
+    "clubId": 80444,
+    "clubName": "ŠO TJ Zborovice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80404,
+    "clubName": "ŠO TP Habrovany, z.s.",
+    "label": "UL-TP",
+    "count": 1,
+    "confidence": 0.272,
+    "source": "dict"
+  },
+  {
+    "clubId": 10311,
+    "clubName": "ŠO TP Nova Kladno, z.s.",
+    "label": "NOVA Kladno",
+    "count": 4,
+    "confidence": 0.82,
+    "source": "dict"
+  },
+  {
+    "clubId": 10901,
+    "clubName": "Sokol Brandýs nad Labem",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80080,
+    "clubName": "Sokol Brušperk",
+    "label": "Brusperk",
+    "count": 6,
+    "confidence": 0.835,
+    "source": "dict"
+  },
+  {
+    "clubId": 10308,
+    "clubName": "Sokol Buštěhrad",
+    "label": "Bustehrad",
+    "count": 108,
+    "confidence": 0.95,
+    "source": "dict"
+  },
+  {
+    "clubId": 80366,
+    "clubName": "Sokol Bystřička",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80150,
+    "clubName": "Sokol Chotěbuz",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80006,
+    "clubName": "Sokol ČOS Vranovice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80509,
+    "clubName": "Sokol Dobšice, z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 30101,
+    "clubName": "Sokol Domažlice",
+    "label": "Domazlice",
+    "count": 130,
+    "confidence": 0.95,
+    "source": "dict"
+  },
+  {
+    "clubId": 80367,
+    "clubName": "Sokol Francova Lhota",
+    "label": "Francova Lhota",
+    "count": 25,
+    "confidence": 0.891,
+    "source": "dict"
+  },
+  {
+    "clubId": 50204,
+    "clubName": "Sokol Hradec Králové",
+    "label": "Hradec Kralove",
+    "count": 64,
+    "confidence": 0.931,
+    "source": "dict"
+  },
+  {
+    "clubId": 80370,
+    "clubName": "Sokol Huslenky",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80185,
+    "clubName": "Sokol Jámy",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80018,
+    "clubName": "Sokol Jedovnice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80235,
+    "clubName": "Sokol Kobeřice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80503,
+    "clubName": "Sokol Kolín",
+    "label": "Kolin",
+    "count": 50,
+    "confidence": 0.921,
+    "source": "dict"
+  },
+  {
+    "clubId": 80009,
+    "clubName": "Sokol Lanžhot",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 50607,
+    "clubName": "Sokol Lázně Bohdaneč",
+    "label": "Lazne Beloh",
+    "count": 6,
+    "confidence": 0.425,
+    "source": "dict"
+  },
+  {
+    "clubId": 80164,
+    "clubName": "Sokol Litenčice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80292,
+    "clubName": "Sokol Městečko Trnávka",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 51111,
+    "clubName": "Sokol Mistrovice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 10703,
+    "clubName": "Sokol Mladá Boleslav",
+    "label": "Mlada Boleslav",
+    "count": 28,
+    "confidence": 0.896,
+    "source": "dict"
+  },
+  {
+    "clubId": 80563,
+    "clubName": "Sokol Nebušice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80634,
+    "clubName": "Sokol Nová Bělá",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 10804,
+    "clubName": "Sokol Pečky",
+    "label": "Pecky",
+    "count": 22,
+    "confidence": 0.886,
+    "source": "dict"
+  },
+  {
+    "clubId": 80165,
+    "clubName": "Sokol Postoupky",
+    "label": "Postoupky",
+    "count": 119,
+    "confidence": 0.95,
+    "source": "dict"
+  },
+  {
+    "clubId": 10101,
+    "clubName": "Sokol Postupice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80287,
+    "clubName": "Sokol Přemyslovice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80022,
+    "clubName": "Sokol Rudice",
+    "label": "Rudice",
+    "count": 13,
+    "confidence": 0.865,
+    "source": "dict"
+  },
+  {
+    "clubId": 50704,
+    "clubName": "Sokol Rychnov nad Kněžnou",
+    "label": "Rychnov",
+    "count": 59,
+    "confidence": 0.928,
+    "source": "dict"
+  },
+  {
+    "clubId": 80429,
+    "clubName": "Sokol Štítary",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80450,
+    "clubName": "Sokol Struhařov z.s.",
+    "label": "Struharov",
+    "count": 25,
+    "confidence": 0.891,
+    "source": "dict"
+  },
+  {
+    "clubId": 20801,
+    "clubName": "Sokol Tábor",
+    "label": "Tabor",
+    "count": 99,
+    "confidence": 0.95,
+    "source": "dict"
+  },
+  {
+    "clubId": 80375,
+    "clubName": "Sokol Val.Polanka",
+    "label": "Val.Bystrice",
+    "count": 20,
+    "confidence": 0.382,
+    "source": "dict"
+  },
+  {
+    "clubId": 80267,
+    "clubName": "Sokol Vítkovice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80074,
+    "clubName": "Sokol Vrbno p/P",
+    "label": "Vrbno",
+    "count": 31,
+    "confidence": 0.901,
+    "source": "dict"
+  },
+  {
+    "clubId": 80024,
+    "clubName": "Spartak Adamov",
+    "label": "Adamov",
+    "count": 57,
+    "confidence": 0.926,
+    "source": "dict"
+  },
+  {
+    "clubId": 80189,
+    "clubName": "Spartak Velká Bíteš",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80190,
+    "clubName": "Spartak Velké Meziříčí",
+    "label": "Val.Mezirici",
+    "count": 10,
+    "confidence": 0.465,
+    "source": "dict"
+  },
+  {
+    "clubId": 80409,
+    "clubName": "Sportovní klub Brumov-Bylnice, z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80538,
+    "clubName": "Sportovní klub Sokol Citov, z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 10501,
+    "clubName": "SPORTOVNÍ KLUBY Slavoj Čáslav",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80129,
+    "clubName": "SŠK Cejle",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 30701,
+    "clubName": "SŠK TJ Heřmanova Huť  z.s. / TJ NÝŘANY z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80591,
+    "clubName": "ŠŠPM Lipky HK",
+    "label": "SSPM Lipky HK",
+    "count": 9,
+    "confidence": 0.9,
+    "source": "dict"
+  },
+  {
+    "clubId": 80556,
+    "clubName": "Steinitz - Makabi Praha",
+    "label": "OAZA Praha",
+    "count": 94,
+    "confidence": 0.478,
+    "source": "dict"
+  },
+  {
+    "clubId": 80462,
+    "clubName": "T.J. Sokol Hranice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80598,
+    "clubName": "T.J. Sokol Lhotka",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80459,
+    "clubName": "T.J. Sokol Morkovice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80599,
+    "clubName": "T.J. Sokol Mšeno - šachový oddíl",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 20203,
+    "clubName": "T.J.Sokol Křemže",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80198,
+    "clubName": "Tatra Kopřivnice",
+    "label": "Koprivnice",
+    "count": 42,
+    "confidence": 0.913,
+    "source": "dict"
+  },
+  {
+    "clubId": 80216,
+    "clubName": "Tatran Litovel",
+    "label": "Litovel",
+    "count": 74,
+    "confidence": 0.938,
+    "source": "dict"
+  },
+  {
+    "clubId": 80012,
+    "clubName": "Tatran Poštorná",
+    "label": "Postorna",
+    "count": 38,
+    "confidence": 0.909,
+    "source": "dict"
+  },
+  {
+    "clubId": 80374,
+    "clubName": "Tělovýchovná jednota Sokol Ústí z.s.",
+    "label": "Usti",
+    "count": 48,
+    "confidence": 0.919,
+    "source": "dict"
+  },
+  {
+    "clubId": 80655,
+    "clubName": "Tělovýchovná jednota Sokol Velké Němčice z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80197,
+    "clubName": "Tělovýchovná jednota Spartak Bílovec z.s",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 10903,
+    "clubName": "TJ AERO Odolena Voda",
+    "label": "Odolena Voda",
+    "count": 26,
+    "confidence": 0.893,
+    "source": "dict"
+  },
+  {
+    "clubId": 10705,
+    "clubName": "TJ Auto Škoda Mladá Boleslav",
+    "label": "Mlada Boleslav",
+    "count": 28,
+    "confidence": 0.896,
+    "source": "dict"
+  },
+  {
+    "clubId": 30901,
+    "clubName": "TJ Baník Habartov",
+    "label": "Habartov",
+    "count": 5,
+    "confidence": 0.828,
+    "source": "dict"
+  },
+  {
+    "clubId": 80137,
+    "clubName": "TJ Baník Havířov",
+    "label": "Havirov",
+    "count": 49,
+    "confidence": 0.92,
+    "source": "dict"
+  },
+  {
+    "clubId": 40402,
+    "clubName": "TJ Bižuterie Jablonec n.Nisou",
+    "label": "Bizuterie Jablonec",
+    "count": 1,
+    "confidence": 0.78,
+    "source": "dict"
+  },
+  {
+    "clubId": 10802,
+    "clubName": "TJ Bohemia Poděbrady",
+    "label": "Bohemia",
+    "count": 67,
+    "confidence": 0.933,
+    "source": "dict"
+  },
+  {
+    "clubId": 60001,
+    "clubName": "TJ Bohemians Praha",
+    "label": "Bohemians Praha",
+    "count": 27,
+    "confidence": 0.917,
+    "source": "dict"
+  },
+  {
+    "clubId": 80360,
+    "clubName": "TJ Bojkovice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 50102,
+    "clubName": "TJ CHS Chotěboř",
+    "label": "TJ CHS Chotebor",
+    "count": 19,
+    "confidence": 0.763,
+    "source": "dict"
+  },
+  {
+    "clubId": 20702,
+    "clubName": "TJ ČZ Strakonice",
+    "label": "Strakonice",
+    "count": 18,
+    "confidence": 0.878,
+    "source": "dict"
+  },
+  {
+    "clubId": 40505,
+    "clubName": "TJ Desko Liberec",
+    "label": "Liberec",
+    "count": 118,
+    "confidence": 0.95,
+    "source": "dict"
+  },
+  {
+    "clubId": 80087,
+    "clubName": "TJ Dobratice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 51005,
+    "clubName": "TJ Dvůr Králové nad Labem, z.s.",
+    "label": "Dvur Kralove",
+    "count": 25,
+    "confidence": 0.891,
+    "source": "dict"
+  },
+  {
+    "clubId": 80199,
+    "clubName": "TJ Frenštát pod Radhoštěm, spolek",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80200,
+    "clubName": "TJ Fulnek",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 11002,
+    "clubName": "TJ Hostivice",
+    "label": "Hostivice",
+    "count": 50,
+    "confidence": 0.928,
+    "source": "dict"
+  },
+  {
+    "clubId": 80226,
+    "clubName": "TJ Hradec n/Moravicí",
+    "label": "Hradec Kralove",
+    "count": 64,
+    "confidence": 0.524,
+    "source": "dict"
+  },
+  {
+    "clubId": 50509,
+    "clubName": "TJ Hronov",
+    "label": "Hronov",
+    "count": 44,
+    "confidence": 0.915,
+    "source": "dict"
+  },
+  {
+    "clubId": 51106,
+    "clubName": "TJ Jablonné nad Orlicí",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 10103,
+    "clubName": "TJ Jawa Brodce",
+    "label": "JAWA Brodce",
+    "count": 19,
+    "confidence": 0.894,
+    "source": "dict"
+  },
+  {
+    "clubId": 11104,
+    "clubName": "TJ Jince",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 50205,
+    "clubName": "TJ Jiskra  Nový Bydžov",
+    "label": "Novy Bydzov",
+    "count": 4,
+    "confidence": 0.82,
+    "source": "dict"
+  },
+  {
+    "clubId": 50402,
+    "clubName": "TJ Jiskra Hořice v Podkrkonoší",
+    "label": "Horice",
+    "count": 83,
+    "confidence": 0.942,
+    "source": "dict"
+  },
+  {
+    "clubId": 20402,
+    "clubName": "TJ Jiskra Humpolec",
+    "label": "Humpolec",
+    "count": 45,
+    "confidence": 0.916,
+    "source": "dict"
+  },
+  {
+    "clubId": 50504,
+    "clubName": "TJ Jiskra Jaroměř",
+    "label": "Jaromer",
+    "count": 33,
+    "confidence": 0.903,
+    "source": "dict"
+  },
+  {
+    "clubId": 40405,
+    "clubName": "TJ Jiskra Tanvald",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 20302,
+    "clubName": "TJ Jiskra Třeboň",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 10504,
+    "clubName": "TJ Kavalier Sázava z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 40304,
+    "clubName": "TJ Klášterec nad Ohří",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 60015,
+    "clubName": "TJ Kobylisy",
+    "label": "Kobylisy",
+    "count": 158,
+    "confidence": 0.953,
+    "source": "dict"
+  },
+  {
+    "clubId": 10601,
+    "clubName": "TJ KRALUPY, z.s.",
+    "label": "Kralupy",
+    "count": 63,
+    "confidence": 0.931,
+    "source": "dict"
+  },
+  {
+    "clubId": 40204,
+    "clubName": "TJ Krásná Lípa",
+    "label": "Lipa",
+    "count": 89,
+    "confidence": 0.945,
+    "source": "dict"
+  },
+  {
+    "clubId": 51109,
+    "clubName": "TJ Lanškroun",
+    "label": "Lanskroun",
+    "count": 136,
+    "confidence": 0.957,
+    "source": "dict"
+  },
+  {
+    "clubId": 50409,
+    "clubName": "TJ Lázně Bělohrad z.s.",
+    "label": "Lazne Belohrad",
+    "count": 5,
+    "confidence": 0.828,
+    "source": "dict"
+  },
+  {
+    "clubId": 80172,
+    "clubName": "TJ Libina",
+    "label": "Libina",
+    "count": 3,
+    "confidence": 0.81,
+    "source": "dict"
+  },
+  {
+    "clubId": 41004,
+    "clubName": "TJ Libouchec",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 51101,
+    "clubName": "TJ Lokomotiva Česká Třebová",
+    "label": "Ceska Trebova",
+    "count": 14,
+    "confidence": 0.868,
+    "source": "dict"
+  },
+  {
+    "clubId": 40502,
+    "clubName": "TJ Lokomotiva Liberec",
+    "label": "Liberec",
+    "count": 118,
+    "confidence": 0.95,
+    "source": "dict"
+  },
+  {
+    "clubId": 30501,
+    "clubName": "TJ Lokomotiva Plzeň",
+    "label": "Plzen",
+    "count": 52,
+    "confidence": 0.922,
+    "source": "dict"
+  },
+  {
+    "clubId": 51001,
+    "clubName": "TJ Lokomotiva Trutnov",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80241,
+    "clubName": "TJ Ludgeřovice, z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80174,
+    "clubName": "TJ Lutopecny-Měrůtky",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80201,
+    "clubName": "TJ Mořkov",
+    "label": "Morkov",
+    "count": 14,
+    "confidence": 0.868,
+    "source": "dict"
+  },
+  {
+    "clubId": 50503,
+    "clubName": "TJ Náchod",
+    "label": "Nachod",
+    "count": 31,
+    "confidence": 0.901,
+    "source": "dict"
+  },
+  {
+    "clubId": 80303,
+    "clubName": "TJ Náměšť n/Oslavou",
+    "label": "Namest n/Oslavou",
+    "count": 10,
+    "confidence": 0.854,
+    "source": "dict"
+  },
+  {
+    "clubId": 10603,
+    "clubName": "TJ Neratovice",
+    "label": "Neratovice",
+    "count": 70,
+    "confidence": 0.946,
+    "source": "dict"
+  },
+  {
+    "clubId": 50407,
+    "clubName": "TJ Nová Paka",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 30305,
+    "clubName": "TJ Olympie Hroznětín z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80352,
+    "clubName": "TJ Orel Nivnice",
+    "label": "Orel Opava",
+    "count": 12,
+    "confidence": 0.422,
+    "source": "dict"
+  },
+  {
+    "clubId": 80263,
+    "clubName": "TJ Ostrava",
+    "label": "Ostrava",
+    "count": 83,
+    "confidence": 0.942,
+    "source": "dict"
+  },
+  {
+    "clubId": 30307,
+    "clubName": "TJ Ostrov",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 60006,
+    "clubName": "TJ Pankrác",
+    "label": "Pankrac",
+    "count": 128,
+    "confidence": 0.95,
+    "source": "dict"
+  },
+  {
+    "clubId": 30504,
+    "clubName": "TJ Plzeň Košutka z.s.",
+    "label": "Plzen",
+    "count": 52,
+    "confidence": 0.922,
+    "source": "dict"
+  },
+  {
+    "clubId": 80354,
+    "clubName": "TJ Polešovice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80203,
+    "clubName": "TJ Respekt",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 30708,
+    "clubName": "TJ Šakal Kozolupy",
+    "label": "Sakal Kozolupy",
+    "count": 22,
+    "confidence": 0.907,
+    "source": "dict"
+  },
+  {
+    "clubId": 80217,
+    "clubName": "TJ ŠK DUE POP Uničov",
+    "label": "Unicov",
+    "count": 3,
+    "confidence": 0.81,
+    "source": "dict"
+  },
+  {
+    "clubId": 50403,
+    "clubName": "TJ SKP Valdice",
+    "label": "SKP SSS 17/18, Kralupy",
+    "count": 1,
+    "confidence": 0.216,
+    "source": "dict"
+  },
+  {
+    "clubId": 80028,
+    "clubName": "TJ Sloup",
+    "label": "Sloup",
+    "count": 9,
+    "confidence": 0.85,
+    "source": "dict"
+  },
+  {
+    "clubId": 50508,
+    "clubName": "TJ Slovan Broumov",
+    "label": "Broumov",
+    "count": 7,
+    "confidence": 0.84,
+    "source": "dict"
+  },
+  {
+    "clubId": 80452,
+    "clubName": "TJ Slovan Havířov",
+    "label": "Havirov",
+    "count": 49,
+    "confidence": 0.92,
+    "source": "dict"
+  },
+  {
+    "clubId": 80057,
+    "clubName": "TJ Slovan Ivančice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 20301,
+    "clubName": "TJ Slovan Jindřichův Hradec",
+    "label": "Jindrichuv Hradec",
+    "count": 7,
+    "confidence": 0.84,
+    "source": "dict"
+  },
+  {
+    "clubId": 80291,
+    "clubName": "TJ Slovan Moravská Třebová",
+    "label": "Moravska Trebova",
+    "count": 3,
+    "confidence": 0.81,
+    "source": "dict"
+  },
+  {
+    "clubId": 80607,
+    "clubName": "TJ Slovan Varnsdorf z.s.",
+    "label": "Varnsdorf",
+    "count": 4,
+    "confidence": 0.82,
+    "source": "dict"
+  },
+  {
+    "clubId": 50301,
+    "clubName": "TJ ŠO Chrudim",
+    "label": "Chrudim",
+    "count": 59,
+    "confidence": 0.928,
+    "source": "dict"
+  },
+  {
+    "clubId": 20602,
+    "clubName": "TJ Sokol Čkyně",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80081,
+    "clubName": "TJ Sokol Dobrá",
+    "label": "Dobra",
+    "count": 49,
+    "confidence": 0.92,
+    "source": "dict"
+  },
+  {
+    "clubId": 80636,
+    "clubName": "TJ Sokol Dolní Dobrouč, z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 51004,
+    "clubName": "TJ Sokol Dubenec",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 50306,
+    "clubName": "TJ Sokol Krouna",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80466,
+    "clubName": "TJ Sokol Litvínov-Lom.",
+    "label": "Litvinov",
+    "count": 14,
+    "confidence": 0.868,
+    "source": "dict"
+  },
+  {
+    "clubId": 50406,
+    "clubName": "TJ Sokol Lužany",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80631,
+    "clubName": "TJ Sokol Město Touškov z.s.",
+    "label": "St.Mesto",
+    "count": 153,
+    "confidence": 0.49,
+    "source": "dict"
+  },
+  {
+    "clubId": 80610,
+    "clubName": "TJ Sokol Metylovice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80614,
+    "clubName": "TJ Sokol Nekoř",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 51118,
+    "clubName": "TJ Sokol Němčice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 10102,
+    "clubName": "TJ Sokol Neveklov",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 30505,
+    "clubName": "TJ Sokol Plzeň-Letná",
+    "label": "Plzen Letna",
+    "count": 69,
+    "confidence": 0.935,
+    "source": "dict"
+  },
+  {
+    "clubId": 30105,
+    "clubName": "TJ Sokol Postřekov",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 60011,
+    "clubName": "TJ Sokol Praha-Vršovice",
+    "label": "Vrsovice",
+    "count": 94,
+    "confidence": 0.948,
+    "source": "dict"
+  },
+  {
+    "clubId": 80166,
+    "clubName": "TJ Sokol Pravčice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80187,
+    "clubName": "TJ Sokol Rovečné",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 10403,
+    "clubName": "TJ Sokol Sendražice, z.s.",
+    "label": "Sendrazice",
+    "count": 48,
+    "confidence": 0.919,
+    "source": "dict"
+  },
+  {
+    "clubId": 80281,
+    "clubName": "TJ Sokol Skalička z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80578,
+    "clubName": "TJ Sokol Teplá, z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80151,
+    "clubName": "TJ Sokol Těrlicko",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80632,
+    "clubName": "TJ Sokol Těšany z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80537,
+    "clubName": "TJ Sokol Tovačov",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 40306,
+    "clubName": "TJ Sokol Údlice",
+    "label": "Udlice",
+    "count": 53,
+    "confidence": 0.923,
+    "source": "dict"
+  },
+  {
+    "clubId": 80490,
+    "clubName": "TJ Sokol Valašská Bystřice",
+    "label": "Valasska Bystrice",
+    "count": 2,
+    "confidence": 0.798,
+    "source": "dict"
+  },
+  {
+    "clubId": 80023,
+    "clubName": "TJ Sokol Vanovice, z.s.,",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80416,
+    "clubName": "TJ Sokol Vizovice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 50303,
+    "clubName": "TJ Sokol Zaječice",
+    "label": "Zajecice",
+    "count": 70,
+    "confidence": 0.935,
+    "source": "dict"
+  },
+  {
+    "clubId": 10502,
+    "clubName": "TJ Sparta Kutná Hora",
+    "label": "Kutna Hora",
+    "count": 61,
+    "confidence": 0.929,
+    "source": "dict"
+  },
+  {
+    "clubId": 30902,
+    "clubName": "TJ Spartak Horní Slavkov",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 20204,
+    "clubName": "TJ Spartak Kaplice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 51116,
+    "clubName": "TJ Spartak Letohrad",
+    "label": "Letohrad",
+    "count": 31,
+    "confidence": 0.901,
+    "source": "dict"
+  },
+  {
+    "clubId": 20403,
+    "clubName": "TJ Spartak Pelhřimov",
+    "label": "Pelhrimov",
+    "count": 4,
+    "confidence": 0.82,
+    "source": "dict"
+  },
+  {
+    "clubId": 80282,
+    "clubName": "TJ Spartak Přerov",
+    "label": "Prerov",
+    "count": 2,
+    "confidence": 0.798,
+    "source": "dict"
+  },
+  {
+    "clubId": 50804,
+    "clubName": "TJ Spartak Rokytnice n.Jizerou",
+    "label": "Rokytnice",
+    "count": 1,
+    "confidence": 0.78,
+    "source": "dict"
+  },
+  {
+    "clubId": 20805,
+    "clubName": "TJ Spartak Sezimovo Ústí",
+    "label": "Usti",
+    "count": 48,
+    "confidence": 0.919,
+    "source": "dict"
+  },
+  {
+    "clubId": 20806,
+    "clubName": "TJ Spartak Soběslav",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 10108,
+    "clubName": "TJ Spartak Vlašim",
+    "label": "Vlasim",
+    "count": 227,
+    "confidence": 0.95,
+    "source": "dict"
+  },
+  {
+    "clubId": 51009,
+    "clubName": "TJ Spartak Vrchlabí",
+    "label": "Vrchlabi",
+    "count": 51,
+    "confidence": 0.922,
+    "source": "dict"
+  },
+  {
+    "clubId": 80394,
+    "clubName": "TJ Sport Bučovice, z.s.",
+    "label": "Bucovice",
+    "count": 5,
+    "confidence": 0.828,
+    "source": "dict"
+  },
+  {
+    "clubId": 50901,
+    "clubName": "TJ Štefanydes Polička",
+    "label": "Stefanydes Policka",
+    "count": 7,
+    "confidence": 0.867,
+    "source": "dict"
+  },
+  {
+    "clubId": 41006,
+    "clubName": "TJ Svádov-Olšinky",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 30303,
+    "clubName": "TJ Tašovice",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 51006,
+    "clubName": "TJ Tatran Hostinné",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80527,
+    "clubName": "TJ Tatran Město Albrechtice z.s.",
+    "label": "Mesto Albrechtice",
+    "count": 3,
+    "confidence": 0.81,
+    "source": "dict"
+  },
+  {
+    "clubId": 40702,
+    "clubName": "TJ Tatran Podbořany z.s.",
+    "label": "Podborany",
+    "count": 34,
+    "confidence": 0.904,
+    "source": "dict"
+  },
+  {
+    "clubId": 80089,
+    "clubName": "TJ TŽ Třinec",
+    "label": "TZ Trinec",
+    "count": 15,
+    "confidence": 0.878,
+    "source": "dict"
+  },
+  {
+    "clubId": 80383,
+    "clubName": "TJ Valašské Meziříčí",
+    "label": "Val.Mezirici",
+    "count": 10,
+    "confidence": 0.496,
+    "source": "dict"
+  },
+  {
+    "clubId": 80347,
+    "clubName": "TJ Velehrad z.s.",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80088,
+    "clubName": "TJ Vendryně",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80487,
+    "clubName": "TJ Vítkov",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  },
+  {
+    "clubId": 80356,
+    "clubName": "TJ Vlčnov",
+    "label": "Vlcnov",
+    "count": 31,
+    "confidence": 0.901,
+    "source": "dict"
+  },
+  {
+    "clubId": 80183,
+    "clubName": "TJ Žďár nad Sázavou z.s.",
+    "label": "Zdar nad Sazavou",
+    "count": 4,
+    "confidence": 0.82,
+    "source": "dict"
+  },
+  {
+    "clubId": 80116,
+    "clubName": "TJ Zlaté Hory",
+    "label": "Zelezne hory",
+    "count": 14,
+    "confidence": 0.476,
+    "source": "dict"
+  },
+  {
+    "clubId": 60035,
+    "clubName": "TJ Zora Praha",
+    "label": "OAZA Praha",
+    "count": 94,
+    "confidence": 0.573,
+    "source": "dict"
+  },
+  {
+    "clubId": 80461,
+    "clubName": "Unichess",
+    "label": "Unichess",
+    "count": 112,
+    "confidence": 1.0,
+    "source": "dict"
+  },
+  {
+    "clubId": 60008,
+    "clubName": "USK Praha",
+    "label": "OAZA Praha",
+    "count": 94,
+    "confidence": 0.554,
+    "source": "dict"
+  },
+  {
+    "clubId": 80275,
+    "clubName": "VOKD Poruba",
+    "label": "VOKD Poruba",
+    "count": 35,
+    "confidence": 0.956,
+    "source": "dict"
+  },
+  {
+    "clubId": 80050,
+    "clubName": "VSK Univerzita Brno",
+    "label": "Loko Brno",
+    "count": 90,
+    "confidence": 0.449,
+    "source": "dict"
+  },
+  {
+    "clubId": 80605,
+    "clubName": "ZŠ O. Březiny Jihlava",
+    "label": "Jihlava",
+    "count": 27,
+    "confidence": 0.895,
+    "source": "dict"
+  },
+  {
+    "clubId": 80645,
+    "clubName": "Ztracení Chlapci",
+    "label": null,
+    "count": 0,
+    "confidence": 0.0,
+    "source": "none"
+  }
+]

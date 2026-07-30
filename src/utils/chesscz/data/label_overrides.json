@@ -1,0 +1,380 @@
+[
+  {
+    "clubId": 80090,
+    "clubName": "Beskydská šachová škola z.s.",
+    "label": "Beskydska",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80638,
+    "clubName": "Chess Queen",
+    "label": "Queen",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 70003,
+    "clubName": "Cizinci",
+    "label": "Cizinci",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80644,
+    "clubName": "CZECH INN CHESS",
+    "label": "Czech",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 40905,
+    "clubName": "Dům dětí a mládeže Cvrček",
+    "label": "Cvrcek",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 70001,
+    "clubName": "Individuální člen",
+    "label": "Individualni",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 70022,
+    "clubName": "Individuální člen JmŠS",
+    "label": "CZE KP JmSS",
+    "source": "dict-weak",
+    "reviewed": false
+  },
+  {
+    "clubId": 70013,
+    "clubName": "Individuální člen JŠS",
+    "label": "CZE 1div JSS",
+    "source": "dict-weak",
+    "reviewed": false
+  },
+  {
+    "clubId": 70015,
+    "clubName": "Individuální člen KŠSKV",
+    "label": "Individualni",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 70021,
+    "clubName": "Individuální člen KŠSV",
+    "label": "Individualni",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 70011,
+    "clubName": "Individuální člen PŠS",
+    "label": "Individualni",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 70017,
+    "clubName": "Individuální člen ŠSLK",
+    "label": "CZE KP SSLK",
+    "source": "dict-weak",
+    "reviewed": false
+  },
+  {
+    "clubId": 70024,
+    "clubName": "Individuální člen ŠSOK",
+    "label": "Individualni",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 70014,
+    "clubName": "Individuální člen ŠSPK",
+    "label": "SSPK KP I",
+    "source": "dict-weak",
+    "reviewed": false
+  },
+  {
+    "clubId": 70023,
+    "clubName": "Individuální člen ŠSZK",
+    "label": "CZE KP SSZK",
+    "source": "dict-weak",
+    "reviewed": false
+  },
+  {
+    "clubId": 70016,
+    "clubName": "Individuální člen ÚŠS",
+    "label": "Individualni",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80565,
+    "clubName": "Kbelská sportovní",
+    "label": "Kbelska",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80604,
+    "clubName": "Krásnodvorská MYSLIVNA",
+    "label": "Krasnodvorska",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80640,
+    "clubName": "MINT Chess Academy, z.s.",
+    "label": "Academy",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80657,
+    "clubName": "OCTOPUS CHESS z. s.",
+    "label": "Octopus",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 70004,
+    "clubName": "Online Aréna",
+    "label": "Online",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 70005,
+    "clubName": "Pedagogové individuální",
+    "label": "Individualni",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 60028,
+    "clubName": "PSK Union Praha",
+    "label": "OAZA Praha",
+    "source": "dict-weak",
+    "reviewed": false
+  },
+  {
+    "clubId": 80145,
+    "clubName": "Rychvaldský spolek šachový 1945",
+    "label": "Rychvaldsky",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80621,
+    "clubName": "Šachová škola HŘÍBATA",
+    "label": "Hribata",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80603,
+    "clubName": "Šachová škola STAMAT, z.s.",
+    "label": "Stamat",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80534,
+    "clubName": "Šachový klub DM Klášterského 4, Brno",
+    "label": "Loko Brno",
+    "source": "dict-weak",
+    "reviewed": false
+  },
+  {
+    "clubId": 80035,
+    "clubName": "Šachový klub Moravská Slavia",
+    "label": "Moravska",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80633,
+    "clubName": "Šachový klub Na Smetance, z.s.",
+    "label": "Smetance",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80656,
+    "clubName": "ŠACHY PRO RADOST!!",
+    "label": "Radost",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80602,
+    "clubName": "Šachy Štěpán",
+    "label": "Stepan",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80648,
+    "clubName": "ŠK AuHa Gladiators",
+    "label": "Gladiators",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80551,
+    "clubName": "ŠK Aurora",
+    "label": "Aurora",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80325,
+    "clubName": "ŠK Dolňácko, z.s.",
+    "label": "Dolnacko",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80629,
+    "clubName": "ŠK Hartenberg",
+    "label": "Hartenberg",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 60052,
+    "clubName": "SK LISA",
+    "label": "Lisa",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80550,
+    "clubName": "ŠK Mlejn",
+    "label": "Mlejn",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80618,
+    "clubName": "ŠK Molekula",
+    "label": "Molekula",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80654,
+    "clubName": "ŠK Monte Berani",
+    "label": "Berani",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80113,
+    "clubName": "SK Řetězárna",
+    "label": "Retezarna",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 20102,
+    "clubName": "SK ROYAL",
+    "label": "Royal",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80048,
+    "clubName": "ŠK Salesiáni Žabiny",
+    "label": "Salesiani",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80434,
+    "clubName": "ŠK Sebranci RH",
+    "label": "Sebranci",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80568,
+    "clubName": "ŠK ZAS",
+    "label": "Zas",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 70002,
+    "clubName": "SKŠ",
+    "label": "Sks",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80556,
+    "clubName": "Steinitz - Makabi Praha",
+    "label": "OAZA Praha",
+    "source": "dict-weak",
+    "reviewed": false
+  },
+  {
+    "clubId": 51001,
+    "clubName": "TJ Lokomotiva Trutnov",
+    "label": "Trutnov",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80203,
+    "clubName": "TJ Respekt",
+    "label": "Respekt",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80151,
+    "clubName": "TJ Sokol Těrlicko",
+    "label": "Terlicko",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 80537,
+    "clubName": "TJ Sokol Tovačov",
+    "label": "Tovacov",
+    "source": "heuristic",
+    "reviewed": false
+  },
+  {
+    "clubId": 60035,
+    "clubName": "TJ Zora Praha",
+    "label": "OAZA Praha",
+    "source": "dict-weak",
+    "reviewed": false
+  },
+  {
+    "clubId": 60008,
+    "clubName": "USK Praha",
+    "label": "OAZA Praha",
+    "source": "dict-weak",
+    "reviewed": false
+  },
+  {
+    "clubId": 80050,
+    "clubName": "VSK Univerzita Brno",
+    "label": "Loko Brno",
+    "source": "dict-weak",
+    "reviewed": false
+  },
+  {
+    "clubId": 80645,
+    "clubName": "Ztracení Chlapci",
+    "label": "Ztraceni",
+    "source": "heuristic",
+    "reviewed": false
+  }
+]

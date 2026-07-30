@@ -76,6 +76,16 @@ export type ChessczMatchResult = {
     matchGames: ChessczBoardGame[];
 };
 
+export type ChessczCompetitionDetails = {
+    compName?: string;
+    regionName?: string;
+};
+
+export type ChessczTeamRow = {
+    teamId: number;
+    teamName: string;
+};
+
 export type PgnHeaders = Record<string, string>;
 
 export type ScaffoldGame = { headers: PgnHeaders; movesPgn: string };
@@ -84,6 +94,14 @@ export type ScaffoldGame = { headers: PgnHeaders; movesPgn: string };
 export function asArray<T>(data: T | T[] | null | undefined): T[] {
     if (data == null) return [];
     return Array.isArray(data) ? data : [data];
+}
+
+/** Some chess.cz endpoints wrap the payload in `{ data: … }`, others return it raw. */
+export function unwrapData(data: unknown): unknown {
+    if (data && typeof data === "object" && "data" in data) {
+        return (data as { data: unknown }).data;
+    }
+    return data;
 }
 
 /** chess.cz mixes number/string types across endpoints — coerce numeric fields. */
@@ -147,7 +165,9 @@ export function formatChessczDate(czDate: string | null | undefined): string {
 }
 
 type PlaceholderInput = {
-    compName: string;
+    // Pre-composed Event tag ("<prefix> <home>-<away>", or the full competition name
+    // as a fallback) — the same value for every board of the match.
+    event: string;
     roundNr: number;
     roundDate: string;
     homeTeamName: string;
@@ -157,7 +177,7 @@ type PlaceholderInput = {
 
 // Build N placeholder games (team-name placeholders) for a not-yet-played round.
 export function buildPlaceholderGames(input: PlaceholderInput): ScaffoldGame[] {
-    const event = clean(input.compName);
+    const event = clean(input.event);
     const date = formatChessczDate(input.roundDate);
     const home = clean(input.homeTeamName);
     const away = clean(input.awayTeamName);
@@ -191,7 +211,7 @@ export function boardGameToHeaders(
     match: ChessczMatchResult,
     game: ChessczBoardGame,
     idx: number,
-    compName: string,
+    event: string,
     roundDate?: string,
 ): PgnHeaders {
     const board = idx + 1;
@@ -215,7 +235,7 @@ export function boardGameToHeaders(
     else if (homeResult === 0.5 && awayResult === 0.5) result = "1/2-1/2";
 
     const headers: PgnHeaders = {
-        Event: clean(compName),
+        Event: clean(event),
         Site: "chess.cz",
         Round: `${match.roundNr}.${board}`,
         Board: String(board),

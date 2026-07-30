@@ -5,6 +5,7 @@ import {
   Group,
   Loader,
   Modal,
+  NumberInput,
   ScrollArea,
   Select,
   Stack,
@@ -14,6 +15,11 @@ import { IconAlertCircle } from "@tabler/icons-react";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getCompetitions, getCompetitionSchedule, getRoundMatches } from "@/utils/chesscz/client";
+import {
+  type CompetitionLabels,
+  composeEventName,
+  computeCompetitionLabels,
+} from "@/utils/chesscz/labels";
 import {
   boardGameToHeaders,
   buildPlaceholderGames,
@@ -48,14 +54,22 @@ export function ChessczImportDialog({
   const [loadingSchedule, setLoadingSchedule] = useState(false);
   const [round, setRound] = useState<string | null>(null);
 
+  // Free-form competition number: works for competitions missing from the current-season
+  // catalog (past seasons, or a new season whose search entry isn't listed yet).
+  const [directCompId, setDirectCompId] = useState<string | number>("");
+
+  const [labels, setLabels] = useState<CompetitionLabels | null>(null);
+
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
-  const compName = useMemo(
+  const catalogCompName = useMemo(
     () => competitions.find((c) => c.value === compId)?.name ?? "",
     [competitions, compId],
   );
+  // Prefer the authoritative name resolved from the API (covers direct-compId entry).
+  const compName = labels?.compName || catalogCompName;
 
   // Load the competition catalog when the dialog opens.
   useEffect(() => {
@@ -95,6 +109,22 @@ export function ChessczImportDialog({
       .catch(() => setError(t("Chesscz.Import.LoadError")))
       .finally(() => setLoadingSchedule(false));
   }, [compId, t]);
+
+  // Resolve short team labels + the Event-tag prefix for the whole competition.
+  // Best-effort: on failure `labels` stays null and the import falls back to full names.
+  useEffect(() => {
+    setLabels(null);
+    if (!compId) return;
+    let cancelled = false;
+    computeCompetitionLabels(Number(compId))
+      .then((res) => {
+        if (!cancelled) setLabels(res);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [compId]);
 
   const competitionData = useMemo(() => {
     const groups = new Map<string, { value: string; label: string }[]>();
@@ -142,18 +172,26 @@ export function ChessczImportDialog({
       const results = await getRoundMatches(Number(compId), currentRound.roundNr);
       const games: ScaffoldGame[] = [];
       for (const pairing of chosen) {
+        const eventName = composeEventName(
+          labels,
+          pairing.homeTeamId,
+          pairing.homeTeamName,
+          pairing.awayTeamId,
+          pairing.awayTeamName,
+          compName,
+        );
         const match = findMatch(results, pairing.homeTeamId, pairing.awayTeamId);
         if (match && match.matchGames.length > 0) {
           match.matchGames.forEach((g, idx) => {
             games.push({
-              headers: boardGameToHeaders(match, g, idx, compName, currentRound.roundDate),
+              headers: boardGameToHeaders(match, g, idx, eventName, currentRound.roundDate),
               movesPgn: "",
             });
           });
         } else {
           games.push(
             ...buildPlaceholderGames({
-              compName,
+              event: eventName,
               roundNr: currentRound.roundNr,
               roundDate: currentRound.roundDate,
               homeTeamName: pairing.homeTeamName,
@@ -188,6 +226,33 @@ export function ChessczImportDialog({
           rightSection={loadingComps ? <Loader size="xs" /> : undefined}
           nothingFoundMessage={t("Common.NoResults")}
         />
+
+        <Group align="flex-end" gap="sm">
+          <NumberInput
+            label={t("Chesscz.Import.DirectCompId")}
+            placeholder={t("Chesscz.Import.DirectCompIdPlaceholder")}
+            value={directCompId}
+            onChange={setDirectCompId}
+            min={1}
+            allowDecimal={false}
+            allowNegative={false}
+            hideControls
+            style={{ flex: 1 }}
+          />
+          <Button
+            variant="default"
+            disabled={!directCompId || Number(directCompId) <= 0}
+            onClick={() => setCompId(String(Number(directCompId)))}
+          >
+            {t("Chesscz.Import.Load")}
+          </Button>
+        </Group>
+
+        {labels?.prefix && (
+          <Text c="dimmed" size="xs">
+            {t("Chesscz.Import.EventPrefix")}: {labels.prefix}
+          </Text>
+        )}
 
         <Select
           label={t("Chesscz.Import.Round")}

@@ -10,11 +10,14 @@ import { fetch } from "@tauri-apps/plugin-http";
 import { apiHeaders } from "@/utils/http";
 import {
     asArray,
+    type ChessczCompetitionDetails,
     type ChessczCompetitionsByRegion,
     type ChessczMatchResult,
     type ChessczMember,
     type ChessczRoundSchedule,
+    type ChessczTeamRow,
     normalizePairing,
+    unwrapData,
 } from "./pgn";
 
 const BASE = "https://api.chess.cz/api";
@@ -125,4 +128,24 @@ export async function getRoundMatches(
         TTL.matches,
     );
     return asArray(data).map((m) => ({ ...m, matchGames: asArray(m.matchGames) }));
+}
+
+// Competition metadata (name + region) — used to build the Event-tag prefix for a
+// competition that isn't in the current-season catalog (past seasons, direct compId).
+export async function getCompetitionDetails(compId: number): Promise<ChessczCompetitionDetails> {
+    const data = await get<unknown>(`/competitions/${compId}/details`, TTL.competitions);
+    return (unwrapData(data) ?? {}) as ChessczCompetitionDetails;
+}
+
+// Full team set of a competition — the closed set the team-label resolver needs to
+// guarantee unique short labels (a single round only exposes the two paired teams).
+export async function getCompetitionTable(compId: number): Promise<ChessczTeamRow[]> {
+    const data = await get<unknown>(`/competitions/${compId}/table`, TTL.schedule);
+    const rows = asArray(unwrapData(data)) as Array<{
+        teamId?: number | string;
+        teamName?: string;
+    }>;
+    return rows
+        .map((t) => ({ teamId: Number(t.teamId), teamName: String(t.teamName ?? "") }))
+        .filter((t) => Number.isFinite(t.teamId) && t.teamId > 0 && t.teamName !== "");
 }

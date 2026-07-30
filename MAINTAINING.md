@@ -61,11 +61,31 @@ Keep this list current. When merging, conflicts can only appear in the
 
 ### New files (safe — never conflict)
 
-- `src/utils/chesscz/pgn.ts` — pure PGN/parsing logic (ported from pgn-base)
-- `src/utils/chesscz/client.ts` — api.chess.cz client (Tauri fetch, ~1 req/s throttle + cache)
+- `src/utils/chesscz/pgn.ts` — pure PGN/parsing logic (ported from pgn-base). The
+  `Event` tag is built from a pre-composed string (`<prefix> <home>-<away>`), not the
+  raw competition name (see `labels.ts`).
+- `src/utils/chesscz/client.ts` — api.chess.cz client (Tauri fetch, ~1 req/s throttle +
+  cache). Endpoints: search, competitions, schedule, round matches, **details**, **table**.
+- `src/utils/chesscz/teamShorten.ts` — team-name shortening + competition-prefix logic.
+  **Verbatim port** of pgn-base `backend/src/lib/teamShorten.ts` (itself a port of the
+  Python reference in the `hlavičky` workspace). Keep in sync with pgn-base; do not
+  edit locally except to re-sync.
+- `src/utils/chesscz/teamShorten.test.ts` — 11 unit tests over the bundled lean data.
+- `src/utils/chesscz/labels.ts` — offline, no-backend equivalent of pgn-base's
+  `computeCompetitionLabels`: loads the bundled reference JSON, fetches `/table` +
+  meta, runs `resolveCompetition` + `eventPrefix`. Returns the Event prefix + per-team
+  short labels; best-effort (falls back to full names on any error).
+- `src/utils/chesscz/data/*.json` — **lean** reference set bundled into the app:
+  `club_label_dict.json` (493 clubs), `label_overrides.json`, `comp_abbr_overrides.json`.
+  The 551 KB `gazetteer_obce.json` is **intentionally NOT bundled** — every registered
+  ŠSČR club is already in the mined dictionary, so `dict → heuristic` covers real league
+  teams. Add the gazetteer only if unregistered clubs start getting bad labels. Regenerate
+  from the `hlavičky` workspace / pgn-base `backend/data/team-shorten/`.
 - `src/utils/chesscz/useChessczSearch.ts` — SWR player-search hook
 - `src/components/common/ChessczPlayerAutocomplete.tsx` — player autocomplete input
-- `src/components/files/ChessczImportDialog.tsx` — "Import from ŠSČR" dialog
+- `src/components/files/ChessczImportDialog.tsx` — "Import from ŠSČR" dialog. Has a
+  direct competition-number field (for competitions missing from the current-season
+  catalog) and computes/uses the short-label Event prefix.
 - `src/translation/cs-CZ.json` — the Czech translation
 
 ### Modified upstream files — structural (watch these on upstream refactors)

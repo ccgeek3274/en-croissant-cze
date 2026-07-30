@@ -1,0 +1,74 @@
+[
+  {
+    "compId": 3253,
+    "compName": "MČR družstev mládeže - finále A",
+    "prefix": "fA SSCR 25/26",
+    "reviewed": false
+  },
+  {
+    "compId": 3254,
+    "compName": "MČR družstev mládeže - finále B",
+    "prefix": "fB SSCR 25/26",
+    "reviewed": false
+  },
+  {
+    "compId": 3299,
+    "compName": "1. jihočeská divize",
+    "prefix": "1.D JSS 25/26",
+    "reviewed": false
+  },
+  {
+    "compId": 3302,
+    "compName": "2. divize - finále - skupina o postup",
+    "prefix": "2.D post JSS 25/26",
+    "reviewed": false
+  },
+  {
+    "compId": 3303,
+    "compName": "2. divize - skupina bojující o udržení",
+    "prefix": "2.D udr JSS 25/26",
+    "reviewed": false
+  },
+  {
+    "compId": 3300,
+    "compName": "2. divize - zákl. skupina A",
+    "prefix": "2.D A JSS 25/26",
+    "reviewed": false
+  },
+  {
+    "compId": 3301,
+    "compName": "2. divize - zákl. skupina B",
+    "prefix": "2.D B JSS 25/26",
+    "reviewed": false
+  },
+  {
+    "compId": 3304,
+    "compName": "3. jihočeská divize - A",
+    "prefix": "3.D JSS 25/26",
+    "reviewed": false
+  },
+  {
+    "compId": 3305,
+    "compName": "3. jihočeská divize - B",
+    "prefix": "3.D JSS 25/26",
+    "reviewed": false
+  },
+  {
+    "compId": 3259,
+    "compName": "\"šachy.cz\" Přebor družstev regionu Přerov",
+    "prefix": "PRP SSOK 25/26",
+    "reviewed": false
+  },
+  {
+    "compId": 3342,
+    "compName": "Přebor okresu Šumperk",
+    "prefix": "POS SSOK 25/26",
+    "reviewed": false
+  },
+  {
+    "compId": 3328,
+    "compName": "Krajská liga mládeže",
+    "prefix": "KLM SSS 25/26",
+    "reviewed": false
+  }
+]
