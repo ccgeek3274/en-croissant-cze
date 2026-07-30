@@ -116,6 +116,25 @@ export function normalizePairing(e: ChessczMatchPairing): ChessczMatchPairing {
     };
 }
 
+/** Normalize a raw chess.cz /schedule payload into rounds with usable pairings.
+ *
+ * chess.cz nests `roundMatches` **without their own `roundNr`/`roundDate`** — those live
+ * only on the parent round. Inject them into each pairing before `normalizePairing`, or
+ * the missing `roundNr` becomes `NaN` and `isPlayablePairing`'s `roundNr > 0` check drops
+ * every match (the round's match list shows up empty). See pgn-base 71d92c4. */
+export function normalizeSchedule(raw: unknown): ChessczRoundSchedule[] {
+    return asArray(raw as ChessczRoundSchedule | ChessczRoundSchedule[]).map((r) => {
+        const roundNr = Number(r.roundNr);
+        return {
+            ...r,
+            roundNr,
+            roundMatches: asArray(r.roundMatches).map((m) =>
+                normalizePairing({ ...m, roundNr, roundDate: r.roundDate }),
+            ),
+        };
+    });
+}
+
 /** Bye rounds (volno) have no opponent — they can't be imported as a match. */
 export function isPlayablePairing(e: ChessczMatchPairing): boolean {
     return (

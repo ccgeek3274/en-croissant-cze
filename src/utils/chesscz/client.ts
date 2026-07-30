@@ -16,7 +16,7 @@ import {
     type ChessczMember,
     type ChessczRoundSchedule,
     type ChessczTeamRow,
-    normalizePairing,
+    normalizeSchedule,
     unwrapData,
 } from "./pgn";
 
@@ -113,10 +113,7 @@ export async function getCompetitionSchedule(compId: number): Promise<ChessczRou
         `/competitions/${compId}/schedule`,
         TTL.schedule,
     );
-    return asArray(data).map((r) => ({
-        ...r,
-        roundMatches: asArray(r.roundMatches).map(normalizePairing),
-    }));
+    return normalizeSchedule(data);
 }
 
 export async function getRoundMatches(
