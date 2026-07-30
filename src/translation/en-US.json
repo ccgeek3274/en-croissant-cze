@@ -179,7 +179,7 @@
     "Chesscz.Import.Generate": "Generate PGN",
     "Chesscz.Import.Load": "Load",
     "Chesscz.Import.LoadError": "Failed to load data from chess.cz",
-    "Chesscz.Import.Matches": "Matches",
+    "Chesscz.Import.Match": "Match",
     "Chesscz.Import.NoMatches": "No matches in this round",
     "Chesscz.Import.Note": "chess.cz provides pairings and results, not moves — this creates games with filled-in headers and an empty move list.",
     "Chesscz.Import.Round": "Round",

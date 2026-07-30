@@ -1,11 +1,11 @@
 import {
   Alert,
   Button,
-  Checkbox,
   Group,
   Loader,
   Modal,
   NumberInput,
+  Radio,
   ScrollArea,
   Select,
   Stack,
@@ -60,7 +60,8 @@ export function ChessczImportDialog({
 
   const [labels, setLabels] = useState<CompetitionLabels | null>(null);
 
-  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+  // Exactly one match is imported at a time (a single team's game DB).
+  const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
@@ -100,7 +101,7 @@ export function ChessczImportDialog({
   useEffect(() => {
     setRound(null);
     setSchedule([]);
-    setSelectedKeys([]);
+    setSelectedKey(null);
     if (!compId) return;
     setLoadingSchedule(true);
     setError("");
@@ -156,54 +157,53 @@ export function ChessczImportDialog({
     [schedule, t],
   );
 
-  // Default: all matches of the round selected.
+  // Reset the pick whenever the round (and thus the match list) changes.
   useEffect(() => {
-    setSelectedKeys(playablePairings.map(pairingKey));
+    setSelectedKey(null);
   }, [playablePairings]);
 
   async function doImport() {
     if (!currentRound || !compId) return;
-    const chosen = playablePairings.filter((p) => selectedKeys.includes(pairingKey(p)));
-    if (chosen.length === 0) return;
+    const pairing = playablePairings.find((p) => pairingKey(p) === selectedKey);
+    if (!pairing) return;
 
     setBusy(true);
     setError("");
     try {
       const results = await getRoundMatches(Number(compId), currentRound.roundNr);
+      // Event tag = team names, no round: "<prefix> <home>-<away>" (falls back to the
+      // full competition name). The suggested database name reuses it.
+      const eventName = composeEventName(
+        labels,
+        pairing.homeTeamId,
+        pairing.homeTeamName,
+        pairing.awayTeamId,
+        pairing.awayTeamName,
+        compName,
+      );
       const games: ScaffoldGame[] = [];
-      for (const pairing of chosen) {
-        const eventName = composeEventName(
-          labels,
-          pairing.homeTeamId,
-          pairing.homeTeamName,
-          pairing.awayTeamId,
-          pairing.awayTeamName,
-          compName,
-        );
-        const match = findMatch(results, pairing.homeTeamId, pairing.awayTeamId);
-        if (match && match.matchGames.length > 0) {
-          match.matchGames.forEach((g, idx) => {
-            games.push({
-              headers: boardGameToHeaders(match, g, idx, eventName, currentRound.roundDate),
-              movesPgn: "",
-            });
+      const match = findMatch(results, pairing.homeTeamId, pairing.awayTeamId);
+      if (match && match.matchGames.length > 0) {
+        match.matchGames.forEach((g, idx) => {
+          games.push({
+            headers: boardGameToHeaders(match, g, idx, eventName, currentRound.roundDate),
+            movesPgn: "",
           });
-        } else {
-          games.push(
-            ...buildPlaceholderGames({
-              event: eventName,
-              roundNr: currentRound.roundNr,
-              roundDate: currentRound.roundDate,
-              homeTeamName: pairing.homeTeamName,
-              awayTeamName: pairing.awayTeamName,
-              boardCount: DEFAULT_BOARD_COUNT,
-            }),
-          );
-        }
+        });
+      } else {
+        games.push(
+          ...buildPlaceholderGames({
+            event: eventName,
+            roundNr: currentRound.roundNr,
+            roundDate: currentRound.roundDate,
+            homeTeamName: pairing.homeTeamName,
+            awayTeamName: pairing.awayTeamName,
+            boardCount: DEFAULT_BOARD_COUNT,
+          }),
+        );
       }
       const pgn = gamesToPgn(games);
-      const name = `${compName} ${currentRound.roundNr}. ${t("Chesscz.Import.Round").toLowerCase()}`;
-      onImport(pgn, name);
+      onImport(pgn, eventName);
       onClose();
     } catch {
       setError(t("Chesscz.Import.LoadError"));
@@ -266,15 +266,15 @@ export function ChessczImportDialog({
         />
 
         {currentRound && playablePairings.length > 0 && (
-          <Checkbox.Group
-            label={t("Chesscz.Import.Matches")}
-            value={selectedKeys}
-            onChange={setSelectedKeys}
+          <Radio.Group
+            label={t("Chesscz.Import.Match")}
+            value={selectedKey}
+            onChange={setSelectedKey}
           >
             <ScrollArea.Autosize mah={220}>
               <Stack gap="xs" pt="xs">
                 {playablePairings.map((p) => (
-                  <Checkbox
+                  <Radio
                     key={pairingKey(p)}
                     value={pairingKey(p)}
                     label={
@@ -289,7 +289,7 @@ export function ChessczImportDialog({
                 ))}
               </Stack>
             </ScrollArea.Autosize>
-          </Checkbox.Group>
+          </Radio.Group>
         )}
 
         {currentRound && playablePairings.length === 0 && (
@@ -312,7 +312,7 @@ export function ChessczImportDialog({
           <Button variant="default" onClick={onClose}>
             {t("Common.Cancel")}
           </Button>
-          <Button onClick={doImport} loading={busy} disabled={selectedKeys.length === 0}>
+          <Button onClick={doImport} loading={busy} disabled={!selectedKey}>
             {t("Chesscz.Import.Generate")}
           </Button>
         </Group>
