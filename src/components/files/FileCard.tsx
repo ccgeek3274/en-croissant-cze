@@ -1,5 +1,11 @@
 import { ActionIcon, Badge, Box, Divider, Group, Stack, Text, Tooltip } from "@mantine/core";
-import { IconEdit, IconZoomCheck } from "@tabler/icons-react";
+import {
+  IconEdit,
+  IconFileExport,
+  IconFileImport,
+  IconListCheck,
+  IconZoomCheck,
+} from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
 import { useAtom, useSetAtom } from "jotai";
 import { useEffect, useState } from "react";
@@ -12,17 +18,20 @@ import { unwrap } from "@/utils/unwrap";
 import GamePreview from "../databases/GamePreview";
 import GameSelector from "../panels/info/GameSelector";
 import type { FileMetadata } from "./file";
+import { ExportPgnModal, ImportGamesModal, KontrolaModal } from "./PgnToolsDialogs";
 
 function FileCard({
   selected,
   games,
   setGames,
   toggleEditModal,
+  mutate,
 }: {
   selected: FileMetadata;
   games: Map<number, string>;
   setGames: React.Dispatch<React.SetStateAction<Map<number, string>>>;
   toggleEditModal: () => void;
+  mutate: () => void;
 }) {
   const { t } = useTranslation();
 
@@ -32,6 +41,15 @@ function FileCard({
 
   const [selectedGame, setSelectedGame] = useState<string | null>(null);
   const [page, setPage] = useState(0);
+  const [kontrolaOpen, setKontrolaOpen] = useState(false);
+  const [exportOpen, setExportOpen] = useState(false);
+  const [importOpen, setImportOpen] = useState(false);
+
+  function onChanged() {
+    setGames(new Map());
+    setPage(0);
+    mutate();
+  }
 
   useEffect(() => {
     setPage(0);
@@ -76,6 +94,21 @@ function FileCard({
               <IconEdit />
             </ActionIcon>
           </Tooltip>
+          <Tooltip label={t("PgnTools.Kontrola.Title")}>
+            <ActionIcon size="sm" variant="default" onClick={() => setKontrolaOpen(true)}>
+              <IconListCheck />
+            </ActionIcon>
+          </Tooltip>
+          <Tooltip label={t("PgnTools.Import.Title")}>
+            <ActionIcon size="sm" variant="default" onClick={() => setImportOpen(true)}>
+              <IconFileImport />
+            </ActionIcon>
+          </Tooltip>
+          <Tooltip label={t("PgnTools.Export.Title")}>
+            <ActionIcon size="sm" variant="default" onClick={() => setExportOpen(true)}>
+              <IconFileExport />
+            </ActionIcon>
+          </Tooltip>
         </Group>
         <Text ta="center" c="dimmed">
           {selected?.numGames} {t("Common.Games")}
@@ -102,6 +135,20 @@ function FileCard({
           </Box>
         </>
       )}
+
+      <KontrolaModal
+        opened={kontrolaOpen}
+        onClose={() => setKontrolaOpen(false)}
+        file={selected}
+        onChanged={onChanged}
+      />
+      <ExportPgnModal opened={exportOpen} onClose={() => setExportOpen(false)} file={selected} />
+      <ImportGamesModal
+        opened={importOpen}
+        onClose={() => setImportOpen(false)}
+        file={selected}
+        onChanged={onChanged}
+      />
     </Stack>
   );
 }

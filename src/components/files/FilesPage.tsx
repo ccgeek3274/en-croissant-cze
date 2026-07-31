@@ -349,6 +349,7 @@ function FilesPage() {
                   games={games}
                   setGames={setGames}
                   toggleEditModal={toggleEditModal}
+                  mutate={mutate}
                 />
               </Paper>
             ) : (
