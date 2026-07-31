@@ -4,7 +4,7 @@ import { resolve, dirname } from "@tauri-apps/api/path";
 import { exists, mkdir, rename, writeTextFile } from "@tauri-apps/plugin-fs";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { createFile } from "@/utils/files";
+import { createFile, sanitizeFilename } from "@/utils/files";
 import GenericCard from "../common/GenericCard";
 import { ChessczImportDialog } from "./ChessczImportDialog";
 import type { Directory, FileMetadata, FileType } from "./file";
@@ -57,21 +57,27 @@ export function CreateModal({
       }
     }
 
-    const newFile = await createFile({
-      filename: trimmedFilename,
-      filetype,
-      pgn,
-      dir: targetDir,
-    });
-    if (newFile.isErr) {
-      setError(newFile.error.message);
-    } else {
-      setFiles([...files, newFile.value]);
-      setSelected(newFile.value);
-      setError("");
-      setOpened(false);
-      setFilename("");
-      setFiletype("game");
+    try {
+      const newFile = await createFile({
+        filename: trimmedFilename,
+        filetype,
+        pgn,
+        dir: targetDir,
+      });
+      if (newFile.isErr) {
+        setError(newFile.error.message);
+      } else {
+        setFiles([...files, newFile.value]);
+        setSelected(newFile.value);
+        setError("");
+        setOpened(false);
+        setFilename("");
+        setFiletype("game");
+      }
+    } catch (e) {
+      // Surface the failure instead of silently doing nothing (e.g. an invalid
+      // path/filename that made writeTextFile throw).
+      setError(e instanceof Error ? e.message : String(e));
     }
   }
 
@@ -138,7 +144,7 @@ export function CreateModal({
         onImport={(importedPgn, suggestedName) => {
           setPgn(importedPgn);
           setFiletype("tournament");
-          if (!filename.trim()) setFilename(suggestedName);
+          if (!filename.trim()) setFilename(sanitizeFilename(suggestedName));
         }}
       />
     </Modal>

@@ -102,6 +102,17 @@ export async function openFile(
     return id;
 }
 
+/** Make a string safe to use as a file name: drop path separators and characters
+ *  that are illegal on common filesystems, collapse whitespace. Without this a name
+ *  derived from data (e.g. a ŠSČR Event like "KP StC 24/25 A-B") would smuggle a "/"
+ *  into the path and writeTextFile would fail against a non-existent subdirectory. */
+export function sanitizeFilename(name: string): string {
+    return name
+        .replace(/[/\\:*?"<>|]/g, "-")
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
 export async function createFile({
     filename,
     filetype,
@@ -113,7 +124,11 @@ export async function createFile({
     pgn?: string;
     dir: string;
 }): Promise<Result<FileMetadata>> {
-    const file = await resolve(dir, `${filename}.pgn`);
+    const safeName = sanitizeFilename(filename);
+    if (!safeName) {
+        return Result.err(Error("Invalid file name"));
+    }
+    const file = await resolve(dir, `${safeName}.pgn`);
     if (await exists(file)) {
         return Result.err(Error("File already exists"));
     }
@@ -126,7 +141,7 @@ export async function createFile({
     const numGames = unwrap(await commands.countPgnGames(file));
     return Result.ok({
         type: "file",
-        name: filename,
+        name: safeName,
         path: file,
         numGames,
         metadata,
