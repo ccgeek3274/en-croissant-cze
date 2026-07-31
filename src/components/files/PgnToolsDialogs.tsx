@@ -13,6 +13,7 @@ import {
   Modal,
   ScrollArea,
   SegmentedControl,
+  Select,
   Stack,
   Table,
   Text,
@@ -21,7 +22,7 @@ import {
 import { notifications } from "@mantine/notifications";
 import { open as openDialog, save } from "@tauri-apps/plugin-dialog";
 import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { commands } from "@/bindings";
 import {
@@ -37,7 +38,13 @@ import {
   type ExportOptions,
   type HeaderMode,
 } from "@/utils/pgn/export";
-import { applyMergedMovetext, type MergePlan, planMerge } from "@/utils/pgn/merge";
+import {
+  applyMergedMovetext,
+  matchLevel,
+  type PairSide,
+  pairSideFromTags,
+  planMerge,
+} from "@/utils/pgn/merge";
 import { splitGame, splitPgnGames } from "@/utils/pgn/tags";
 import { unwrap } from "@/utils/unwrap";
 import type { FileMetadata } from "./file";
@@ -303,14 +310,22 @@ export function ExportPgnModal({
 }
 
 // ————————————————————————————————————————————————————————————————
-// Importovat partie — merge external games into this database
+// Importovat tahy — merge external games' moves into this database
 
 function levelColor(level: 0 | 1 | 2): string {
   return level === 2 ? "teal" : level === 1 ? "orange" : "red";
 }
 
-function sideLabel(s: { white: string; black: string }): string {
-  return `${s.white || "?"} – ${s.black || "?"}`;
+// Static t() calls (not a dynamic key) so i18next-cli extract keeps the labels.
+function levelLabel(t: (key: string) => string, level: 0 | 1 | 2): string {
+  if (level === 2) return t("PgnTools.Import.LevelBoth");
+  if (level === 1) return t("PgnTools.Import.LevelOne");
+  return t("PgnTools.Import.LevelNone");
+}
+
+function sideLabel(s: PairSide): string {
+  const rb = s.round || s.board;
+  return `${s.white || "?"} – ${s.black || "?"}${rb ? ` (${rb})` : ""}`;
 }
 
 export function ImportGamesModal({
@@ -328,49 +343,62 @@ export function ImportGamesModal({
   const [targets, setTargets] = useState<string[]>([]);
   const [imported, setImported] = useState<string[]>([]);
   const [pasted, setPasted] = useState("");
-  const [plan, setPlan] = useState<MergePlan | null>(null);
+  // assignment[t] = index into `imported` paired with target t, or null.
+  const [assignment, setAssignment] = useState<(number | null)[]>([]);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
     if (!opened) return;
     setImported([]);
     setPasted("");
-    setPlan(null);
+    setAssignment([]);
     readAllGames(file).then(setTargets);
   }, [opened, file]);
+
+  const targetSides = useMemo(
+    () => targets.map((g) => pairSideFromTags(splitGame(g).tags)),
+    [targets],
+  );
+  const importedSides = useMemo(
+    () => imported.map((g) => pairSideFromTags(splitGame(g).tags)),
+    [imported],
+  );
 
   function loadImported(text: string) {
     const parsed = splitPgnGames(text);
     setImported(parsed);
-    setPlan(parsed.length > 0 ? planMerge(targets, parsed) : null);
+    // Seed the assignment with the automatic best-first pairing; the user can then
+    // adjust any row by hand.
+    setAssignment(parsed.length > 0 ? planMerge(targets, parsed).rows.map((r) => r.imported) : []);
   }
 
-  async function pickFile() {
-    const selected = await openDialog({
-      multiple: false,
-      filters: [{ name: "PGN", extensions: ["pgn"] }],
+  // Assign imported game `j` (or null) to target `t`, keeping the mapping 1:1 by
+  // releasing `j` from whichever other target held it.
+  function assign(t2: number, j: number | null) {
+    setAssignment((prev) => {
+      const next = [...prev];
+      if (j != null) for (let k = 0; k < next.length; k++) if (next[k] === j) next[k] = null;
+      next[t2] = j;
+      return next;
     });
-    if (!selected || Array.isArray(selected)) return;
-    loadImported(await readTextFile(selected));
   }
+
+  const usedImported = new Set(assignment.filter((j): j is number => j != null));
+  const leftovers = importedSides.map((_, j) => j).filter((j) => !usedImported.has(j));
+  const matchedCount = usedImported.size;
 
   async function apply() {
-    if (!plan) return;
     setBusy(true);
     try {
       const merged = targets.map((g, t2) => {
-        const row = plan.rows[t2];
-        return row.imported != null ? applyMergedMovetext(g, imported[row.imported]) : g;
+        const j = assignment[t2];
+        return j != null ? applyMergedMovetext(g, imported[j]) : g;
       });
-      const appended = plan.appendedImported.map((j) => imported[j]);
-      const all = [...merged, ...appended];
-      await writeTextFile(file.path, all.join("\n\n\n") + "\n");
+      const appended = leftovers.map((j) => imported[j]);
+      await writeTextFile(file.path, [...merged, ...appended].join("\n\n\n") + "\n");
       notifications.show({
         title: t("PgnTools.Import.Title"),
-        message: t("PgnTools.Import.Done", {
-          matched: plan.rows.filter((r) => r.imported != null).length,
-          appended: appended.length,
-        }),
+        message: t("PgnTools.Import.Done", { matched: matchedCount, appended: appended.length }),
         color: "teal",
       });
       onChanged();
@@ -385,6 +413,17 @@ export function ImportGamesModal({
       setBusy(false);
     }
   }
+
+  async function pickFile() {
+    const selected = await openDialog({
+      multiple: false,
+      filters: [{ name: "PGN", extensions: ["pgn"] }],
+    });
+    if (!selected || Array.isArray(selected)) return;
+    loadImported(await readTextFile(selected));
+  }
+
+  const importedOptions = importedSides.map((s, j) => ({ value: String(j), label: sideLabel(s) }));
 
   return (
     <Modal opened={opened} onClose={onClose} title={t("PgnTools.Import.Title")} size="xl">
@@ -409,51 +448,72 @@ export function ImportGamesModal({
           maxRows={6}
         />
 
-        {plan && (
-          <ScrollArea.Autosize mah={320}>
-            <Table stickyHeader>
-              <Table.Thead>
-                <Table.Tr>
-                  <Table.Th>{t("PgnTools.Import.TargetGame")}</Table.Th>
-                  <Table.Th>{t("PgnTools.Import.ImportedGame")}</Table.Th>
-                  <Table.Th>{t("PgnTools.Import.Match")}</Table.Th>
-                </Table.Tr>
-              </Table.Thead>
-              <Table.Tbody>
-                {plan.rows.map((row) => (
-                  <Table.Tr key={row.target}>
-                    <Table.Td>{sideLabel(row.targetSide)}</Table.Td>
-                    <Table.Td>{row.importedSide ? sideLabel(row.importedSide) : "—"}</Table.Td>
-                    <Table.Td>
-                      {row.imported != null ? (
-                        <Badge color={levelColor(row.level)} variant="light">
-                          {t(`PgnTools.Import.Level${row.level}`)}
-                        </Badge>
-                      ) : (
-                        <Badge color="gray" variant="light">
-                          {t("PgnTools.Import.NoMatch")}
-                        </Badge>
-                      )}
-                    </Table.Td>
+        {imported.length > 0 && (
+          <>
+            <ScrollArea.Autosize mah={360}>
+              <Table stickyHeader verticalSpacing="xs">
+                <Table.Thead>
+                  <Table.Tr>
+                    <Table.Th>{t("PgnTools.Import.TargetGame")}</Table.Th>
+                    <Table.Th>{t("PgnTools.Import.ImportedGame")}</Table.Th>
+                    <Table.Th>{t("PgnTools.Import.Match")}</Table.Th>
                   </Table.Tr>
-                ))}
-              </Table.Tbody>
-            </Table>
-            {plan.appendedImported.length > 0 && (
-              <Text size="sm" c="dimmed" mt="xs">
-                {t("PgnTools.Import.WillAppend", {
-                  count: plan.appendedImported.length,
-                })}
+                </Table.Thead>
+                <Table.Tbody>
+                  {targetSides.map((targetSide, t2) => {
+                    const j = assignment[t2];
+                    const level = j != null ? matchLevel(targetSide, importedSides[j]) : null;
+                    return (
+                      <Table.Tr key={t2}>
+                        <Table.Td>{sideLabel(targetSide)}</Table.Td>
+                        <Table.Td>
+                          <Select
+                            data={importedOptions}
+                            value={j != null ? String(j) : null}
+                            onChange={(v) => assign(t2, v == null ? null : Number(v))}
+                            placeholder={t("PgnTools.Import.Unassigned")}
+                            clearable
+                            searchable
+                            size="xs"
+                            comboboxProps={{ withinPortal: true }}
+                          />
+                        </Table.Td>
+                        <Table.Td>
+                          {level != null ? (
+                            <Badge color={levelColor(level)} variant="light">
+                              {levelLabel(t, level)}
+                            </Badge>
+                          ) : (
+                            <Badge color="gray" variant="light">
+                              {t("PgnTools.Import.NoMatch")}
+                            </Badge>
+                          )}
+                        </Table.Td>
+                      </Table.Tr>
+                    );
+                  })}
+                </Table.Tbody>
+              </Table>
+            </ScrollArea.Autosize>
+
+            <Group gap="lg">
+              <Text size="xs" c="dimmed">
+                {t("PgnTools.Import.Legend")}
+              </Text>
+            </Group>
+            {leftovers.length > 0 && (
+              <Text size="sm" c="dimmed">
+                {t("PgnTools.Import.WillAppend", { count: leftovers.length })}
               </Text>
             )}
-          </ScrollArea.Autosize>
+          </>
         )}
 
         <Group justify="flex-end">
           <Button variant="default" onClick={onClose}>
             {t("Common.Cancel")}
           </Button>
-          <Button loading={busy} disabled={!plan || imported.length === 0} onClick={apply}>
+          <Button loading={busy} disabled={imported.length === 0} onClick={apply}>
             {t("PgnTools.Import.Apply")}
           </Button>
         </Group>
