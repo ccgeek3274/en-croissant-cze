@@ -304,6 +304,107 @@ export function countArtifacts(movetext: string): ArtifactCounts {
     };
 }
 
+export type VariationInfo = {
+    hasVariations: boolean;
+    /** Half-moves on the main line (what survives when variations are stripped). */
+    mainLinePlies: number;
+    /** Half-moves on the longest line in the tree (a variation may run deeper). */
+    longestPlies: number;
+    /** True when a variation runs deeper than the main line — stripping to the main
+     *  line would silently drop that longer line, so callers confirm before doing so. */
+    losesLongerLine: boolean;
+};
+
+// Single scan of a movetext segment. Returns the number of main-line half-moves and
+// the longest line reachable through its variation tree. A `( … )` is an alternative
+// to the move it immediately follows, so a line diving into it keeps the plies before
+// that move (prefix) then continues with the variation's own longest line — computed
+// recursively. Pure text, mirroring cleanMovetext's tokenizer (no move tree).
+function scanLine(text: string): { mainPlies: number; longest: number } {
+    const n = text.length;
+    let i = 0;
+    let mainPlies = 0;
+    let bestVariation = 0;
+
+    while (i < n) {
+        const ch = text[i];
+        if (/\s/.test(ch)) {
+            i++;
+            continue;
+        }
+        if (ch === "{") {
+            const end = text.indexOf("}", i + 1);
+            i = end === -1 ? n : end + 1;
+            continue;
+        }
+        if (ch === "%" && (i === 0 || text[i - 1] === "\n")) {
+            const end = text.indexOf("\n", i);
+            i = end === -1 ? n : end + 1;
+            continue;
+        }
+        if (ch === "$") {
+            i++;
+            while (i < n && /\d/.test(text[i])) i++;
+            continue;
+        }
+        if (ch === "(") {
+            let depth = 0;
+            let j = i;
+            for (; j < n; j++) {
+                if (text[j] === "(") depth++;
+                else if (text[j] === ")") {
+                    depth--;
+                    if (depth === 0) {
+                        j++;
+                        break;
+                    }
+                }
+            }
+            const inner = scanLine(text.slice(i + 1, j - 1));
+            // Prefix = plies before the move this variation replaces (the last main move).
+            const prefix = Math.max(0, mainPlies - 1);
+            bestVariation = Math.max(bestVariation, prefix + inner.longest);
+            i = j;
+            continue;
+        }
+        let j = i;
+        while (j < n && !/\s/.test(text[j]) && !"{}()$".includes(text[j])) j++;
+        let tok = text.slice(i, j);
+        i = j;
+        if (RESULT_RE.test(tok) || MOVE_NUMBER_RE.test(tok) || GLYPH_SYMBOLS.has(tok)) continue;
+        const glued = tok.match(GLUED_NUMBER_RE);
+        if (glued) tok = glued[2];
+        if (stripMoveGlyphs(tok)) mainPlies++;
+    }
+
+    return { mainPlies, longest: Math.max(mainPlies, bestVariation) };
+}
+
+/** Report a movetext's main-line vs. longest-line length. Guards variation removal
+ *  (and stripped export) against silently dropping a line longer than the main one. */
+export function variationInfo(movetext: string): VariationInfo {
+    const { mainPlies, longest } = scanLine(movetext);
+    return {
+        hasVariations: hasAnyTopLevelVariation(movetext),
+        mainLinePlies: mainPlies,
+        longestPlies: longest,
+        losesLongerLine: longest > mainPlies,
+    };
+}
+
+/** Remove every variation, keeping the main line (its comments, NAGs and glyphs
+ *  survive) and syncing the terminator to `result`. */
+export function stripVariationsKeepMainLine(movetext: string, result: string): string {
+    const kept = cleanMovetext(movetext, {
+        removeComments: false,
+        removeVariations: true,
+        removeNags: false,
+        removeGlyphs: false,
+        removeEscapes: false,
+    });
+    return syncMovetextResult(kept, result || "*");
+}
+
 /** Replace (or append) the movetext result terminator so it matches the Result
  *  header. Keeps the two in sync after cleaning/editing. */
 export function syncMovetextResult(movetext: string, result: string): string {

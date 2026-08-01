@@ -2,14 +2,19 @@ import { describe, expect, it } from "vitest";
 import {
     type ArtifactsCard,
     type DiacriticsCard,
+    distinctTagValues,
     type DuplicatesCard,
+    type EventCard,
     isPlaceholder,
     movetextResult,
-    type ResultCard,
     pgncheck,
+    removeGameVariations,
+    type ResultCard,
+    setGameTag,
     stripGameDiacritics,
     syncGameResult,
-    type TagsCard,
+    type TeamsCard,
+    type VariationsCard,
 } from "./check";
 
 function game(tags: Record<string, string>, movetext = "1. e4 e5 *"): string {
@@ -24,8 +29,8 @@ const CLEAN = game(
     "1. e4 e5 2. Nf3 1-0",
 );
 
-function card<T>(games: string[], id: string): T {
-    return pgncheck(games).cards.find((c) => c.id === id) as T;
+function card<T>(games: string[], id: string, opts?: { isMatch?: boolean }): T {
+    return pgncheck(games, opts).cards.find((c) => c.id === id) as T;
 }
 
 describe("pgncheck — overall", () => {
@@ -46,19 +51,53 @@ describe("pgncheck — overall", () => {
 });
 
 describe("pgncheck — artifacts", () => {
-    it("tallies removable annotations per class and per game", () => {
+    it("tallies removable annotations per class and per game (no variations)", () => {
         const g = game(
             { White: "A", Black: "B", Result: "*", Event: "E", Date: "2026.01.01" },
-            "1. e4! e5 $1 {comment} 2. Nf3 (2. Bc4 Bc5) Nc6 *",
+            "1. e4! e5 $1 {comment} 2. Nf3 Nc6 *",
         );
         const c = card<ArtifactsCard>([g], "artifacts");
         expect(c.status).toBe("warn");
         expect(c.affected).toBe(1);
         expect(c.totals.comments).toBe(1);
-        expect(c.totals.variations).toBe(1);
         expect(c.totals.nags).toBe(1);
         expect(c.totals.glyphs).toBe(1);
-        expect(c.games[0].counts.variations).toBe(1);
+    });
+});
+
+describe("pgncheck — variations", () => {
+    it("routes a variation game to the variations card, not artifacts", () => {
+        const g = game(
+            { White: "A", Black: "B", Result: "*", Event: "E", Date: "2026.01.01" },
+            "1. e4 e5 2. Nf3 (2. Bc4 Bc5) Nc6 *",
+        );
+        expect(card<ArtifactsCard>([g], "artifacts").affected).toBe(0);
+        const v = card<VariationsCard>([g], "variations");
+        expect(v.affected).toBe(1);
+        expect(v.games[0].info.hasVariations).toBe(true);
+        expect(v.games[0].info.losesLongerLine).toBe(false);
+    });
+
+    it("flags a variation that runs longer than the main line", () => {
+        const g = game(
+            { White: "A", Black: "B", Result: "*", Event: "E", Date: "2026.01.01" },
+            "1. e4 e5 2. Nf3 (2. Bc4 Bc5 3. d4 exd4 4. c3 dxc3) Nc6 *",
+        );
+        const info = card<VariationsCard>([g], "variations").games[0].info;
+        expect(info.mainLinePlies).toBe(4);
+        expect(info.longestPlies).toBe(8);
+        expect(info.losesLongerLine).toBe(true);
+    });
+
+    it("removeGameVariations keeps the main line and drops the variation", () => {
+        const g = game(
+            { White: "A", Black: "B", Result: "1-0", Event: "E", Date: "2026.01.01" },
+            "1. e4 e5 2. Nf3 (2. Bc4 Bc5) Nc6 1-0",
+        );
+        const out = removeGameVariations(g);
+        expect(out).not.toContain("Bc4");
+        expect(out).toContain("Nc6");
+        expect(out).toContain("1-0");
     });
 });
 
@@ -76,7 +115,6 @@ describe("pgncheck — diacritics", () => {
         const changes = c.games[0].changes;
         expect(changes).toContainEqual({ tag: "Event", from: "Přebor", to: "Prebor" });
         expect(changes).toContainEqual({ tag: "White", from: "Dvořák", to: "Dvorak" });
-        // Svoboda has no diacritics → not listed.
         expect(changes.find((x) => x.tag === "Black")).toBeUndefined();
     });
 
@@ -128,13 +166,53 @@ describe("pgncheck — result", () => {
     });
 });
 
-describe("pgncheck — tags", () => {
-    it("flags missing and placeholder required tags", () => {
-        const g = game({ Event: "?", White: "A", Black: "", Result: "1-0", Date: "2026.01.01" });
-        const c = card<TagsCard>([g], "tags");
-        expect(c.affected).toBe(1);
-        expect(c.games[0].missing).toEqual(expect.arrayContaining(["Event", "Black"]));
-        expect(c.games[0].missing).not.toContain("White");
+describe("pgncheck — match checks", () => {
+    const mk = (board: number, whiteTeam: string, blackTeam: string, event = "Liga") =>
+        game({
+            Event: event,
+            Round: `1.${board}`,
+            Board: String(board),
+            WhiteTeam: whiteTeam,
+            BlackTeam: blackTeam,
+            White: `W${board}`,
+            Black: `B${board}`,
+            Result: "*",
+            Date: "2026.01.01",
+        });
+
+    it("omits event/teams unless isMatch", () => {
+        expect(pgncheck([CLEAN]).cards.find((c) => c.id === "event")).toBeUndefined();
+        expect(
+            pgncheck([CLEAN], { isMatch: true }).cards.find((c) => c.id === "event"),
+        ).toBeDefined();
+    });
+
+    it("passes a uniform Event and warns on differing ones", () => {
+        const ok = card<EventCard>([mk(1, "X", "Y"), mk(2, "Y", "X")], "event", { isMatch: true });
+        expect(ok.uniform).toBe(true);
+        expect(ok.status).toBe("ok");
+
+        const bad = card<EventCard>([mk(1, "X", "Y"), mk(2, "Y", "X", "Jiné")], "event", {
+            isMatch: true,
+        });
+        expect(bad.uniform).toBe(false);
+        expect(bad.status).toBe("warn");
+    });
+
+    it("flags a team-alternation violation", () => {
+        // Odd boards expect X on white, even boards Y; board 3 breaks it.
+        const games = [mk(1, "X", "Y"), mk(2, "Y", "X"), mk(3, "Y", "X"), mk(5, "X", "Y")];
+        const teams = card<TeamsCard>(games, "teams", { isMatch: true });
+        expect(teams.checkable).toBe(true);
+        expect(teams.teamOdd).toBe("X");
+        expect(teams.teamEven).toBe("Y");
+        expect(teams.violations.map((g) => g.index)).toEqual([2]);
+    });
+
+    it("reports teams as not checkable without board/team info", () => {
+        const teams = card<TeamsCard>([CLEAN], "teams", { isMatch: true });
+        expect(teams.checkable).toBe(false);
+        expect(teams.status).toBe("unknown");
     });
 });
 
@@ -163,9 +241,50 @@ describe("pgncheck — duplicates", () => {
     });
 
     it("does not flag distinct pairings", () => {
-        const a = game({ White: "A", Black: "B", Round: "1.1", Result: "1-0", Event: "E", Date: "2026.01.01" });
-        const b = game({ White: "C", Black: "D", Round: "1.2", Result: "0-1", Event: "E", Date: "2026.01.01" });
+        const a = game({
+            White: "A",
+            Black: "B",
+            Round: "1.1",
+            Result: "1-0",
+            Event: "E",
+            Date: "2026.01.01",
+        });
+        const b = game({
+            White: "C",
+            Black: "D",
+            Round: "1.2",
+            Result: "0-1",
+            Event: "E",
+            Date: "2026.01.01",
+        });
         expect(card<DuplicatesCard>([a, b], "duplicates").affected).toBe(0);
+    });
+});
+
+describe("tags editor helpers", () => {
+    it("distinctTagValues counts, flags placeholders and sorts by frequency", () => {
+        const a = game({ Event: "Liga", White: "A", Black: "B", Result: "*", Date: "2026.01.01" });
+        const b = game({ Event: "Liga", White: "C", Black: "D", Result: "*", Date: "2026.01.01" });
+        const c = game({ Event: "?", White: "E", Black: "F", Result: "*", Date: "2026.01.01" });
+        const vals = distinctTagValues([a, b, c], "Event");
+        expect(vals[0]).toMatchObject({ value: "Liga", count: 2 });
+        expect(vals[0].indices).toEqual([0, 1]);
+        expect(vals.find((v) => v.value === "?")?.suspicious).toBe(true);
+    });
+
+    it("setGameTag sets a tag and syncs the Result terminator", () => {
+        const g = game(
+            { White: "A", Black: "B", Result: "*", Event: "E", Date: "2026.01.01" },
+            "1. e4 e5 *",
+        );
+        const out = setGameTag(g, "Result", "1-0");
+        expect(out).toContain('[Result "1-0"]');
+        expect(out).toContain("1. e4 e5 1-0");
+    });
+
+    it("setGameTag adds a missing tag", () => {
+        const g = game({ White: "A", Black: "B", Result: "*", Event: "E", Date: "2026.01.01" });
+        expect(setGameTag(g, "Round", "2.3")).toContain('[Round "2.3"]');
     });
 });
 

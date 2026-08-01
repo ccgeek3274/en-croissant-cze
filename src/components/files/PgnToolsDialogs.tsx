@@ -19,15 +19,12 @@ import {
   Table,
   Text,
   Textarea,
+  TextInput,
   ThemeIcon,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import {
-  IconAlertTriangle,
-  IconCheck,
-  IconMinus,
-} from "@tabler/icons-react";
-import { open as openDialog, save } from "@tauri-apps/plugin-dialog";
+import { IconAlertTriangle, IconCheck, IconMinus } from "@tabler/icons-react";
+import { confirm as confirmDialog, open as openDialog, save } from "@tauri-apps/plugin-dialog";
 import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -37,13 +34,19 @@ import {
   type CheckCard,
   type CheckStatus,
   type DiacriticsCard,
+  distinctTagValues,
   type DuplicatesCard,
+  type EventCard,
   type GameRef,
   pgncheck,
+  removeGameVariations,
   type ResultCard,
+  setGameTag,
   stripGameDiacritics,
   syncGameResult,
-  type TagsCard,
+  TAG_DEFS,
+  type TeamsCard,
+  type VariationsCard,
 } from "@/utils/pgn/check";
 import { type CleanupOptions, FULL_CLEANUP } from "@/utils/pgn/cleanup";
 import {
@@ -59,7 +62,7 @@ import {
   pairSideFromTags,
   planMerge,
 } from "@/utils/pgn/merge";
-import { splitGame, splitPgnGames } from "@/utils/pgn/tags";
+import { getTag, splitGame, splitPgnGames } from "@/utils/pgn/tags";
 import { unwrap } from "@/utils/unwrap";
 import type { FileMetadata } from "./file";
 
@@ -129,11 +132,16 @@ export function KontrolaModal({
   onChanged: () => void;
 }) {
   const { t } = useTranslation();
+  const isMatch = file.metadata.type === "tournament";
   const [games, setGames] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [busy, setBusy] = useState(false);
-  // Which artifact classes the movetext cleanup should strip.
+  // Movetext cleanup toggles (variations are handled per-game, so not here).
   const [opts, setOpts] = useState<CleanupOptions>(FULL_CLEANUP);
+  // "Tagy" editor state.
+  const [tagKey, setTagKey] = useState<string>("Event");
+  const [checkedValues, setCheckedValues] = useState<Set<string>>(new Set());
+  const [desired, setDesired] = useState("");
 
   async function reload() {
     setLoading(true);
@@ -148,29 +156,38 @@ export function KontrolaModal({
     if (!opened) return;
     reload();
     setOpts(FULL_CLEANUP);
+    setTagKey("Event");
+    setCheckedValues(new Set());
+    setDesired("");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [opened, file]);
 
-  const report = useMemo(() => pgncheck(games), [games]);
+  const report = useMemo(() => pgncheck(games, { isMatch }), [games, isMatch]);
   const get = <T extends CheckCard>(id: CheckCard["id"]) =>
-    report.cards.find((c) => c.id === id) as T;
-  const artifacts = get<ArtifactsCard>("artifacts");
-  const diacritics = get<DiacriticsCard>("diacritics");
-  const result = get<ResultCard>("result");
-  const tags = get<TagsCard>("tags");
-  const duplicates = get<DuplicatesCard>("duplicates");
+    report.cards.find((c) => c.id === id) as T | undefined;
+  const artifacts = get<ArtifactsCard>("artifacts")!;
+  const variations = get<VariationsCard>("variations")!;
+  const diacritics = get<DiacriticsCard>("diacritics")!;
+  const result = get<ResultCard>("result")!;
+  const event = get<EventCard>("event");
+  const teams = get<TeamsCard>("teams");
+  const duplicates = get<DuplicatesCard>("duplicates")!;
 
-  // Run `transform` over every game, write the file back, then re-check in place.
-  async function applyFix(transform: (g: string) => string) {
+  const tagDef = TAG_DEFS.find((d) => d.key === tagKey)!;
+  const tagValues = useMemo(() => distinctTagValues(games, tagKey), [games, tagKey]);
+  const maxCount = tagValues[0]?.count ?? 0;
+  const tagsWarn = tagValues.some((v) => v.suspicious);
+
+  // Write `next` back to disk and re-check in place.
+  async function commit(next: string[], msg?: string) {
     setBusy(true);
     try {
-      const next = games.map(transform);
       await writeTextFile(file.path, next.join("\n\n\n") + "\n");
       await reload();
       onChanged();
       notifications.show({
         title: t("PgnTools.Kontrola.Title"),
-        message: t("PgnTools.Check.Done"),
+        message: msg ?? t("PgnTools.Check.Done"),
         color: "teal",
       });
     } catch (e) {
@@ -184,17 +201,63 @@ export function KontrolaModal({
     }
   }
 
+  const applyAll = (transform: (g: string) => string) => commit(games.map(transform));
+  const applyOne = (index: number, transform: (g: string) => string) =>
+    commit(games.map((g, i) => (i === index ? transform(g) : g)));
+
   const cleanMovetext = () =>
-    applyFix((g) => buildExportGame(g, { headers: "all", cleanup: opts, stripDiacritics: false }));
+    applyAll((g) => buildExportGame(g, { headers: "all", cleanup: opts, stripDiacritics: false }));
+
+  async function removeVariations(index: number, info: VariationsCard["games"][number]["info"]) {
+    // Keeping only the main line drops any deeper variation — confirm that loss.
+    if (info.losesLongerLine) {
+      const ok = await confirmDialog(
+        t("PgnTools.Check.Variations.Confirm", {
+          main: info.mainLinePlies,
+          longest: info.longestPlies,
+        }),
+        { title: t("PgnTools.Check.Variations.Title") },
+      );
+      if (!ok) return;
+    }
+    applyOne(index, removeGameVariations);
+  }
+
+  function toggleValue(v: string) {
+    setCheckedValues((prev) => {
+      const next = new Set(prev);
+      if (next.has(v)) next.delete(v);
+      else next.add(v);
+      return next;
+    });
+  }
+
+  async function replaceTag() {
+    if (checkedValues.size === 0) return;
+    if (!desired.trim()) {
+      const ok = await confirmDialog(t("PgnTools.Check.Tags.ConfirmClear", { tag: tagKey }));
+      if (!ok) return;
+    }
+    const target = desired.trim();
+    await commit(
+      games.map((g) =>
+        checkedValues.has((getTag(splitGame(g).tags, tagKey) ?? "").trim())
+          ? setGameTag(g, tagKey, target)
+          : g,
+      ),
+    );
+    setCheckedValues(new Set());
+    setDesired("");
+  }
 
   const artifactRows: [keyof CleanupOptions, keyof ArtifactsCard["totals"], string][] = [
     ["removeComments", "comments", t("PgnTools.Artifact.Comments")],
-    ["removeVariations", "variations", t("PgnTools.Artifact.Variations")],
     ["removeNags", "nags", t("PgnTools.Artifact.Nags")],
     ["removeGlyphs", "glyphs", t("PgnTools.Artifact.Glyphs")],
     ["removeEscapes", "escapes", t("PgnTools.Artifact.Escapes")],
   ];
   const nothingSelected = !artifactRows.some(([k]) => opts[k]);
+  const ok = t("PgnTools.Check.Ok");
 
   return (
     <Modal opened={opened} onClose={onClose} title={t("PgnTools.Kontrola.Title")} size="lg">
@@ -215,14 +278,14 @@ export function KontrolaModal({
             )}
 
             <Accordion variant="separated" multiple>
-              {/* Movetext annotations — with per-class checkboxes + clean action. */}
+              {/* Movetext annotations — per-class checkboxes + bulk clean. */}
               <CardShell
                 status={artifacts.status}
                 title={t("PgnTools.Check.Artifacts.Title")}
                 detail={
                   artifacts.affected > 0
                     ? t("PgnTools.Check.Artifacts.Detail", { n: artifacts.affected })
-                    : t("PgnTools.Check.Ok")
+                    : ok
                 }
               >
                 <Stack>
@@ -264,6 +327,50 @@ export function KontrolaModal({
                 </Stack>
               </CardShell>
 
+              {/* Variations — removed one game at a time (never in bulk). */}
+              <CardShell
+                status={variations.status}
+                title={t("PgnTools.Check.Variations.Title")}
+                detail={
+                  variations.affected > 0
+                    ? t("PgnTools.Check.Variations.Detail", { n: variations.affected })
+                    : ok
+                }
+              >
+                <Stack gap="xs">
+                  <Text size="xs" c="dimmed">
+                    {t("PgnTools.Check.Variations.Help")}
+                  </Text>
+                  <ScrollArea.Autosize mah={260}>
+                    <Stack gap={4}>
+                      {variations.games.map((g) => (
+                        <Group key={g.index} gap="xs" wrap="nowrap" justify="space-between">
+                          <Text size="xs" style={{ flex: 1 }}>
+                            {refLabel(g)}
+                          </Text>
+                          {g.info.losesLongerLine && (
+                            <Text size="xs" c="orange" style={{ whiteSpace: "nowrap" }}>
+                              {t("PgnTools.Check.Variations.LosesLine", {
+                                longest: g.info.longestPlies,
+                                main: g.info.mainLinePlies,
+                              })}
+                            </Text>
+                          )}
+                          <Button
+                            size="compact-xs"
+                            variant="light"
+                            loading={busy}
+                            onClick={() => removeVariations(g.index, g.info)}
+                          >
+                            {t("PgnTools.Check.Variations.Apply")}
+                          </Button>
+                        </Group>
+                      ))}
+                    </Stack>
+                  </ScrollArea.Autosize>
+                </Stack>
+              </CardShell>
+
               {/* Diacritics in header tags. */}
               <CardShell
                 status={diacritics.status}
@@ -271,7 +378,7 @@ export function KontrolaModal({
                 detail={
                   diacritics.affected > 0
                     ? t("PgnTools.Check.Diacritics.Detail", { n: diacritics.affected })
-                    : t("PgnTools.Check.Ok")
+                    : ok
                 }
               >
                 <Stack gap="xs">
@@ -291,7 +398,7 @@ export function KontrolaModal({
                       size="xs"
                       loading={busy}
                       disabled={diacritics.affected === 0}
-                      onClick={() => applyFix((g) => stripGameDiacritics(g))}
+                      onClick={() => applyAll((g) => stripGameDiacritics(g))}
                     >
                       {t("PgnTools.Check.Diacritics.Apply")}
                     </Button>
@@ -306,7 +413,7 @@ export function KontrolaModal({
                 detail={
                   result.affected > 0
                     ? t("PgnTools.Check.Result.Detail", { n: result.affected })
-                    : t("PgnTools.Check.Ok")
+                    : ok
                 }
               >
                 <Stack gap="xs">
@@ -326,7 +433,7 @@ export function KontrolaModal({
                       size="xs"
                       loading={busy}
                       disabled={result.affected === 0}
-                      onClick={() => applyFix(syncGameResult)}
+                      onClick={() => applyAll(syncGameResult)}
                     >
                       {t("PgnTools.Check.Result.Apply")}
                     </Button>
@@ -334,27 +441,182 @@ export function KontrolaModal({
                 </Stack>
               </CardShell>
 
-              {/* Missing / placeholder required tags — informational. */}
-              <CardShell
-                status={tags.status}
-                title={t("PgnTools.Check.Tags.Title")}
-                detail={
-                  tags.affected > 0
-                    ? t("PgnTools.Check.Tags.Detail", { n: tags.affected })
-                    : t("PgnTools.Check.Ok")
-                }
-              >
-                <ScrollArea.Autosize mah={220}>
-                  <Stack gap={2}>
-                    {tags.games.map((g) => (
-                      <Text key={g.index} size="xs">
-                        <b>{refLabel(g)}</b>
-                        {": "}
-                        {g.missing.join(", ")}
-                      </Text>
-                    ))}
+              {/* Match-only: uniform Event. */}
+              {event && (
+                <CardShell
+                  status={event.status}
+                  title={t("PgnTools.Check.Event.Title")}
+                  detail={
+                    event.uniform
+                      ? t("PgnTools.Check.Event.Uniform", { value: event.values[0] })
+                      : event.values.length <= 1
+                        ? t("PgnTools.Check.Event.Empty")
+                        : t("PgnTools.Check.Event.Multiple", { n: event.values.length })
+                  }
+                >
+                  <Stack gap="xs">
+                    <ScrollArea.Autosize mah={160}>
+                      <Stack gap={2}>
+                        {event.values.map((v) => (
+                          <Text key={v || "∅"} size="xs">
+                            {v || t("PgnTools.Check.Tags.Empty")}
+                          </Text>
+                        ))}
+                      </Stack>
+                    </ScrollArea.Autosize>
+                    <Group justify="flex-end">
+                      <Button
+                        size="xs"
+                        variant="default"
+                        onClick={() => {
+                          setTagKey("Event");
+                          setCheckedValues(new Set());
+                        }}
+                      >
+                        {t("PgnTools.Check.Event.OpenInTags")}
+                      </Button>
+                    </Group>
                   </Stack>
-                </ScrollArea.Autosize>
+                </CardShell>
+              )}
+
+              {/* Match-only: team alternation across boards. */}
+              {teams && (
+                <CardShell
+                  status={teams.status}
+                  title={t("PgnTools.Check.Teams.Title")}
+                  detail={
+                    !teams.checkable
+                      ? t("PgnTools.Check.Teams.NotCheckable")
+                      : teams.violations.length === 0
+                        ? t("PgnTools.Check.Teams.Ok")
+                        : t("PgnTools.Check.Teams.Detail", { n: teams.violations.length })
+                  }
+                >
+                  <Stack gap="xs">
+                    {teams.teamOdd && teams.teamEven && (
+                      <Text size="xs" c="dimmed">
+                        {t("PgnTools.Check.Teams.Expected", {
+                          odd: teams.teamOdd,
+                          even: teams.teamEven,
+                        })}
+                      </Text>
+                    )}
+                    <ScrollArea.Autosize mah={200}>
+                      <Stack gap={2}>
+                        {teams.violations.map((g) => (
+                          <Text key={g.index} size="xs">
+                            {refLabel(g)}
+                          </Text>
+                        ))}
+                      </Stack>
+                    </ScrollArea.Autosize>
+                    {teams.missingInfo > 0 && (
+                      <Text size="xs" c="dimmed">
+                        {t("PgnTools.Check.Teams.Missing", { n: teams.missingInfo })}
+                      </Text>
+                    )}
+                  </Stack>
+                </CardShell>
+              )}
+
+              {/* Tags editor — distinct values per tag + bulk unify. */}
+              <CardShell
+                status={tagsWarn ? "warn" : "ok"}
+                title={t("PgnTools.Check.Tags.Title")}
+                detail={t("PgnTools.Check.Tags.Hint")}
+              >
+                <Stack gap="xs">
+                  <Group gap="xs" align="flex-end">
+                    <Select
+                      label={t("PgnTools.Check.Tags.SelectTag")}
+                      data={TAG_DEFS.map((d) => d.key)}
+                      value={tagKey}
+                      onChange={(v) => {
+                        if (v) setTagKey(v);
+                        setCheckedValues(new Set());
+                        setDesired("");
+                      }}
+                      size="xs"
+                      comboboxProps={{ withinPortal: true }}
+                      allowDeselect={false}
+                    />
+                    {!tagDef.replaceable && (
+                      <Text size="xs" c="orange">
+                        {t("PgnTools.Check.Tags.ListOnly")}
+                      </Text>
+                    )}
+                  </Group>
+
+                  <ScrollArea.Autosize mah={240}>
+                    <Table verticalSpacing={2}>
+                      <Table.Tbody>
+                        {tagValues.map(({ value, count, suspicious }) => {
+                          const minority =
+                            !suspicious &&
+                            tagValues.length > 1 &&
+                            maxCount >= 3 &&
+                            count < maxCount;
+                          const color = suspicious ? "red" : minority ? "orange" : undefined;
+                          return (
+                            <Table.Tr key={value || "∅"}>
+                              <Table.Td>
+                                <Group gap="xs" wrap="nowrap">
+                                  {tagDef.replaceable && (
+                                    <Checkbox
+                                      size="xs"
+                                      checked={checkedValues.has(value)}
+                                      onChange={() => toggleValue(value)}
+                                    />
+                                  )}
+                                  <Text size="xs" c={color} fw={color ? 600 : 400}>
+                                    {value || t("PgnTools.Check.Tags.Empty")}
+                                  </Text>
+                                </Group>
+                              </Table.Td>
+                              <Table.Td ta="right">
+                                <Group gap="xs" justify="flex-end" wrap="nowrap">
+                                  <Text size="xs" c="dimmed">
+                                    {count}×
+                                  </Text>
+                                  {tagDef.replaceable && value !== "" && (
+                                    <Button
+                                      size="compact-xs"
+                                      variant="subtle"
+                                      onClick={() => setDesired(value)}
+                                    >
+                                      {t("PgnTools.Check.Tags.Take")}
+                                    </Button>
+                                  )}
+                                </Group>
+                              </Table.Td>
+                            </Table.Tr>
+                          );
+                        })}
+                      </Table.Tbody>
+                    </Table>
+                  </ScrollArea.Autosize>
+
+                  {tagDef.replaceable && (
+                    <Group gap="xs" align="flex-end">
+                      <TextInput
+                        style={{ flex: 1 }}
+                        size="xs"
+                        placeholder={t("PgnTools.Check.Tags.Desired")}
+                        value={desired}
+                        onChange={(e) => setDesired(e.currentTarget.value)}
+                      />
+                      <Button
+                        size="xs"
+                        loading={busy}
+                        disabled={checkedValues.size === 0}
+                        onClick={replaceTag}
+                      >
+                        {t("PgnTools.Check.Tags.Replace", { n: checkedValues.size })}
+                      </Button>
+                    </Group>
+                  )}
+                </Stack>
               </CardShell>
 
               {/* Duplicate pairings — informational. */}
@@ -364,7 +626,7 @@ export function KontrolaModal({
                 detail={
                   duplicates.affected > 0
                     ? t("PgnTools.Check.Duplicates.Detail", { n: duplicates.affected })
-                    : t("PgnTools.Check.Ok")
+                    : ok
                 }
               >
                 <ScrollArea.Autosize mah={220}>
