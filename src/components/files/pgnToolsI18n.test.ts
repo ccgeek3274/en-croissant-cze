@@ -15,8 +15,17 @@ import enUS from "@/translation/en-US.json";
 // plural form is exercised; interpolation-only keys carry their variables.
 const PLAIN_KEYS = [
     "PgnTools.Kontrola.Title",
-    "PgnTools.Kontrola.Clean",
-    "PgnTools.Kontrola.Apply",
+    "PgnTools.Check.AllClean",
+    "PgnTools.Check.Ok",
+    "PgnTools.Check.Artifacts.Title",
+    "PgnTools.Check.Artifacts.Apply",
+    "PgnTools.Check.Diacritics.Title",
+    "PgnTools.Check.Diacritics.Apply",
+    "PgnTools.Check.Result.Title",
+    "PgnTools.Check.Result.Apply",
+    "PgnTools.Check.Tags.Title",
+    "PgnTools.Check.Duplicates.Title",
+    "PgnTools.Check.Done",
     "PgnTools.Artifact.Comments",
     "PgnTools.Artifact.Variations",
     "PgnTools.Artifact.Nags",
@@ -46,8 +55,12 @@ const PLAIN_KEYS = [
 ];
 
 const INTERP_KEYS: [string, Record<string, unknown>][] = [
-    ["PgnTools.Kontrola.Summary", { total: 3, affected: 2 }],
-    ["PgnTools.Kontrola.Cleaned", { count: 2 }],
+    ["PgnTools.Check.Summary", { total: 3 }],
+    ["PgnTools.Check.Artifacts.Detail", { n: 2 }],
+    ["PgnTools.Check.Diacritics.Detail", { n: 2 }],
+    ["PgnTools.Check.Result.Detail", { n: 2 }],
+    ["PgnTools.Check.Tags.Detail", { n: 2 }],
+    ["PgnTools.Check.Duplicates.Detail", { n: 2 }],
     ["PgnTools.Export.Done", { count: 2 }],
     ["PgnTools.Import.Done", { matched: 2, appended: 1 }],
     ["PgnTools.Import.WillAppend", { count: 2 }],

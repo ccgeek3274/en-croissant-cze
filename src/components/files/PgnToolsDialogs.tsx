@@ -4,6 +4,7 @@
 // helpers in src/utils/pgn, so they work on any database, not just ŠSČR imports.
 
 import {
+  Accordion,
   Alert,
   Badge,
   Button,
@@ -18,20 +19,33 @@ import {
   Table,
   Text,
   Textarea,
+  ThemeIcon,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
+import {
+  IconAlertTriangle,
+  IconCheck,
+  IconMinus,
+} from "@tabler/icons-react";
 import { open as openDialog, save } from "@tauri-apps/plugin-dialog";
 import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { commands } from "@/bindings";
 import {
-  type ArtifactCounts,
-  type CleanupOptions,
-  countArtifacts,
-  FULL_CLEANUP,
-  hasArtifacts,
-} from "@/utils/pgn/cleanup";
+  type ArtifactsCard,
+  type CheckCard,
+  type CheckStatus,
+  type DiacriticsCard,
+  type DuplicatesCard,
+  type GameRef,
+  pgncheck,
+  type ResultCard,
+  stripGameDiacritics,
+  syncGameResult,
+  type TagsCard,
+} from "@/utils/pgn/check";
+import { type CleanupOptions, FULL_CLEANUP } from "@/utils/pgn/cleanup";
 import {
   buildExportGame,
   buildExportPgn,
@@ -55,25 +69,52 @@ async function readAllGames(file: FileMetadata): Promise<string[]> {
 }
 
 // ————————————————————————————————————————————————————————————————
-// Kontrola — validate & clean
+// Kontrola — a per-check card report (powered by the pure `pgncheck`) plus the
+// fix actions each card offers. Every check runs on open; cards expand to show the
+// affected games and the exact change a fix would make.
 
-function emptyCounts(): ArtifactCounts {
-  return { comments: 0, variations: 0, nags: 0, glyphs: 0, escapes: 0 };
+const STATUS_ICON: Record<CheckStatus, { icon: React.ReactNode; color: string }> = {
+  ok: { icon: <IconCheck size={14} />, color: "teal" },
+  warn: { icon: <IconAlertTriangle size={14} />, color: "orange" },
+  unknown: { icon: <IconMinus size={14} />, color: "gray" },
+};
+
+/** "White – Black (round)" one-liner for an affected game. */
+function refLabel(g: GameRef): string {
+  const rb = g.round || g.board;
+  return `${g.white || "?"} – ${g.black || "?"}${rb ? ` (${rb})` : ""}`;
 }
 
-function sumCounts(games: string[]): { totals: ArtifactCounts; affected: number } {
-  const totals = emptyCounts();
-  let affected = 0;
-  for (const g of games) {
-    const c = countArtifacts(splitGame(g).movetext);
-    totals.comments += c.comments;
-    totals.variations += c.variations;
-    totals.nags += c.nags;
-    totals.glyphs += c.glyphs;
-    totals.escapes += c.escapes;
-    if (hasArtifacts(c)) affected++;
-  }
-  return { totals, affected };
+function CardShell({
+  status,
+  title,
+  detail,
+  children,
+}: {
+  status: CheckStatus;
+  title: string;
+  detail: string;
+  children?: React.ReactNode;
+}) {
+  const s = STATUS_ICON[status];
+  return (
+    <Accordion.Item value={title}>
+      <Accordion.Control disabled={!children}>
+        <Group gap="xs" wrap="nowrap">
+          <ThemeIcon size="sm" variant="light" color={s.color}>
+            {s.icon}
+          </ThemeIcon>
+          <Text fw={600} size="sm">
+            {title}
+          </Text>
+          <Text size="xs" c="dimmed">
+            {detail}
+          </Text>
+        </Group>
+      </Accordion.Control>
+      {children && <Accordion.Panel>{children}</Accordion.Panel>}
+    </Accordion.Item>
+  );
 }
 
 export function KontrolaModal({
@@ -91,33 +132,47 @@ export function KontrolaModal({
   const [games, setGames] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [busy, setBusy] = useState(false);
+  // Which artifact classes the movetext cleanup should strip.
   const [opts, setOpts] = useState<CleanupOptions>(FULL_CLEANUP);
+
+  async function reload() {
+    setLoading(true);
+    try {
+      setGames(await readAllGames(file));
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
     if (!opened) return;
-    setLoading(true);
-    readAllGames(file)
-      .then(setGames)
-      .finally(() => setLoading(false));
+    reload();
+    setOpts(FULL_CLEANUP);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [opened, file]);
 
-  const { totals, affected } = sumCounts(games);
-  const anything = hasArtifacts(totals);
+  const report = useMemo(() => pgncheck(games), [games]);
+  const get = <T extends CheckCard>(id: CheckCard["id"]) =>
+    report.cards.find((c) => c.id === id) as T;
+  const artifacts = get<ArtifactsCard>("artifacts");
+  const diacritics = get<DiacriticsCard>("diacritics");
+  const result = get<ResultCard>("result");
+  const tags = get<TagsCard>("tags");
+  const duplicates = get<DuplicatesCard>("duplicates");
 
-  async function clean() {
+  // Run `transform` over every game, write the file back, then re-check in place.
+  async function applyFix(transform: (g: string) => string) {
     setBusy(true);
     try {
-      const cleaned = games.map((g) =>
-        buildExportGame(g, { headers: "all", cleanup: opts, stripDiacritics: false }),
-      );
-      await writeTextFile(file.path, cleaned.join("\n\n\n") + "\n");
+      const next = games.map(transform);
+      await writeTextFile(file.path, next.join("\n\n\n") + "\n");
+      await reload();
+      onChanged();
       notifications.show({
         title: t("PgnTools.Kontrola.Title"),
-        message: t("PgnTools.Kontrola.Cleaned", { count: affected }),
+        message: t("PgnTools.Check.Done"),
         color: "teal",
       });
-      onChanged();
-      onClose();
     } catch (e) {
       notifications.show({
         title: t("PgnTools.Kontrola.Title"),
@@ -129,16 +184,20 @@ export function KontrolaModal({
     }
   }
 
-  const rows: [keyof CleanupOptions, keyof ArtifactCounts, string][] = [
+  const cleanMovetext = () =>
+    applyFix((g) => buildExportGame(g, { headers: "all", cleanup: opts, stripDiacritics: false }));
+
+  const artifactRows: [keyof CleanupOptions, keyof ArtifactsCard["totals"], string][] = [
     ["removeComments", "comments", t("PgnTools.Artifact.Comments")],
     ["removeVariations", "variations", t("PgnTools.Artifact.Variations")],
     ["removeNags", "nags", t("PgnTools.Artifact.Nags")],
     ["removeGlyphs", "glyphs", t("PgnTools.Artifact.Glyphs")],
     ["removeEscapes", "escapes", t("PgnTools.Artifact.Escapes")],
   ];
+  const nothingSelected = !artifactRows.some(([k]) => opts[k]);
 
   return (
-    <Modal opened={opened} onClose={onClose} title={t("PgnTools.Kontrola.Title")} size="md">
+    <Modal opened={opened} onClose={onClose} title={t("PgnTools.Kontrola.Title")} size="lg">
       <Stack>
         {loading ? (
           <Group justify="center" p="md">
@@ -147,42 +206,186 @@ export function KontrolaModal({
         ) : (
           <>
             <Text size="sm" c="dimmed">
-              {t("PgnTools.Kontrola.Summary", {
-                total: games.length,
-                affected,
-              })}
+              {t("PgnTools.Check.Summary", { total: report.total })}
             </Text>
-            <Table>
-              <Table.Tbody>
-                {rows.map(([optKey, countKey, label]) => (
-                  <Table.Tr key={optKey}>
-                    <Table.Td>
-                      <Checkbox
-                        label={label}
-                        checked={opts[optKey]}
-                        onChange={(e) => setOpts({ ...opts, [optKey]: e.currentTarget.checked })}
-                      />
-                    </Table.Td>
-                    <Table.Td ta="right">
-                      <Badge variant="light" color={totals[countKey] > 0 ? "orange" : "gray"}>
-                        {totals[countKey]}
-                      </Badge>
-                    </Table.Td>
-                  </Table.Tr>
-                ))}
-              </Table.Tbody>
-            </Table>
-            {!anything && (
+            {report.clean && report.total > 0 && (
               <Alert color="teal" variant="light">
-                {t("PgnTools.Kontrola.Clean")}
+                {t("PgnTools.Check.AllClean")}
               </Alert>
             )}
+
+            <Accordion variant="separated" multiple>
+              {/* Movetext annotations — with per-class checkboxes + clean action. */}
+              <CardShell
+                status={artifacts.status}
+                title={t("PgnTools.Check.Artifacts.Title")}
+                detail={
+                  artifacts.affected > 0
+                    ? t("PgnTools.Check.Artifacts.Detail", { n: artifacts.affected })
+                    : t("PgnTools.Check.Ok")
+                }
+              >
+                <Stack>
+                  <Table>
+                    <Table.Tbody>
+                      {artifactRows.map(([optKey, countKey, label]) => (
+                        <Table.Tr key={optKey}>
+                          <Table.Td>
+                            <Checkbox
+                              label={label}
+                              checked={opts[optKey]}
+                              onChange={(e) =>
+                                setOpts({ ...opts, [optKey]: e.currentTarget.checked })
+                              }
+                            />
+                          </Table.Td>
+                          <Table.Td ta="right">
+                            <Badge
+                              variant="light"
+                              color={artifacts.totals[countKey] > 0 ? "orange" : "gray"}
+                            >
+                              {artifacts.totals[countKey]}
+                            </Badge>
+                          </Table.Td>
+                        </Table.Tr>
+                      ))}
+                    </Table.Tbody>
+                  </Table>
+                  <Group justify="flex-end">
+                    <Button
+                      size="xs"
+                      loading={busy}
+                      disabled={artifacts.affected === 0 || nothingSelected}
+                      onClick={cleanMovetext}
+                    >
+                      {t("PgnTools.Check.Artifacts.Apply")}
+                    </Button>
+                  </Group>
+                </Stack>
+              </CardShell>
+
+              {/* Diacritics in header tags. */}
+              <CardShell
+                status={diacritics.status}
+                title={t("PgnTools.Check.Diacritics.Title")}
+                detail={
+                  diacritics.affected > 0
+                    ? t("PgnTools.Check.Diacritics.Detail", { n: diacritics.affected })
+                    : t("PgnTools.Check.Ok")
+                }
+              >
+                <Stack gap="xs">
+                  <ScrollArea.Autosize mah={220}>
+                    <Stack gap={2}>
+                      {diacritics.games.map((g) => (
+                        <Text key={g.index} size="xs">
+                          <b>{refLabel(g)}</b>
+                          {": "}
+                          {g.changes.map((c) => `${c.from} → ${c.to}`).join(", ")}
+                        </Text>
+                      ))}
+                    </Stack>
+                  </ScrollArea.Autosize>
+                  <Group justify="flex-end">
+                    <Button
+                      size="xs"
+                      loading={busy}
+                      disabled={diacritics.affected === 0}
+                      onClick={() => applyFix((g) => stripGameDiacritics(g))}
+                    >
+                      {t("PgnTools.Check.Diacritics.Apply")}
+                    </Button>
+                  </Group>
+                </Stack>
+              </CardShell>
+
+              {/* Result header vs. movetext terminator. */}
+              <CardShell
+                status={result.status}
+                title={t("PgnTools.Check.Result.Title")}
+                detail={
+                  result.affected > 0
+                    ? t("PgnTools.Check.Result.Detail", { n: result.affected })
+                    : t("PgnTools.Check.Ok")
+                }
+              >
+                <Stack gap="xs">
+                  <ScrollArea.Autosize mah={220}>
+                    <Stack gap={2}>
+                      {result.games.map((g) => (
+                        <Text key={g.index} size="xs">
+                          <b>{refLabel(g)}</b>
+                          {": "}
+                          {g.header} ≠ {g.movetext ?? "—"}
+                        </Text>
+                      ))}
+                    </Stack>
+                  </ScrollArea.Autosize>
+                  <Group justify="flex-end">
+                    <Button
+                      size="xs"
+                      loading={busy}
+                      disabled={result.affected === 0}
+                      onClick={() => applyFix(syncGameResult)}
+                    >
+                      {t("PgnTools.Check.Result.Apply")}
+                    </Button>
+                  </Group>
+                </Stack>
+              </CardShell>
+
+              {/* Missing / placeholder required tags — informational. */}
+              <CardShell
+                status={tags.status}
+                title={t("PgnTools.Check.Tags.Title")}
+                detail={
+                  tags.affected > 0
+                    ? t("PgnTools.Check.Tags.Detail", { n: tags.affected })
+                    : t("PgnTools.Check.Ok")
+                }
+              >
+                <ScrollArea.Autosize mah={220}>
+                  <Stack gap={2}>
+                    {tags.games.map((g) => (
+                      <Text key={g.index} size="xs">
+                        <b>{refLabel(g)}</b>
+                        {": "}
+                        {g.missing.join(", ")}
+                      </Text>
+                    ))}
+                  </Stack>
+                </ScrollArea.Autosize>
+              </CardShell>
+
+              {/* Duplicate pairings — informational. */}
+              <CardShell
+                status={duplicates.status}
+                title={t("PgnTools.Check.Duplicates.Title")}
+                detail={
+                  duplicates.affected > 0
+                    ? t("PgnTools.Check.Duplicates.Detail", { n: duplicates.affected })
+                    : t("PgnTools.Check.Ok")
+                }
+              >
+                <ScrollArea.Autosize mah={220}>
+                  <Stack gap="xs">
+                    {duplicates.groups.map((grp) => (
+                      <Stack key={grp.key} gap={0}>
+                        {grp.games.map((g) => (
+                          <Text key={g.index} size="xs">
+                            {refLabel(g)}
+                          </Text>
+                        ))}
+                      </Stack>
+                    ))}
+                  </Stack>
+                </ScrollArea.Autosize>
+              </CardShell>
+            </Accordion>
+
             <Group justify="flex-end">
               <Button variant="default" onClick={onClose}>
-                {t("Common.Cancel")}
-              </Button>
-              <Button loading={busy} disabled={!anything} onClick={clean}>
-                {t("PgnTools.Kontrola.Apply")}
+                {t("Common.Close")}
               </Button>
             </Group>
           </>
