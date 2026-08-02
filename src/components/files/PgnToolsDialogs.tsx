@@ -13,7 +13,6 @@ import {
   Loader,
   Modal,
   ScrollArea,
-  SegmentedControl,
   Select,
   Stack,
   Table,
@@ -49,12 +48,7 @@ import {
   type VariationsCard,
 } from "@/utils/pgn/check";
 import { type CleanupOptions, FULL_CLEANUP } from "@/utils/pgn/cleanup";
-import {
-  buildExportGame,
-  buildExportPgn,
-  type ExportOptions,
-  type HeaderMode,
-} from "@/utils/pgn/export";
+import { buildExportGame } from "@/utils/pgn/export";
 import {
   applyMergedMovetext,
   matchLevel,
@@ -125,14 +119,20 @@ export function KontrolaModal({
   onClose,
   file,
   onChanged,
+  mode = "inplace",
 }: {
   opened: boolean;
   onClose: () => void;
   file: FileMetadata;
-  onChanged: () => void;
+  /** Called after an in-place edit rewrites the source DB (ignored in export mode). */
+  onChanged?: () => void;
+  /** "inplace" writes fixes back to the source DB (Kontrola); "export" applies them
+   *  to an in-memory working copy that is finally saved to a separate .pgn file. */
+  mode?: "inplace" | "export";
 }) {
   const { t } = useTranslation();
   const isMatch = file.metadata.type === "tournament";
+  const toolTitle = mode === "export" ? t("PgnTools.Export.Title") : t("PgnTools.Kontrola.Title");
   const [games, setGames] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -178,21 +178,54 @@ export function KontrolaModal({
   const maxCount = tagValues[0]?.count ?? 0;
   const tagsWarn = tagValues.some((v) => v.suspicious);
 
-  // Write `next` back to disk and re-check in place.
+  // Apply `next`: in-place mode rewrites the source DB and re-checks; export mode
+  // only updates the in-memory working copy (the source DB stays untouched — the
+  // result is written out later by saveExport).
   async function commit(next: string[], msg?: string) {
     setBusy(true);
     try {
-      await writeTextFile(file.path, next.join("\n\n\n") + "\n");
-      await reload();
-      onChanged();
+      if (mode === "export") {
+        setGames(next);
+      } else {
+        await writeTextFile(file.path, next.join("\n\n\n") + "\n");
+        await reload();
+        onChanged?.();
+      }
       notifications.show({
-        title: t("PgnTools.Kontrola.Title"),
+        title: toolTitle,
         message: msg ?? t("PgnTools.Check.Done"),
         color: "teal",
       });
     } catch (e) {
       notifications.show({
-        title: t("PgnTools.Kontrola.Title"),
+        title: toolTitle,
+        message: String(e),
+        color: "red",
+      });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  // Export mode: save the (possibly Kontrola-cleaned) working copy to a new .pgn.
+  async function saveExport() {
+    const dest = await save({
+      defaultPath: `${file.name}.pgn`,
+      filters: [{ name: "PGN", extensions: ["pgn"] }],
+    });
+    if (!dest) return;
+    setBusy(true);
+    try {
+      await writeTextFile(dest, games.join("\n\n\n") + "\n");
+      notifications.show({
+        title: toolTitle,
+        message: t("PgnTools.Export.Done", { count: games.length }),
+        color: "teal",
+      });
+      onClose();
+    } catch (e) {
+      notifications.show({
+        title: toolTitle,
         message: String(e),
         color: "red",
       });
@@ -260,7 +293,7 @@ export function KontrolaModal({
   const ok = t("PgnTools.Check.Ok");
 
   return (
-    <Modal opened={opened} onClose={onClose} title={t("PgnTools.Kontrola.Title")} size="lg">
+    <Modal opened={opened} onClose={onClose} title={toolTitle} size="lg">
       <Stack>
         {loading ? (
           <Group justify="center" p="md">
@@ -268,6 +301,11 @@ export function KontrolaModal({
           </Group>
         ) : (
           <>
+            {mode === "export" && (
+              <Alert color="blue" variant="light">
+                {t("PgnTools.Export.Note")}
+              </Alert>
+            )}
             <Text size="sm" c="dimmed">
               {t("PgnTools.Check.Summary", { total: report.total })}
             </Text>
@@ -646,9 +684,20 @@ export function KontrolaModal({
             </Accordion>
 
             <Group justify="flex-end">
-              <Button variant="default" onClick={onClose}>
-                {t("Common.Close")}
-              </Button>
+              {mode === "export" ? (
+                <>
+                  <Button variant="default" onClick={onClose}>
+                    {t("Common.Cancel")}
+                  </Button>
+                  <Button loading={busy} onClick={saveExport}>
+                    {t("PgnTools.Export.Save")}
+                  </Button>
+                </>
+              ) : (
+                <Button variant="default" onClick={onClose}>
+                  {t("Common.Close")}
+                </Button>
+              )}
             </Group>
           </>
         )}
@@ -658,7 +707,8 @@ export function KontrolaModal({
 }
 
 // ————————————————————————————————————————————————————————————————
-// Export PGN
+// Export PGN — the same Kontrola report, but fixes apply to an in-memory working
+// copy that is saved to a separate .pgn (the source DB is never modified).
 
 export function ExportPgnModal({
   opened,
@@ -669,109 +719,7 @@ export function ExportPgnModal({
   onClose: () => void;
   file: FileMetadata;
 }) {
-  const { t } = useTranslation();
-  const [headers, setHeaders] = useState<HeaderMode>("all");
-  const [clean, setClean] = useState(false);
-  const [cleanup, setCleanup] = useState<CleanupOptions>(FULL_CLEANUP);
-  const [stripDiacritics, setStripDiacritics] = useState(false);
-  const [busy, setBusy] = useState(false);
-
-  async function doExport() {
-    const dest = await save({
-      defaultPath: `${file.name}.pgn`,
-      filters: [{ name: "PGN", extensions: ["pgn"] }],
-    });
-    if (!dest) return;
-    setBusy(true);
-    try {
-      const games = await readAllGames(file);
-      const opts: ExportOptions = {
-        headers,
-        cleanup: clean ? cleanup : null,
-        stripDiacritics,
-      };
-      await writeTextFile(dest, buildExportPgn(games, opts));
-      notifications.show({
-        title: t("PgnTools.Export.Title"),
-        message: t("PgnTools.Export.Done", { count: games.length }),
-        color: "teal",
-      });
-      onClose();
-    } catch (e) {
-      notifications.show({
-        title: t("PgnTools.Export.Title"),
-        message: String(e),
-        color: "red",
-      });
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  const cleanupRows: [keyof CleanupOptions, string][] = [
-    ["removeComments", t("PgnTools.Artifact.Comments")],
-    ["removeVariations", t("PgnTools.Artifact.Variations")],
-    ["removeNags", t("PgnTools.Artifact.Nags")],
-    ["removeGlyphs", t("PgnTools.Artifact.Glyphs")],
-    ["removeEscapes", t("PgnTools.Artifact.Escapes")],
-  ];
-
-  return (
-    <Modal opened={opened} onClose={onClose} title={t("PgnTools.Export.Title")} size="md">
-      <Stack>
-        <div>
-          <Text size="sm" fw={600} mb={4}>
-            {t("PgnTools.Export.Headers")}
-          </Text>
-          <SegmentedControl
-            fullWidth
-            value={headers}
-            onChange={(v) => setHeaders(v as HeaderMode)}
-            data={[
-              { value: "all", label: t("PgnTools.Export.HeadersAll") },
-              { value: "standard", label: t("PgnTools.Export.HeadersStandard") },
-            ]}
-          />
-        </div>
-
-        <div>
-          <Checkbox
-            label={t("PgnTools.Export.CleanMovetext")}
-            checked={clean}
-            onChange={(e) => setClean(e.currentTarget.checked)}
-          />
-          {clean && (
-            <Stack gap={4} mt="xs" ml="lg">
-              {cleanupRows.map(([key, label]) => (
-                <Checkbox
-                  key={key}
-                  size="xs"
-                  label={label}
-                  checked={cleanup[key]}
-                  onChange={(e) => setCleanup({ ...cleanup, [key]: e.currentTarget.checked })}
-                />
-              ))}
-            </Stack>
-          )}
-        </div>
-
-        <Checkbox
-          label={t("PgnTools.Export.StripDiacritics")}
-          checked={stripDiacritics}
-          onChange={(e) => setStripDiacritics(e.currentTarget.checked)}
-        />
-
-        <Group justify="flex-end">
-          <Button variant="default" onClick={onClose}>
-            {t("Common.Cancel")}
-          </Button>
-          <Button loading={busy} onClick={doExport}>
-            {t("PgnTools.Export.Save")}
-          </Button>
-        </Group>
-      </Stack>
-    </Modal>
-  );
+  return <KontrolaModal opened={opened} onClose={onClose} file={file} mode="export" />;
 }
 
 // ————————————————————————————————————————————————————————————————
