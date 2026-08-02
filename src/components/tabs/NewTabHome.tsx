@@ -11,19 +11,17 @@ import {
   Tooltip,
   UnstyledButton,
 } from "@mantine/core";
-import { useAtom, useSetAtom, useStore } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { useCallback, useEffect, useState } from "react";
 import {
   activeTabAtom,
-  addRecentFileAtom,
   deckAtomFamily,
   type RecentFile,
   recentFilesAtom,
-  tabFamily,
   tabsAtom,
 } from "@/state/atoms";
 import type { Tab } from "@/utils/tabs";
-import { createTab } from "@/utils/tabs";
+import { openFile } from "@/utils/files";
 import { unwrap } from "@/utils/unwrap";
 import CreateRepertoireModal from "./CreateRepertoireModal";
 import ImportModal from "./ImportModal";
@@ -113,7 +111,6 @@ export default function NewTabHome({ id }: { id: string }) {
   const setActiveTab = useSetAtom(activeTabAtom);
 
   const [recentFiles, setRecentFiles] = useAtom(recentFilesAtom);
-  const store = useStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -137,39 +134,22 @@ export default function NewTabHome({ id }: { id: string }) {
 
   const openRecentFile = useCallback(
     async (file: RecentFile) => {
-      const pgn = unwrap(await commands.readGames(file.path, 0, 0));
-      const tabId = await createTab({
-        tab: {
+      const numGames = unwrap(await commands.countPgnGames(file.path));
+      await openFile(
+        {
+          type: "file",
           name: file.name,
-          type: "analysis",
+          path: file.path,
+          numGames,
+          metadata: { type: file.type, tags: [] },
+          lastModified: Math.floor(Date.now() / 1000),
         },
         setTabs,
         setActiveTab,
-        pgn: pgn[0] || "",
-        gameOrigin: {
-          kind: "file",
-          gameNumber: 0,
-          file: {
-            type: "file",
-            name: file.name,
-            path: file.path,
-            numGames: 1,
-            metadata: { type: file.type, tags: [] },
-            lastModified: Math.floor(Date.now() / 1000),
-          },
-        },
-      });
-      if (file.type === "repertoire") {
-        store.set(tabFamily(tabId), "practice");
-      }
-      store.set(addRecentFileAtom, {
-        name: file.name,
-        path: file.path,
-        type: file.type,
-      });
+      );
       navigate({ to: "/" });
     },
-    [setTabs, setActiveTab, store, navigate],
+    [setTabs, setActiveTab, navigate],
   );
 
   const cards = [
