@@ -390,8 +390,10 @@ function Board({
             flexWrap: "nowrap",
             overflow: "hidden",
             maxWidth:
-              //            topbar   bottompadding                tabs                                  bottomb    topbar   evalbar                                gaps    ???
-              `calc(100cqh - 2.25rem - var(--mantine-spacing-sm) - 2.5rem - var(--mantine-spacing-sm) - ${BAR_HEIGHT} - ${BAR_HEIGHT} + 1.563rem + var(--mantine-spacing-md) - 1rem  - 0.2rem)`,
+              // 100cqh is the pane height; subtract only the chrome inside this
+              // pane so the square board fills the remaining vertical space:
+              //     top bar        bottom bar     two 0.5rem flex gaps  + eval bar (25px) + its gap
+              `calc(100cqh - ${BAR_HEIGHT} - ${BAR_HEIGHT} - 1rem + 1.563rem + var(--mantine-spacing-sm))`,
           }}
         >
           <BoardBar
