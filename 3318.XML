@@ -1,0 +1,854 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chess>
+<tournament name="basic">
+<info><id>3318</id><code /><name>Krajská soutěž SŠS 2025/26 - skupina A</name><teams>12</teams><players>8</players><year>2025</year><wins>3</wins><lost>1</lost><remi>0</remi><man /><address /><email /><phone /><www>https://chess-results.com/Tnr1258271.aspx?lan=5</www></info>
+<team><name>ŠK KDJS Sedlčany A</name><no>1</no><man1 /><m1 /><man2 /><m2 /><man3 /><m3 /><play /><wins /><remi /><lost /><pnt /><scr /><note /><code /><group /><info /></team>
+<team><name>Dubno A</name><no>2</no><man1 /><m1 /><man2 /><m2 /><man3 /><m3 /><play /><wins /><remi /><lost /><pnt /><scr /><note /><code /><group /><info /></team>
+<team><name>Český lev Kolešovice B</name><no>3</no><man1 /><m1 /><man2 /><m2 /><man3 /><m3 /><play /><wins /><remi /><lost /><pnt /><scr /><note /><code /><group /><info /></team>
+<team><name>Cayman Pharma Neratovice C</name><no>4</no><man1 /><m1 /><man2 /><m2 /><man3 /><m3 /><play /><wins /><remi /><lost /><pnt /><scr /><note /><code /><group /><info /></team>
+<team><name>ŠK Rakovník A</name><no>5</no><man1 /><m1 /><man2 /><m2 /><man3 /><m3 /><play /><wins /><remi /><lost /><pnt /><scr /><note /><code /><group /><info /></team>
+<team><name>ŠK Řevnice A</name><no>6</no><man1 /><m1 /><man2 /><m2 /><man3 /><m3 /><play /><wins /><remi /><lost /><pnt /><scr /><note /><code /><group /><info /></team>
+<team><name>Sokol Buštěhrad A</name><no>7</no><man1 /><m1 /><man2 /><m2 /><man3 /><m3 /><play /><wins /><remi /><lost /><pnt /><scr /><note /><code /><group /><info /></team>
+<team><name>JAWA Brodce B</name><no>8</no><man1 /><m1 /><man2 /><m2 /><man3 /><m3 /><play /><wins /><remi /><lost /><pnt /><scr /><note /><code /><group /><info /></team>
+<team><name>Caissa Roztoky A</name><no>9</no><man1 /><m1 /><man2 /><m2 /><man3 /><m3 /><play /><wins /><remi /><lost /><pnt /><scr /><note /><code /><group /><info /></team>
+<team><name>Cayman Pharma Neratovice B</name><no>10</no><man1 /><m1 /><man2 /><m2 /><man3 /><m3 /><play /><wins /><remi /><lost /><pnt /><scr /><note /><code /><group /><info /></team>
+<team><name>TJ Hostivice A</name><no>11</no><man1 /><m1 /><man2 /><m2 /><man3 /><m3 /><play /><wins /><remi /><lost /><pnt /><scr /><note /><code /><group /><info /></team>
+<team><name>Klokani z Kralup</name><no>12</no><man1 /><m1 /><man2 /><m2 /><man3 /><m3 /><play /><wins /><remi /><lost /><pnt /><scr /><note /><code /><group /><info /></team>
+<round><no>1</no><term>2025-10-12</term><schedule> 112 211 310 4 9 5 8 6 7</schedule></round>
+<round><no>2</no><term>2025-11-02</term><schedule>12 7 8 6 9 510 411 3 1 2</schedule></round>
+<round><no>3</no><term>2025-11-16</term><schedule> 212 3 1 411 510 6 9 7 8</schedule></round>
+<round><no>4</no><term>2025-11-30</term><schedule>12 8 9 710 611 5 1 4 2 3</schedule></round>
+<round><no>5</no><term>2025-12-14</term><schedule> 312 4 2 5 1 611 710 8 9</schedule></round>
+<round><no>6</no><term>2026-01-11</term><schedule>12 910 811 7 1 6 2 5 3 4</schedule></round>
+<round><no>7</no><term>2026-01-25</term><schedule> 412 5 3 6 2 7 1 811 910</schedule></round>
+<round><no>8</no><term>2026-02-08</term><schedule>121011 9 1 8 2 7 3 6 4 5</schedule></round>
+<round><no>9</no><term>2026-02-22</term><schedule> 512 6 4 7 3 8 2 9 11011</schedule></round>
+<round><no>10</no><term>2026-03-15</term><schedule>1211 110 2 9 3 8 4 7 5 6</schedule></round>
+<round><no>11</no><term>2026-03-29</term><schedule> 612 7 5 8 4 9 310 211 1</schedule></round>
+<list><tno>2</tno><desk>1</desk><code>342</code><name>Stluka Petr</name><memo>Z,ZK</memo><cr>2133</cr><fide>2126</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>2</tno><desk>2</desk><code>910</code><name>Stluka František</name><memo>Z</memo><cr>2057</cr><fide>2050</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>2</tno><desk>3</desk><code>13588</code><name>Zeman Martin</name><memo>Z,H</memo><cr>1986</cr><fide>1990</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>2</tno><desk>4</desk><code>277</code><name>Hlaváček Jiří</name><memo>Z,K</memo><cr>2039</cr><fide>2033</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>2</tno><desk>5</desk><code>812</code><name>Petras Milan</name><memo>Z,H</memo><cr>1974</cr><fide>2013</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>2</tno><desk>6</desk><code>1526</code><name>Mareš Vladimír</name><memo>Z</memo><cr>1910</cr><fide>1953</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>2</tno><desk>7</desk><code>16353</code><name>Mejzr Jan</name><memo>Z,H</memo><cr>1802</cr><fide>1904</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>2</tno><desk>8</desk><code>144</code><name>Trmal Jaroslav</name><memo>Z</memo><cr>2036</cr><fide>2028</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>2</tno><desk>9</desk><code>33957</code><name>Bodický Michal</name><memo /><cr>2101</cr><fide>2215</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>2</tno><desk>10</desk><code>41475</code><name>Hrubý Matěj</name><memo /><cr>1677</cr><fide>1851</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>2</tno><desk>11</desk><code>49772</code><name>Štufka Martin</name><memo /><cr>1730</cr><fide>1722</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>2</tno><desk>12</desk><code>1855</code><name>Jelagin Konstantin</name><memo /><cr>1821</cr><fide>1898</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>2</tno><desk>13</desk><code>7112</code><name>Štufka Karel</name><memo /><cr>1720</cr><fide>1842</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>2</tno><desk>14</desk><code>3868</code><name>Saxl Jiří</name><memo /><cr>1727</cr><fide>1785</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>2</tno><desk>15</desk><code>4820</code><name>Kraus Roman</name><memo /><cr>1684</cr><fide>1891</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>2</tno><desk>16</desk><code>912</code><name>Ursta Lubomír</name><memo>H</memo><cr>1796</cr><fide>1852</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>2</tno><desk>17</desk><code>2365</code><name>Prachař Josef</name><memo /><cr>1672</cr><fide>1807</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>2</tno><desk>18</desk><code>11125</code><name>Beneš Karel</name><memo /><cr>1601</cr><fide>1776</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>2</tno><desk>19</desk><code>51555</code><name>Brotánek Tomáš</name><memo /><cr>1644</cr><fide>1754</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>2</tno><desk>20</desk><code>12320</code><name>Králík Vladimír</name><memo /><cr>1740</cr><fide>1710</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>1</tno><desk>1</desk><code>41154</code><name>Šimák Roman</name><memo>Z</memo><cr>1858</cr><fide>1889</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>1</tno><desk>2</desk><code>38178</code><name>Hlaváček Ondřej</name><memo>Z</memo><cr>1864</cr><fide>1898</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>1</tno><desk>3</desk><code>3531</code><name>Vohnout Pavel</name><memo>Z</memo><cr>2000</cr><fide>2018</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>1</tno><desk>4</desk><code>1535</code><name>Pavlíček Petr</name><memo>Z,H</memo><cr>1715</cr><fide>1829</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>1</tno><desk>5</desk><code>2925</code><name>Havelka Petr</name><memo>Z,K</memo><cr>1771</cr><fide>1874</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>1</tno><desk>6</desk><code>30731</code><name>Sadil Jan</name><memo>Z</memo><cr>1788</cr><fide>1863</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>1</tno><desk>7</desk><code>34347</code><name>Mandovec Antonín</name><memo>Z,ZK</memo><cr>1697</cr><fide>1776</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>1</tno><desk>8</desk><code>30730</code><name>Kutil Pavel</name><memo>Z</memo><cr>1613</cr><fide>1766</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>1</tno><desk>9</desk><code>54346</code><name>Kurinec Tomáš</name><memo /><cr>1647</cr><fide>1756</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>1</tno><desk>10</desk><code>36844</code><name>Sadil Pavel</name><memo /><cr>1602</cr><fide>1740</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>1</tno><desk>11</desk><code>55397</code><name>Vrzal Václav</name><memo /><cr>1540</cr><fide>1692</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>1</tno><desk>12</desk><code>41085</code><name>Šimák Ivo</name><memo /><cr>1524</cr><fide>1695</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>1</tno><desk>13</desk><code>46701</code><name>Kváča František</name><memo /><cr>1430</cr><fide>1565</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>1</tno><desk>14</desk><code>8652</code><name>Maroušek Jiří</name><memo /><cr>1692</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>1</tno><desk>15</desk><code>47681</code><name>Pejša Matěj Jakub</name><memo /><cr>1439</cr><fide>1711</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>1</tno><desk>16</desk><code>37910</code><name>Mandovec Jiří</name><memo /><cr>1435</cr><fide>1689</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>1</tno><desk>17</desk><code>36845</code><name>Kučera Jan</name><memo /><cr>1404</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>1</tno><desk>18</desk><code>36843</code><name>Kučera Josef</name><memo /><cr>1311</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>1</tno><desk>19</desk><code>52287</code><name>Kváčová Lenka</name><memo>H</memo><cr>1306</cr><fide>1484</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>1</tno><desk>20</desk><code>55955</code><name>Jindráková Alžběta</name><memo /><cr>1098</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>3</tno><desk>1</desk><code>8235</code><name>Vágner Tomáš</name><memo>Z,V</memo><cr>2222</cr><fide>2225</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>3</tno><desk>2</desk><code>1357</code><name>Pokrupa Marek</name><memo>Z</memo><cr>2090</cr><fide>2145</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>3</tno><desk>3</desk><code>33544</code><name>Civín Dominik</name><memo>Z,H</memo><cr>2109</cr><fide>2097</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>3</tno><desk>4</desk><code>7908</code><name>Kšána Václav</name><memo>Z</memo><cr>2084</cr><fide>2093</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>3</tno><desk>5</desk><code>2048</code><name>Urbánek Štěpán</name><memo>Z</memo><cr>1989</cr><fide>2027</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>3</tno><desk>6</desk><code>5829</code><name>Mrnka Jan</name><memo>Z</memo><cr>1985</cr><fide>1972</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>3</tno><desk>7</desk><code>6191</code><name>Fultner Jaromír</name><memo>Z,ZK</memo><cr>1925</cr><fide>1916</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>3</tno><desk>8</desk><code>3293</code><name>Švadlenka Jaroslav</name><memo>Z</memo><cr>1828</cr><fide>1893</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>3</tno><desk>9</desk><code>13140</code><name>Cozl David</name><memo /><cr>1845</cr><fide>1877</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>3</tno><desk>10</desk><code>26266</code><name>Urban Tomáš</name><memo>K</memo><cr>1767</cr><fide>1859</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>3</tno><desk>11</desk><code>13270</code><name>Šmíd Ondřej</name><memo>H</memo><cr>1879</cr><fide>1925</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>3</tno><desk>12</desk><code>1892</code><name>Jirkovský Tomáš</name><memo /><cr>1880</cr><fide>1976</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>3</tno><desk>13</desk><code>28821</code><name>Bauer Jindřich</name><memo /><cr>2036</cr><fide>2030</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>3</tno><desk>14</desk><code>33996</code><name>Bauer Ondřej</name><memo /><cr>1837</cr><fide>1898</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>3</tno><desk>15</desk><code>4171</code><name>Müller Jan</name><memo /><cr>1660</cr><fide>1855</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>3</tno><desk>16</desk><code>8673</code><name>Hejda Václav</name><memo /><cr>1668</cr><fide>1819</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>3</tno><desk>17</desk><code>11117</code><name>Šlégr Josef</name><memo /><cr>1529</cr><fide>1747</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>3</tno><desk>18</desk><code>8675</code><name>Kantořík Pavel</name><memo /><cr>1568</cr><fide>1813</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>3</tno><desk>19</desk><code>38916</code><name>Verner Jaromír</name><memo /><cr>1352</cr><fide>1627</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>5</tno><desk>1</desk><code>53758</code><name>Hocek Lukáš</name><memo>Z</memo><cr>1895</cr><fide>2033</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>5</tno><desk>2</desk><code>28371</code><name>Krásný Drahomír</name><memo>Z,H</memo><cr>1927</cr><fide>1945</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>5</tno><desk>3</desk><code>1060</code><name>Volf Jaromír</name><memo>Z,K</memo><cr>1928</cr><fide>1937</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>5</tno><desk>4</desk><code>468</code><name>Satranský Jaroslav</name><memo>Z,ZK</memo><cr>2116</cr><fide>2135</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>5</tno><desk>5</desk><code>33444</code><name>Funiok Richard</name><memo>Z</memo><cr>1875</cr><fide>1940</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>5</tno><desk>6</desk><code>50114</code><name>Láska Václav</name><memo>Z</memo><cr>1739</cr><fide>1840</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>5</tno><desk>7</desk><code>47898</code><name>Kantořík Radovan</name><memo>Z</memo><cr>1769</cr><fide>1873</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>5</tno><desk>8</desk><code>34722</code><name>Vaňková Veronika</name><memo>Z</memo><cr>1590</cr><fide>1756</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>5</tno><desk>9</desk><code>52236</code><name>Litavský Lukáš</name><memo /><cr>1673</cr><fide>1812</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>5</tno><desk>10</desk><code>34003</code><name>Pokorná Jana</name><memo /><cr>1656</cr><fide>1775</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>5</tno><desk>11</desk><code>30957</code><name>Pokorný Tomáš</name><memo /><cr>1619</cr><fide>1732</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>5</tno><desk>13</desk><code>824</code><name>Spilka Jiří</name><memo /><cr>1707</cr><fide>1915</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>5</tno><desk>14</desk><code>8671</code><name>Beneš Miroslav</name><memo /><cr>1584</cr><fide>1791</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>5</tno><desk>15</desk><code>53759</code><name>Brejcha Milan</name><memo /><cr>1417</cr><fide>1597</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>5</tno><desk>16</desk><code>34321</code><name>Jilka Miloslav</name><memo /><cr>1542</cr><fide>1671</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>5</tno><desk>18</desk><code>4579</code><name>Košnar Karel</name><memo /><cr>1500</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>5</tno><desk>17</desk><code>58964</code><name>Kalvach David</name><memo /><cr>1287</cr><fide>1573</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>12</tno><desk>1</desk><code>27975</code><name>Dobeš Vojtěch</name><memo>Z,H</memo><cr>2147</cr><fide>2148</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>12</tno><desk>2</desk><code>29022</code><name>Wasserbauer Radek</name><memo>Z,V</memo><cr>2072</cr><fide>2148</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>12</tno><desk>3</desk><code>31709</code><name>Hánl František</name><memo>Z,K</memo><cr>2110</cr><fide>2160</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>12</tno><desk>4</desk><code>647</code><name>Štursa Jan</name><memo>Z,V</memo><cr>2000</cr><fide>2034</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>12</tno><desk>5</desk><code>29904</code><name>Třebický Jiří</name><memo>Z</memo><cr>1840</cr><fide>1934</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>12</tno><desk>6</desk><code>28891</code><name>Slapnička Karel</name><memo>Z</memo><cr>1992</cr><fide>2033</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>12</tno><desk>7</desk><code>10963</code><name>Erban Jiří</name><memo>Z</memo><cr>1889</cr><fide>1935</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>12</tno><desk>8</desk><code>46023</code><name>Langmaier Michal</name><memo>Z</memo><cr>1902</cr><fide>1998</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>12</tno><desk>9</desk><code>49879</code><name>Simakhin Martin</name><memo /><cr>1910</cr><fide>2028</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>12</tno><desk>10</desk><code>3205</code><name>Kopecký Jiří</name><memo /><cr>1848</cr><fide>1885</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>12</tno><desk>11</desk><code>2538</code><name>Popelka Pavel</name><memo>ZK</memo><cr>1795</cr><fide>1867</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>12</tno><desk>12</desk><code>35416</code><name>Daňhel Lukáš</name><memo>H</memo><cr>1855</cr><fide>1892</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>12</tno><desk>13</desk><code>12827</code><name>Novák Vítězslav</name><memo /><cr>1941</cr><fide>1963</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>12</tno><desk>14</desk><code>6753</code><name>Palas Aleš</name><memo /><cr>1921</cr><fide>1953</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>12</tno><desk>15</desk><code>47118</code><name>Langmaier Pavel</name><memo /><cr>1379</cr><fide>1592</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>12</tno><desk>16</desk><code>28657</code><name>Zolman Pavel</name><memo /><cr>1756</cr><fide>1948</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>12</tno><desk>17</desk><code>56172</code><name>Sprinz Milan</name><memo /><cr>1633</cr><fide>1688</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>12</tno><desk>18</desk><code>53706</code><name>Mašek Tomáš</name><memo /><cr>1570</cr><fide>1666</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>12</tno><desk>19</desk><code>45191</code><name>Rössler Erik</name><memo /><cr>1766</cr><fide>1858</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>12</tno><desk>20</desk><code>37804</code><name>Benda Martin</name><memo /><cr>1707</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>7</tno><desk>1</desk><code>26809</code><name>Schmalz Michal</name><memo>Z,K</memo><cr>2104</cr><fide>2097</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>7</tno><desk>2</desk><code>58614</code><name>Budil Václav</name><memo>Z,ZK</memo><cr>1960</cr><fide>1981</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>7</tno><desk>3</desk><code>44902</code><name>Hosová Sandra</name><memo>Z</memo><cr>1731</cr><fide>1793</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>7</tno><desk>4</desk><code>32672</code><name>Škubal Ondřej</name><memo>Z</memo><cr>1957</cr><fide>1916</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>7</tno><desk>5</desk><code>51250</code><name>Housa Vojtěch</name><memo>Z</memo><cr>1858</cr><fide>1947</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>7</tno><desk>6</desk><code>51251</code><name>Housa Jan</name><memo>Z</memo><cr>1844</cr><fide>1858</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>7</tno><desk>7</desk><code>39412</code><name>Popovský Ondřej</name><memo>Z</memo><cr>1822</cr><fide>1911</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>7</tno><desk>8</desk><code>45498</code><name>Hrubý Filip</name><memo>Z</memo><cr>1803</cr><fide>1853</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>7</tno><desk>9</desk><code>58815</code><name>Jandáček Kryštof</name><memo /><cr>1797</cr><fide>1945</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>7</tno><desk>10</desk><code>58748</code><name>Plzák David</name><memo /><cr>1695</cr><fide>1966</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>7</tno><desk>11</desk><code>50314</code><name>Kováč Pavel</name><memo /><cr>1630</cr><fide>1687</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>7</tno><desk>12</desk><code>57947</code><name>Peš Matěj</name><memo /><cr>1664</cr><fide>1740</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>7</tno><desk>13</desk><code>57962</code><name>Hyam Robin</name><memo /><cr>1732</cr><fide>1854</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>7</tno><desk>14</desk><code>34653</code><name>Šefčík Jan</name><memo /><cr>1642</cr><fide>1789</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>7</tno><desk>15</desk><code>44162</code><name>Švarc Kryštof</name><memo /><cr>1571</cr><fide>1706</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>7</tno><desk>16</desk><code>57648</code><name>Kott Jakub</name><memo /><cr>1664</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>7</tno><desk>17</desk><code>52269</code><name>Mikulec Eduard</name><memo /><cr>1395</cr><fide>1750</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>7</tno><desk>18</desk><code>11097</code><name>Buk Pavel</name><memo /><cr>1441</cr><fide>1650</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>7</tno><desk>19</desk><code>57608</code><name>Nguyen Minh Khang Tomáš</name><memo /><cr>1393</cr><fide>1639</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>7</tno><desk>20</desk><code>38127</code><name>Nová Michaela</name><memo /><cr>1852</cr><fide>1897</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>9</tno><desk>1</desk><code>37070</code><name>Plašil Petr</name><memo>Z,H</memo><cr>1972</cr><fide>1991</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>9</tno><desk>2</desk><code>40734</code><name>Turková Karolína</name><memo>Z</memo><cr>1929</cr><fide>1913</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>9</tno><desk>3</desk><code>13269</code><name>Přibyl Jaroslav</name><memo>Z,H</memo><cr>1944</cr><fide>1952</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>9</tno><desk>4</desk><code>209</code><name>Vanka Miloslav</name><memo>Z</memo><cr>2052</cr><fide>2044</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>9</tno><desk>5</desk><code>7382</code><name>Vlček Marek</name><memo>Z</memo><cr>1902</cr><fide>1901</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>9</tno><desk>6</desk><code>10836</code><name>Maršálek Luboš</name><memo>Z</memo><cr>1862</cr><fide>1911</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>9</tno><desk>7</desk><code>1325</code><name>Sedlák Luděk</name><memo>Z,K</memo><cr>1819</cr><fide>1899</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>9</tno><desk>8</desk><code>6072</code><name>Burianek Petr</name><memo>Z</memo><cr>1776</cr><fide>1850</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>9</tno><desk>9</desk><code>5795</code><name>Framberk Jan</name><memo /><cr>1929</cr><fide>1946</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>9</tno><desk>10</desk><code>10760</code><name>Dungl Martin</name><memo>H</memo><cr>2000</cr><fide>1989</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>9</tno><desk>11</desk><code>6220</code><name>Halla Jiří</name><memo>ZK</memo><cr>1736</cr><fide>1803</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>9</tno><desk>12</desk><code>27499</code><name>Hataš Radim</name><memo /><cr>1663</cr><fide>1776</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>9</tno><desk>13</desk><code>13208</code><name>Šavrda Jan</name><memo /><cr>1656</cr><fide>1801</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>9</tno><desk>14</desk><code>6473</code><name>Kretschmer Jaroslav</name><memo /><cr>1666</cr><fide>1807</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>9</tno><desk>15</desk><code>28878</code><name>Kulička Jan</name><memo /><cr>1533</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>9</tno><desk>16</desk><code>10632</code><name>Aulický st. Radim</name><memo /><cr>1477</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>9</tno><desk>17</desk><code>46794</code><name>Aulický ml. Radim</name><memo /><cr>1259</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>9</tno><desk>18</desk><code>5821</code><name>Hlaváček Bedřich</name><memo /><cr>1377</cr><fide>1519</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>8</tno><desk>1</desk><code>50686</code><name>Petrášek Jiří</name><memo>Z,H</memo><cr>1777</cr><fide>1896</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>8</tno><desk>2</desk><code>44678</code><name>Mlýnek Jakub</name><memo>Z,V</memo><cr>1848</cr><fide>2055</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>8</tno><desk>3</desk><code>710</code><name>Fialka Miroslav</name><memo>Z,V,ZK</memo><cr>1971</cr><fide>1993</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>8</tno><desk>4</desk><code>1920</code><name>Procházka Jaroslav</name><memo>Z</memo><cr>1772</cr><fide>1799</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>8</tno><desk>5</desk><code>2093</code><name>Feierfeil Jiří</name><memo>Z,V</memo><cr>1595</cr><fide>1672</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>8</tno><desk>6</desk><code>10792</code><name>Jukl Karel</name><memo>Z,K</memo><cr>1690</cr><fide>1840</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>8</tno><desk>7</desk><code>15601</code><name>Černý Jiří</name><memo>Z</memo><cr>1687</cr><fide>1841</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>8</tno><desk>8</desk><code>45256</code><name>Kleprlík Jan</name><memo>Z</memo><cr>1556</cr><fide>1668</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>8</tno><desk>9</desk><code>28770</code><name>Žbánek Jan</name><memo>Z</memo><cr>1653</cr><fide>1697</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>8</tno><desk>10</desk><code>3026</code><name>Kubaljak Jaromír</name><memo>V</memo><cr>1733</cr><fide>1852</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>8</tno><desk>11</desk><code>494</code><name>Holub Milan</name><memo /><cr>1888</cr><fide>1945</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>8</tno><desk>12</desk><code>2783</code><name>Sládek Oldřich</name><memo /><cr>1851</cr><fide>1926</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>8</tno><desk>13</desk><code>3679</code><name>Dudková Danka</name><memo /><cr>1745</cr><fide>1805</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>8</tno><desk>14</desk><code>36793</code><name>Vnouček Martin</name><memo /><cr>1555</cr><fide>1697</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>8</tno><desk>15</desk><code>25691</code><name>Štěpán Miroslav</name><memo /><cr>1563</cr><fide>1633</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>8</tno><desk>16</desk><code>6198</code><name>Gergelits Tomáš</name><memo /><cr>1543</cr><fide>1585</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>8</tno><desk>17</desk><code>45259</code><name>Tománek Karel</name><memo /><cr>1383</cr><fide>1525</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>8</tno><desk>18</desk><code>42391</code><name>Potůčková Eva</name><memo /><cr>1252</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>10</tno><desk>1</desk><code>232</code><name>Fajman Petr</name><memo>Z,V</memo><cr>2102</cr><fide>2087</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>10</tno><desk>2</desk><code>444</code><name>Jandourek Lukáš</name><memo>Z,ZK</memo><cr>2140</cr><fide>2107</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>10</tno><desk>3</desk><code>1730</code><name>Purnoch Josef</name><memo>Z</memo><cr>2107</cr><fide>2096</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>10</tno><desk>4</desk><code>4093</code><name>Černík Lukáš</name><memo>Z,V</memo><cr>2083</cr><fide>2061</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>10</tno><desk>5</desk><code>3491</code><name>Nadrchal Tomáš</name><memo>Z,K</memo><cr>2039</cr><fide>2036</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>10</tno><desk>6</desk><code>8692</code><name>Šilhan Petr</name><memo>Z</memo><cr>2028</cr><fide>2031</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>10</tno><desk>7</desk><code>2518</code><name>Bargel Martin</name><memo>Z</memo><cr>1986</cr><fide>1970</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>10</tno><desk>8</desk><code>13767</code><name>Drábek Vojtěch</name><memo>Z</memo><cr>1996</cr><fide>1998</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>10</tno><desk>9</desk><code>2615</code><name>Picek Miroslav</name><memo>H</memo><cr>1861</cr><fide>1864</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>10</tno><desk>10</desk><code>1164</code><name>Burda Roman</name><memo /><cr>1958</cr><fide>1987</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>10</tno><desk>11</desk><code>15558</code><name>Veselý Jiří</name><memo /><cr>1914</cr><fide>1949</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>10</tno><desk>12</desk><code>45931</code><name>Pištej Tomáš</name><memo /><cr>1667</cr><fide>1795</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>10</tno><desk>13</desk><code>3083</code><name>Gruber Miloš</name><memo>H</memo><cr>1769</cr><fide>1847</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>10</tno><desk>14</desk><code>2313</code><name>Doležal Vít</name><memo>H</memo><cr>1987</cr><fide>1981</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>10</tno><desk>15</desk><code>551</code><name>Hadžala Daniel</name><memo /><cr>1814</cr><fide>1867</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>10</tno><desk>17</desk><code>13772</code><name>Formánek Jan Baldessar</name><memo /><cr>1911</cr><fide>1850</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>10</tno><desk>18</desk><code>2649</code><name>Nývlt Miloslav</name><memo>H</memo><cr>1615</cr><fide>1825</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>10</tno><desk>19</desk><code>8639</code><name>Jindra Josef</name><memo>H</memo><cr>1459</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>4</tno><desk>1</desk><code>44912</code><name>Veny Jaume</name><memo>Z</memo><cr>1859</cr><fide>1964</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>4</tno><desk>2</desk><code>49700</code><name>Železný Jan</name><memo>Z,H</memo><cr>1929</cr><fide>1981</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>4</tno><desk>3</desk><code>4792</code><name>Krůta Jaroslav</name><memo>Z,H</memo><cr>1840</cr><fide>1921</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>4</tno><desk>4</desk><code>58094</code><name>Adámek Jan</name><memo>Z</memo><cr>1715</cr><fide>1850</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>4</tno><desk>5</desk><code>15018</code><name>Verner Jan</name><memo>Z,K</memo><cr>1801</cr><fide>1882</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>4</tno><desk>6</desk><code>8103</code><name>Partl Miloslav</name><memo>Z,H</memo><cr>1695</cr><fide>1819</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>4</tno><desk>7</desk><code>14448</code><name>Nejedlý Jiří</name><memo>Z</memo><cr>1770</cr><fide>1894</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>4</tno><desk>8</desk><code>54934</code><name>Munkhbayar Unurbayar</name><memo>Z</memo><cr>1793</cr><fide>1906</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>4</tno><desk>9</desk><code>56051</code><name>Huja Matěj</name><memo>ZK</memo><cr>1455</cr><fide>1649</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>4</tno><desk>10</desk><code>13470</code><name>Červinka Pavel</name><memo /><cr>1904</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>4</tno><desk>11</desk><code>59502</code><name>Kopyta Radovan</name><memo /><cr>1336</cr><fide>1575</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>4</tno><desk>12</desk><code>56062</code><name>Gansukh Buyanjargal</name><memo /><cr>1304</cr><fide>1583</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>4</tno><desk>13</desk><code>51246</code><name>Straka René</name><memo>H</memo><cr>1398</cr><fide>1569</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>4</tno><desk>14</desk><code>58508</code><name>Munkhbayar Narandelger</name><memo /><cr>1079</cr><fide>1439</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>4</tno><desk>15</desk><code>61492</code><name>Cúth Tomáš</name><memo /><cr>0</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>4</tno><desk>16</desk><code>41585</code><name>Verner Ondřej</name><memo /><cr>1299</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>4</tno><desk>17</desk><code>61736</code><name>Byrtus Adam</name><memo /><cr>0</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>4</tno><desk>18</desk><code>16347</code><name>Reif Jakub</name><memo /><cr>1528</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>6</tno><desk>1</desk><code>46626</code><name>Vyšínský Otakar</name><memo>Z</memo><cr>2033</cr><fide>2123</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>6</tno><desk>2</desk><code>45366</code><name>Barták Josef</name><memo>Z,H</memo><cr>1893</cr><fide>1932</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>6</tno><desk>3</desk><code>19387</code><name>Franc Ondřej</name><memo>Z,H,K</memo><cr>2053</cr><fide>2052</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>6</tno><desk>4</desk><code>9241</code><name>Steiner Juraj</name><memo>Z,H</memo><cr>1885</cr><fide>1921</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>6</tno><desk>5</desk><code>31992</code><name>Starýchfojtů Josef</name><memo>Z</memo><cr>1825</cr><fide>1871</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>6</tno><desk>6</desk><code>26699</code><name>Švach Jan</name><memo>Z</memo><cr>1824</cr><fide>1919</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>6</tno><desk>7</desk><code>25957</code><name>Paukert Jindřich</name><memo>Z</memo><cr>1780</cr><fide>1872</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>6</tno><desk>8</desk><code>25678</code><name>Paukert Jan</name><memo>Z,ZK</memo><cr>1720</cr><fide>1832</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>6</tno><desk>9</desk><code>1947</code><name>Tvrdý Jindřich</name><memo>H</memo><cr>1818</cr><fide>1880</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>6</tno><desk>10</desk><code>36019</code><name>Hanzlík Adam</name><memo>H</memo><cr>1772</cr><fide>1861</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>6</tno><desk>11</desk><code>12273</code><name>Kolařík Leoš</name><memo /><cr>1716</cr><fide>1794</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>6</tno><desk>12</desk><code>42784</code><name>Jelínek Oliver</name><memo /><cr>1713</cr><fide>1827</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>6</tno><desk>13</desk><code>25952</code><name>Boháč Pavel</name><memo /><cr>1702</cr><fide>1816</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>6</tno><desk>14</desk><code>38927</code><name>Havelka Jiří</name><memo /><cr>1516</cr><fide>1728</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>6</tno><desk>15</desk><code>55484</code><name>Chaloupka Jan</name><memo /><cr>1322</cr><fide>1631</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>6</tno><desk>16</desk><code>31991</code><name>Paukert Vojtěch</name><memo /><cr>1389</cr><fide>1608</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>6</tno><desk>17</desk><code>61442</code><name>Gregor Matěj</name><memo /><cr>0</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>6</tno><desk>18</desk><code>55483</code><name>Chaloupka Matěj</name><memo /><cr>0</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>6</tno><desk>19</desk><code>59406</code><name>Blaha Otakar Jan</name><memo /><cr>0</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>6</tno><desk>20</desk><code>59405</code><name>Lisec Antonín</name><memo /><cr>0</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>11</tno><desk>1</desk><code>11069</code><name>Tričkov Vasil</name><memo>Z,H</memo><cr>2258</cr><fide>2300</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>11</tno><desk>2</desk><code>45368</code><name>Holub Adam</name><memo>Z,H</memo><cr>1919</cr><fide>1972</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>11</tno><desk>3</desk><code>44915</code><name>Spousta Vojtěch</name><memo>Z</memo><cr>1943</cr><fide>1987</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>11</tno><desk>4</desk><code>1102</code><name>Strahl Jiří</name><memo>Z,H</memo><cr>1950</cr><fide>1975</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>11</tno><desk>5</desk><code>15774</code><name>Slanec Jan</name><memo>Z</memo><cr>1896</cr><fide>1975</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>11</tno><desk>6</desk><code>1924</code><name>Tocháček Michal</name><memo>Z,H</memo><cr>1854</cr><fide>1921</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>11</tno><desk>7</desk><code>5954</code><name>Hinz František</name><memo>Z</memo><cr>1849</cr><fide>1886</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>11</tno><desk>8</desk><code>1591</code><name>Votruba Petr</name><memo>Z</memo><cr>1797</cr><fide>1892</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>11</tno><desk>9</desk><code>7754</code><name>Kyselý Ivan</name><memo>Z</memo><cr>1924</cr><fide>1951</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>11</tno><desk>10</desk><code>2495</code><name>Obrázek Karel</name><memo>K</memo><cr>1750</cr><fide>1836</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>11</tno><desk>11</desk><code>2238</code><name>Matouš Rudolf</name><memo /><cr>1710</cr><fide>1874</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>11</tno><desk>12</desk><code>8649</code><name>Dbalý Václav</name><memo>ZK</memo><cr>1705</cr><fide>1836</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>11</tno><desk>13</desk><code>4212</code><name>Směšný Ivan</name><memo>H</memo><cr>1647</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>11</tno><desk>14</desk><code>40613</code><name>Bednár Jan</name><memo /><cr>1583</cr><fide>1804</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>11</tno><desk>15</desk><code>53082</code><name>Skála Dominik</name><memo /><cr>1559</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>11</tno><desk>16</desk><code>2292</code><name>Řezníček Jiří</name><memo /><cr>1554</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>11</tno><desk>17</desk><code>53779</code><name>Šváb Filip</name><memo /><cr>1551</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>11</tno><desk>18</desk><code>35698</code><name>Červíček Bohumil</name><memo /><cr>1475</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>11</tno><desk>19</desk><code>59831</code><name>Tričkov Filip</name><memo /><cr>0</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>10</tno><desk>16</desk><code>1323</code><name>Pšenička Oldřich</name><memo>H</memo><cr>1802</cr><fide>1868</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>5</tno><desk>12</desk><code>3290</code><name>Dočekal Vladimír</name><memo>H</memo><cr>1726</cr><fide>1830</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>4</tno><desk>19</desk><code>54935</code><name>Krejčiřík Antonín</name><memo /><cr>0</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<list><tno>4</tno><desk>20</desk><code>61811</code><name>Krejčiřík Vojtěch</name><memo /><cr>0</cr><fide>0</fide><pnt /><pnt_all /><played /><played_all /><sumelo /><sumelo_all /><elo /><elo_all /></list>
+<results><no>1</no><tno1>1</tno1><tno2>12</tno2><scr1>2.5</scr1><scr2>5.5</scr2><note /></results>
+<results><no>1</no><tno1>2</tno1><tno2>11</tno2><scr1>5.5</scr1><scr2>2.5</scr2><note /></results>
+<results><no>1</no><tno1>3</tno1><tno2>10</tno2><scr1>2.5</scr1><scr2>5.5</scr2><note /></results>
+<results><no>1</no><tno1>4</tno1><tno2>9</tno2><scr1>6.5</scr1><scr2>1.5</scr2><note /></results>
+<results><no>1</no><tno1>5</tno1><tno2>8</tno2><scr1>6.5</scr1><scr2>1.5</scr2><note /></results>
+<results><no>1</no><tno1>6</tno1><tno2>7</tno2><scr1>2.5</scr1><scr2>5.5</scr2><note /></results>
+<results><no>2</no><tno1>12</tno1><tno2>7</tno2><scr1>6</scr1><scr2>2</scr2><note /></results>
+<results><no>2</no><tno1>8</tno1><tno2>6</tno2><scr1>0</scr1><scr2>8</scr2><note /></results>
+<results><no>2</no><tno1>9</tno1><tno2>5</tno2><scr1>4.5</scr1><scr2>3.5</scr2><note /></results>
+<results><no>2</no><tno1>10</tno1><tno2>4</tno2><scr1>5</scr1><scr2>3</scr2><note /></results>
+<results><no>2</no><tno1>11</tno1><tno2>3</tno2><scr1>5.5</scr1><scr2>2.5</scr2><note /></results>
+<results><no>2</no><tno1>1</tno1><tno2>2</tno2><scr1>2.5</scr1><scr2>5.5</scr2><note /></results>
+<results><no>3</no><tno1>2</tno1><tno2>12</tno2><scr1>2</scr1><scr2>6</scr2><note /></results>
+<results><no>3</no><tno1>3</tno1><tno2>1</tno2><scr1>6.5</scr1><scr2>1.5</scr2><note /></results>
+<results><no>3</no><tno1>4</tno1><tno2>11</tno2><scr1>0.5</scr1><scr2>7.5</scr2><note /></results>
+<results><no>3</no><tno1>5</tno1><tno2>10</tno2><scr1>4.5</scr1><scr2>3.5</scr2><note /></results>
+<results><no>3</no><tno1>6</tno1><tno2>9</tno2><scr1>4</scr1><scr2>4</scr2><note /></results>
+<results><no>3</no><tno1>7</tno1><tno2>8</tno2><scr1>5.5</scr1><scr2>2.5</scr2><note /></results>
+<results><no>4</no><tno1>12</tno1><tno2>8</tno2><scr1>7.5</scr1><scr2>0.5</scr2><note /></results>
+<results><no>4</no><tno1>9</tno1><tno2>7</tno2><scr1>3.5</scr1><scr2>4.5</scr2><note /></results>
+<results><no>4</no><tno1>10</tno1><tno2>6</tno2><scr1>3.5</scr1><scr2>4.5</scr2><note /></results>
+<results><no>4</no><tno1>11</tno1><tno2>5</tno2><scr1>6</scr1><scr2>2</scr2><note /></results>
+<results><no>4</no><tno1>1</tno1><tno2>4</tno2><scr1>3.5</scr1><scr2>4.5</scr2><note /></results>
+<results><no>4</no><tno1>2</tno1><tno2>3</tno2><scr1>4.5</scr1><scr2>3.5</scr2><note /></results>
+<results><no>5</no><tno1>3</tno1><tno2>12</tno2><scr1>2.5</scr1><scr2>5.5</scr2><note /></results>
+<results><no>5</no><tno1>4</tno1><tno2>2</tno2><scr1>3</scr1><scr2>5</scr2><note /></results>
+<results><no>5</no><tno1>5</tno1><tno2>1</tno2><scr1>6.5</scr1><scr2>1.5</scr2><note /></results>
+<results><no>5</no><tno1>6</tno1><tno2>11</tno2><scr1>1.5</scr1><scr2>6.5</scr2><note /></results>
+<results><no>5</no><tno1>7</tno1><tno2>10</tno2><scr1>4</scr1><scr2>4</scr2><note /></results>
+<results><no>5</no><tno1>8</tno1><tno2>9</tno2><scr1>4</scr1><scr2>4</scr2><note /></results>
+<results><no>6</no><tno1>12</tno1><tno2>9</tno2><scr1>7</scr1><scr2>1</scr2><note /></results>
+<results><no>6</no><tno1>10</tno1><tno2>8</tno2><scr1>6</scr1><scr2>2</scr2><note /></results>
+<results><no>6</no><tno1>11</tno1><tno2>7</tno2><scr1>4</scr1><scr2>4</scr2><note /></results>
+<results><no>6</no><tno1>1</tno1><tno2>6</tno2><scr1>2</scr1><scr2>6</scr2><note /></results>
+<results><no>6</no><tno1>2</tno1><tno2>5</tno2><scr1>6</scr1><scr2>2</scr2><note /></results>
+<results><no>6</no><tno1>3</tno1><tno2>4</tno2><scr1>6</scr1><scr2>2</scr2><note /></results>
+<results><no>7</no><tno1>4</tno1><tno2>12</tno2><scr1>4</scr1><scr2>4</scr2><note /></results>
+<results><no>7</no><tno1>5</tno1><tno2>3</tno2><scr1>3</scr1><scr2>5</scr2><note /></results>
+<results><no>7</no><tno1>6</tno1><tno2>2</tno2><scr1>4</scr1><scr2>4</scr2><note /></results>
+<results><no>7</no><tno1>7</tno1><tno2>1</tno2><scr1>5.5</scr1><scr2>2.5</scr2><note /></results>
+<results><no>7</no><tno1>8</tno1><tno2>11</tno2><scr1>3</scr1><scr2>5</scr2><note /></results>
+<results><no>7</no><tno1>9</tno1><tno2>10</tno2><scr1>2</scr1><scr2>6</scr2><note /></results>
+<results><no>8</no><tno1>12</tno1><tno2>10</tno2><scr1>4</scr1><scr2>4</scr2><note /></results>
+<results><no>8</no><tno1>11</tno1><tno2>9</tno2><scr1>4.5</scr1><scr2>3.5</scr2><note /></results>
+<results><no>8</no><tno1>1</tno1><tno2>8</tno2><scr1>4.5</scr1><scr2>3.5</scr2><note /></results>
+<results><no>8</no><tno1>2</tno1><tno2>7</tno2><scr1>4.5</scr1><scr2>3.5</scr2><note /></results>
+<results><no>8</no><tno1>3</tno1><tno2>6</tno2><scr1>6</scr1><scr2>2</scr2><note /></results>
+<results><no>8</no><tno1>4</tno1><tno2>5</tno2><scr1>4.5</scr1><scr2>3.5</scr2><note /></results>
+<results><no>9</no><tno1>5</tno1><tno2>12</tno2><scr1>1.5</scr1><scr2>6.5</scr2><note /></results>
+<results><no>9</no><tno1>6</tno1><tno2>4</tno2><scr1>3.5</scr1><scr2>4.5</scr2><note /></results>
+<results><no>9</no><tno1>7</tno1><tno2>3</tno2><scr1>3</scr1><scr2>5</scr2><note /></results>
+<results><no>9</no><tno1>8</tno1><tno2>2</tno2><scr1>1</scr1><scr2>7</scr2><note /></results>
+<results><no>9</no><tno1>9</tno1><tno2>1</tno2><scr1>5.5</scr1><scr2>2.5</scr2><note /></results>
+<results><no>9</no><tno1>10</tno1><tno2>11</tno2><scr1>5.5</scr1><scr2>2.5</scr2><note /></results>
+<results><no>10</no><tno1>12</tno1><tno2>11</tno2><scr1>0</scr1><scr2>0</scr2><note /></results>
+<results><no>10</no><tno1>1</tno1><tno2>10</tno2><scr1>0</scr1><scr2>0</scr2><note /></results>
+<results><no>10</no><tno1>2</tno1><tno2>9</tno2><scr1>0</scr1><scr2>0</scr2><note /></results>
+<results><no>10</no><tno1>3</tno1><tno2>8</tno2><scr1>0</scr1><scr2>0</scr2><note /></results>
+<results><no>10</no><tno1>4</tno1><tno2>7</tno2><scr1>0</scr1><scr2>0</scr2><note /></results>
+<results><no>10</no><tno1>5</tno1><tno2>6</tno2><scr1>0</scr1><scr2>0</scr2><note /></results>
+<results><no>11</no><tno1>6</tno1><tno2>12</tno2><scr1>0</scr1><scr2>0</scr2><note /></results>
+<results><no>11</no><tno1>7</tno1><tno2>5</tno2><scr1>0</scr1><scr2>0</scr2><note /></results>
+<results><no>11</no><tno1>8</tno1><tno2>4</tno2><scr1>0</scr1><scr2>0</scr2><note /></results>
+<results><no>11</no><tno1>9</tno1><tno2>3</tno2><scr1>0</scr1><scr2>0</scr2><note /></results>
+<results><no>11</no><tno1>10</tno1><tno2>2</tno2><scr1>0</scr1><scr2>0</scr2><note /></results>
+<results><no>11</no><tno1>11</tno1><tno2>1</tno2><scr1>0</scr1><scr2>0</scr2><note /></results>
+<game><rid> 112</rid><no>1</no><pde1>1</pde1><pde2>3</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 112</rid><no>1</no><pde1>2</pde1><pde2>4</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 112</rid><no>1</no><pde1>3</pde1><pde2>5</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 112</rid><no>1</no><pde1>4</pde1><pde2>7</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 112</rid><no>1</no><pde1>5</pde1><pde2>8</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 112</rid><no>1</no><pde1>6</pde1><pde2>9</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 112</rid><no>1</no><pde1>7</pde1><pde2>10</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 112</rid><no>1</no><pde1>8</pde1><pde2>16</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 211</rid><no>1</no><pde1>1</pde1><pde2>1</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 211</rid><no>1</no><pde1>2</pde1><pde2>3</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 211</rid><no>1</no><pde1>3</pde1><pde2>4</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 211</rid><no>1</no><pde1>4</pde1><pde2>5</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 211</rid><no>1</no><pde1>5</pde1><pde2>6</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 211</rid><no>1</no><pde1>6</pde1><pde2>7</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 211</rid><no>1</no><pde1>7</pde1><pde2>8</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 211</rid><no>1</no><pde1>8</pde1><pde2>10</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 310</rid><no>1</no><pde1>1</pde1><pde2>1</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 310</rid><no>1</no><pde1>2</pde1><pde2>2</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 310</rid><no>1</no><pde1>3</pde1><pde2>3</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 310</rid><no>1</no><pde1>4</pde1><pde2>4</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 310</rid><no>1</no><pde1>6</pde1><pde2>5</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 310</rid><no>1</no><pde1>7</pde1><pde2>6</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 310</rid><no>1</no><pde1>10</pde1><pde2>7</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 310</rid><no>1</no><pde1>13</pde1><pde2>15</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 4 9</rid><no>1</no><pde1>1</pde1><pde2>3</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 4 9</rid><no>1</no><pde1>2</pde1><pde2>4</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 4 9</rid><no>1</no><pde1>3</pde1><pde2>5</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 4 9</rid><no>1</no><pde1>4</pde1><pde2>7</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 4 9</rid><no>1</no><pde1>5</pde1><pde2>8</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 4 9</rid><no>1</no><pde1>8</pde1><pde2>9</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 4 9</rid><no>1</no><pde1>12</pde1><pde2>12</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 4 9</rid><no>1</no><pde1>16</pde1><pde2>14</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 5 8</rid><no>1</no><pde1>1</pde1><pde2>2</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 5 8</rid><no>1</no><pde1>3</pde1><pde2>3</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 5 8</rid><no>1</no><pde1>4</pde1><pde2>4</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 5 8</rid><no>1</no><pde1>5</pde1><pde2>5</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 5 8</rid><no>1</no><pde1>7</pde1><pde2>6</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 5 8</rid><no>1</no><pde1>9</pde1><pde2>8</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 5 8</rid><no>1</no><pde1>10</pde1><pde2>14</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 5 8</rid><no>1</no><pde1>11</pde1><pde2>17</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 6 7</rid><no>1</no><pde1>1</pde1><pde2>1</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 6 7</rid><no>1</no><pde1>2</pde1><pde2>2</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 6 7</rid><no>1</no><pde1>3</pde1><pde2>5</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 6 7</rid><no>1</no><pde1>4</pde1><pde2>6</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 6 7</rid><no>1</no><pde1>7</pde1><pde2>8</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 6 7</rid><no>1</no><pde1>12</pde1><pde2>9</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 6 7</rid><no>1</no><pde1>16</pde1><pde2>11</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 6 7</rid><no>1</no><pde1>17</pde1><pde2>12</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid>12 7</rid><no>2</no><pde1>1</pde1><pde2>1</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>12 7</rid><no>2</no><pde1>3</pde1><pde2>2</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>12 7</rid><no>2</no><pde1>4</pde1><pde2>3</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>12 7</rid><no>2</no><pde1>5</pde1><pde2>5</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>12 7</rid><no>2</no><pde1>7</pde1><pde2>6</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid>12 7</rid><no>2</no><pde1>8</pde1><pde2>9</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>12 7</rid><no>2</no><pde1>9</pde1><pde2>11</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>12 7</rid><no>2</no><pde1>10</pde1><pde2>13</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 8 6</rid><no>2</no><pde1>4</pde1><pde2>1</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 8 6</rid><no>2</no><pde1>5</pde1><pde2>2</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 8 6</rid><no>2</no><pde1>7</pde1><pde2>3</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 8 6</rid><no>2</no><pde1>12</pde1><pde2>4</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 8 6</rid><no>2</no><pde1>13</pde1><pde2>5</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 8 6</rid><no>2</no><pde1>14</pde1><pde2>6</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 8 6</rid><no>2</no><pde1>15</pde1><pde2>8</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 8 6</rid><no>2</no><pde1>16</pde1><pde2>12</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 9 5</rid><no>2</no><pde1>1</pde1><pde2>1</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 9 5</rid><no>2</no><pde1>2</pde1><pde2>3</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 9 5</rid><no>2</no><pde1>3</pde1><pde2>4</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 9 5</rid><no>2</no><pde1>4</pde1><pde2>6</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 9 5</rid><no>2</no><pde1>6</pde1><pde2>7</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 9 5</rid><no>2</no><pde1>8</pde1><pde2>9</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 9 5</rid><no>2</no><pde1>9</pde1><pde2>10</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 9 5</rid><no>2</no><pde1>14</pde1><pde2>11</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>10 4</rid><no>2</no><pde1>2</pde1><pde2>1</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>10 4</rid><no>2</no><pde1>3</pde1><pde2>2</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>10 4</rid><no>2</no><pde1>5</pde1><pde2>3</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>10 4</rid><no>2</no><pde1>6</pde1><pde2>4</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid>10 4</rid><no>2</no><pde1>7</pde1><pde2>5</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid>10 4</rid><no>2</no><pde1>9</pde1><pde2>6</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>10 4</rid><no>2</no><pde1>15</pde1><pde2>9</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>10 4</rid><no>2</no><pde1>18</pde1><pde2>12</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>11 3</rid><no>2</no><pde1>1</pde1><pde2>1</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>11 3</rid><no>2</no><pde1>2</pde1><pde2>2</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid>11 3</rid><no>2</no><pde1>3</pde1><pde2>4</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>11 3</rid><no>2</no><pde1>4</pde1><pde2>6</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>11 3</rid><no>2</no><pde1>7</pde1><pde2>7</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>11 3</rid><no>2</no><pde1>8</pde1><pde2>9</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid>11 3</rid><no>2</no><pde1>12</pde1><pde2>10</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>11 3</rid><no>2</no><pde1>15</pde1><pde2>12</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 1 2</rid><no>2</no><pde1>1</pde1><pde2>1</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 1 2</rid><no>2</no><pde1>3</pde1><pde2>2</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 1 2</rid><no>2</no><pde1>4</pde1><pde2>4</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 1 2</rid><no>2</no><pde1>5</pde1><pde2>5</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 1 2</rid><no>2</no><pde1>6</pde1><pde2>6</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 1 2</rid><no>2</no><pde1>7</pde1><pde2>7</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 1 2</rid><no>2</no><pde1>8</pde1><pde2>8</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 1 2</rid><no>2</no><pde1>9</pde1><pde2>10</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 212</rid><no>3</no><pde1>1</pde1><pde2>2</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 212</rid><no>3</no><pde1>3</pde1><pde2>3</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 212</rid><no>3</no><pde1>4</pde1><pde2>5</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 212</rid><no>3</no><pde1>5</pde1><pde2>6</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 212</rid><no>3</no><pde1>6</pde1><pde2>7</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 212</rid><no>3</no><pde1>7</pde1><pde2>10</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 212</rid><no>3</no><pde1>8</pde1><pde2>11</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 212</rid><no>3</no><pde1>10</pde1><pde2>16</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 3 1</rid><no>3</no><pde1>1</pde1><pde2>1</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 3 1</rid><no>3</no><pde1>4</pde1><pde2>2</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 3 1</rid><no>3</no><pde1>5</pde1><pde2>4</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 3 1</rid><no>3</no><pde1>6</pde1><pde2>5</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 3 1</rid><no>3</no><pde1>8</pde1><pde2>7</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 3 1</rid><no>3</no><pde1>9</pde1><pde2>8</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 3 1</rid><no>3</no><pde1>10</pde1><pde2>11</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 3 1</rid><no>3</no><pde1>13</pde1><pde2>13</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 411</rid><no>3</no><pde1>1</pde1><pde2>1</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 411</rid><no>3</no><pde1>2</pde1><pde2>3</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 411</rid><no>3</no><pde1>6</pde1><pde2>4</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 411</rid><no>3</no><pde1>8</pde1><pde2>5</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 411</rid><no>3</no><pde1>9</pde1><pde2>6</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 411</rid><no>3</no><pde1>11</pde1><pde2>7</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 411</rid><no>3</no><pde1>12</pde1><pde2>10</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 411</rid><no>3</no><pde1>16</pde1><pde2>12</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 510</rid><no>3</no><pde1>1</pde1><pde2>5</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 510</rid><no>3</no><pde1>3</pde1><pde2>6</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 510</rid><no>3</no><pde1>4</pde1><pde2>7</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 510</rid><no>3</no><pde1>5</pde1><pde2>9</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 510</rid><no>3</no><pde1>7</pde1><pde2>11</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 510</rid><no>3</no><pde1>9</pde1><pde2>12</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 510</rid><no>3</no><pde1>10</pde1><pde2>13</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 510</rid><no>3</no><pde1>11</pde1><pde2>15</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 6 9</rid><no>3</no><pde1>3</pde1><pde2>1</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 6 9</rid><no>3</no><pde1>4</pde1><pde2>3</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 6 9</rid><no>3</no><pde1>5</pde1><pde2>5</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 6 9</rid><no>3</no><pde1>6</pde1><pde2>6</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 6 9</rid><no>3</no><pde1>7</pde1><pde2>7</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 6 9</rid><no>3</no><pde1>8</pde1><pde2>8</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 6 9</rid><no>3</no><pde1>10</pde1><pde2>11</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 6 9</rid><no>3</no><pde1>12</pde1><pde2>14</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 7 8</rid><no>3</no><pde1>1</pde1><pde2>2</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 7 8</rid><no>3</no><pde1>2</pde1><pde2>5</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 7 8</rid><no>3</no><pde1>5</pde1><pde2>6</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 7 8</rid><no>3</no><pde1>6</pde1><pde2>9</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 7 8</rid><no>3</no><pde1>7</pde1><pde2>10</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 7 8</rid><no>3</no><pde1>9</pde1><pde2>11</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 7 8</rid><no>3</no><pde1>13</pde1><pde2>17</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 7 8</rid><no>3</no><pde1>14</pde1><pde2>18</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>12 8</rid><no>4</no><pde1>3</pde1><pde2>2</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>12 8</rid><no>4</no><pde1>4</pde1><pde2>3</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>12 8</rid><no>4</no><pde1>5</pde1><pde2>4</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>12 8</rid><no>4</no><pde1>7</pde1><pde2>5</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>12 8</rid><no>4</no><pde1>8</pde1><pde2>6</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>12 8</rid><no>4</no><pde1>9</pde1><pde2>15</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>12 8</rid><no>4</no><pde1>10</pde1><pde2>16</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>12 8</rid><no>4</no><pde1>11</pde1><pde2>18</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 9 7</rid><no>4</no><pde1>1</pde1><pde2>1</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 9 7</rid><no>4</no><pde1>3</pde1><pde2>2</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 9 7</rid><no>4</no><pde1>4</pde1><pde2>4</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 9 7</rid><no>4</no><pde1>7</pde1><pde2>5</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 9 7</rid><no>4</no><pde1>8</pde1><pde2>6</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 9 7</rid><no>4</no><pde1>9</pde1><pde2>9</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 9 7</rid><no>4</no><pde1>11</pde1><pde2>18</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 9 7</rid><no>4</no><pde1>14</pde1><pde2>19</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>10 6</rid><no>4</no><pde1>2</pde1><pde2>1</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid>10 6</rid><no>4</no><pde1>3</pde1><pde2>3</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>10 6</rid><no>4</no><pde1>4</pde1><pde2>4</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid>10 6</rid><no>4</no><pde1>5</pde1><pde2>8</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>10 6</rid><no>4</no><pde1>6</pde1><pde2>10</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>10 6</rid><no>4</no><pde1>7</pde1><pde2>11</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>10 6</rid><no>4</no><pde1>9</pde1><pde2>12</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid>10 6</rid><no>4</no><pde1>15</pde1><pde2>0</pde2><scr1>1F</scr1><scr2>0F</scr2><type /></game>
+<game><rid>11 5</rid><no>4</no><pde1>1</pde1><pde2>1</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>11 5</rid><no>4</no><pde1>3</pde1><pde2>3</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>11 5</rid><no>4</no><pde1>4</pde1><pde2>4</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>11 5</rid><no>4</no><pde1>5</pde1><pde2>7</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>11 5</rid><no>4</no><pde1>6</pde1><pde2>9</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>11 5</rid><no>4</no><pde1>7</pde1><pde2>11</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>11 5</rid><no>4</no><pde1>8</pde1><pde2>12</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>11 5</rid><no>4</no><pde1>12</pde1><pde2>17</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 1 4</rid><no>4</no><pde1>1</pde1><pde2>1</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 1 4</rid><no>4</no><pde1>2</pde1><pde2>2</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 1 4</rid><no>4</no><pde1>4</pde1><pde2>4</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 1 4</rid><no>4</no><pde1>5</pde1><pde2>5</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 1 4</rid><no>4</no><pde1>6</pde1><pde2>6</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 1 4</rid><no>4</no><pde1>7</pde1><pde2>8</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 1 4</rid><no>4</no><pde1>10</pde1><pde2>11</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 1 4</rid><no>4</no><pde1>11</pde1><pde2>12</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 2 3</rid><no>4</no><pde1>1</pde1><pde2>1</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 2 3</rid><no>4</no><pde1>2</pde1><pde2>2</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 2 3</rid><no>4</no><pde1>3</pde1><pde2>4</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 2 3</rid><no>4</no><pde1>4</pde1><pde2>5</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 2 3</rid><no>4</no><pde1>5</pde1><pde2>6</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 2 3</rid><no>4</no><pde1>6</pde1><pde2>7</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 2 3</rid><no>4</no><pde1>7</pde1><pde2>8</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 2 3</rid><no>4</no><pde1>8</pde1><pde2>9</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 312</rid><no>5</no><pde1>1</pde1><pde2>1</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 312</rid><no>5</no><pde1>2</pde1><pde2>2</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 312</rid><no>5</no><pde1>3</pde1><pde2>3</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 312</rid><no>5</no><pde1>4</pde1><pde2>4</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 312</rid><no>5</no><pde1>5</pde1><pde2>5</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 312</rid><no>5</no><pde1>6</pde1><pde2>6</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 312</rid><no>5</no><pde1>9</pde1><pde2>7</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 312</rid><no>5</no><pde1>10</pde1><pde2>8</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 4 2</rid><no>5</no><pde1>1</pde1><pde2>1</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 4 2</rid><no>5</no><pde1>4</pde1><pde2>2</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 4 2</rid><no>5</no><pde1>5</pde1><pde2>4</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 4 2</rid><no>5</no><pde1>6</pde1><pde2>5</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 4 2</rid><no>5</no><pde1>8</pde1><pde2>7</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 4 2</rid><no>5</no><pde1>9</pde1><pde2>8</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 4 2</rid><no>5</no><pde1>12</pde1><pde2>10</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 4 2</rid><no>5</no><pde1>14</pde1><pde2>13</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 5 1</rid><no>5</no><pde1>1</pde1><pde2>1</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 5 1</rid><no>5</no><pde1>2</pde1><pde2>2</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 5 1</rid><no>5</no><pde1>3</pde1><pde2>4</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 5 1</rid><no>5</no><pde1>4</pde1><pde2>5</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 5 1</rid><no>5</no><pde1>5</pde1><pde2>9</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 5 1</rid><no>5</no><pde1>7</pde1><pde2>10</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 5 1</rid><no>5</no><pde1>8</pde1><pde2>12</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 5 1</rid><no>5</no><pde1>9</pde1><pde2>18</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 611</rid><no>5</no><pde1>1</pde1><pde2>1</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 611</rid><no>5</no><pde1>2</pde1><pde2>3</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 611</rid><no>5</no><pde1>4</pde1><pde2>4</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 611</rid><no>5</no><pde1>8</pde1><pde2>5</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 611</rid><no>5</no><pde1>10</pde1><pde2>6</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 611</rid><no>5</no><pde1>11</pde1><pde2>7</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 611</rid><no>5</no><pde1>12</pde1><pde2>9</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 611</rid><no>5</no><pde1>16</pde1><pde2>10</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 710</rid><no>5</no><pde1>2</pde1><pde2>2</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 710</rid><no>5</no><pde1>5</pde1><pde2>3</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 710</rid><no>5</no><pde1>7</pde1><pde2>5</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 710</rid><no>5</no><pde1>9</pde1><pde2>6</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 710</rid><no>5</no><pde1>16</pde1><pde2>7</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 710</rid><no>5</no><pde1>17</pde1><pde2>9</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 710</rid><no>5</no><pde1>18</pde1><pde2>10</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 710</rid><no>5</no><pde1>19</pde1><pde2>15</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 8 9</rid><no>5</no><pde1>1</pde1><pde2>1</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 8 9</rid><no>5</no><pde1>2</pde1><pde2>2</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 8 9</rid><no>5</no><pde1>3</pde1><pde2>3</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 8 9</rid><no>5</no><pde1>4</pde1><pde2>4</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 8 9</rid><no>5</no><pde1>6</pde1><pde2>7</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 8 9</rid><no>5</no><pde1>7</pde1><pde2>8</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 8 9</rid><no>5</no><pde1>12</pde1><pde2>11</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 8 9</rid><no>5</no><pde1>14</pde1><pde2>16</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>12 9</rid><no>6</no><pde1>3</pde1><pde2>1</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>12 9</rid><no>6</no><pde1>4</pde1><pde2>2</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>12 9</rid><no>6</no><pde1>5</pde1><pde2>3</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>12 9</rid><no>6</no><pde1>6</pde1><pde2>6</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>12 9</rid><no>6</no><pde1>8</pde1><pde2>7</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>12 9</rid><no>6</no><pde1>9</pde1><pde2>8</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>12 9</rid><no>6</no><pde1>10</pde1><pde2>13</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>12 9</rid><no>6</no><pde1>11</pde1><pde2>14</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>10 8</rid><no>6</no><pde1>2</pde1><pde2>1</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>10 8</rid><no>6</no><pde1>5</pde1><pde2>2</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>10 8</rid><no>6</no><pde1>7</pde1><pde2>3</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>10 8</rid><no>6</no><pde1>10</pde1><pde2>6</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>10 8</rid><no>6</no><pde1>13</pde1><pde2>0</pde2><scr1>1F</scr1><scr2>0F</scr2><type /></game>
+<game><rid>10 8</rid><no>6</no><pde1>15</pde1><pde2>0</pde2><scr1>1F</scr1><scr2>0F</scr2><type /></game>
+<game><rid>10 8</rid><no>6</no><pde1>16</pde1><pde2>0</pde2><scr1>1F</scr1><scr2>0F</scr2><type /></game>
+<game><rid>10 8</rid><no>6</no><pde1>19</pde1><pde2>0</pde2><scr1>1F</scr1><scr2>0F</scr2><type /></game>
+<game><rid>11 7</rid><no>6</no><pde1>1</pde1><pde2>1</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>11 7</rid><no>6</no><pde1>2</pde1><pde2>2</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>11 7</rid><no>6</no><pde1>3</pde1><pde2>4</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>11 7</rid><no>6</no><pde1>5</pde1><pde2>6</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>11 7</rid><no>6</no><pde1>6</pde1><pde2>9</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid>11 7</rid><no>6</no><pde1>7</pde1><pde2>13</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid>11 7</rid><no>6</no><pde1>8</pde1><pde2>14</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid>11 7</rid><no>6</no><pde1>10</pde1><pde2>0</pde2><scr1>1F</scr1><scr2>0F</scr2><type /></game>
+<game><rid> 1 6</rid><no>6</no><pde1>1</pde1><pde2>1</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 1 6</rid><no>6</no><pde1>2</pde1><pde2>3</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 1 6</rid><no>6</no><pde1>5</pde1><pde2>6</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 1 6</rid><no>6</no><pde1>6</pde1><pde2>7</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 1 6</rid><no>6</no><pde1>7</pde1><pde2>8</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 1 6</rid><no>6</no><pde1>8</pde1><pde2>9</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 1 6</rid><no>6</no><pde1>10</pde1><pde2>10</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 1 6</rid><no>6</no><pde1>12</pde1><pde2>13</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 2 5</rid><no>6</no><pde1>1</pde1><pde2>1</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 2 5</rid><no>6</no><pde1>2</pde1><pde2>3</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 2 5</rid><no>6</no><pde1>4</pde1><pde2>4</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 2 5</rid><no>6</no><pde1>5</pde1><pde2>7</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 2 5</rid><no>6</no><pde1>6</pde1><pde2>9</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 2 5</rid><no>6</no><pde1>7</pde1><pde2>10</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 2 5</rid><no>6</no><pde1>8</pde1><pde2>11</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 2 5</rid><no>6</no><pde1>11</pde1><pde2>16</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 3 4</rid><no>6</no><pde1>1</pde1><pde2>1</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 3 4</rid><no>6</no><pde1>2</pde1><pde2>2</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 3 4</rid><no>6</no><pde1>4</pde1><pde2>4</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 3 4</rid><no>6</no><pde1>6</pde1><pde2>5</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 3 4</rid><no>6</no><pde1>8</pde1><pde2>6</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 3 4</rid><no>6</no><pde1>9</pde1><pde2>12</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 3 4</rid><no>6</no><pde1>12</pde1><pde2>16</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 3 4</rid><no>6</no><pde1>13</pde1><pde2>0</pde2><scr1>1F</scr1><scr2>0F</scr2><type /></game>
+<game><rid> 412</rid><no>7</no><pde1>1</pde1><pde2>3</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 412</rid><no>7</no><pde1>4</pde1><pde2>4</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 412</rid><no>7</no><pde1>5</pde1><pde2>5</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 412</rid><no>7</no><pde1>7</pde1><pde2>7</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 412</rid><no>7</no><pde1>8</pde1><pde2>8</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 412</rid><no>7</no><pde1>9</pde1><pde2>9</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 412</rid><no>7</no><pde1>11</pde1><pde2>10</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 412</rid><no>7</no><pde1>12</pde1><pde2>11</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 5 3</rid><no>7</no><pde1>1</pde1><pde2>1</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 5 3</rid><no>7</no><pde1>3</pde1><pde2>2</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 5 3</rid><no>7</no><pde1>4</pde1><pde2>4</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 5 3</rid><no>7</no><pde1>5</pde1><pde2>6</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 5 3</rid><no>7</no><pde1>7</pde1><pde2>7</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 5 3</rid><no>7</no><pde1>9</pde1><pde2>8</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 5 3</rid><no>7</no><pde1>11</pde1><pde2>9</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 5 3</rid><no>7</no><pde1>14</pde1><pde2>10</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 6 2</rid><no>7</no><pde1>1</pde1><pde2>1</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 6 2</rid><no>7</no><pde1>2</pde1><pde2>4</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 6 2</rid><no>7</no><pde1>3</pde1><pde2>6</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 6 2</rid><no>7</no><pde1>6</pde1><pde2>7</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 6 2</rid><no>7</no><pde1>7</pde1><pde2>8</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 6 2</rid><no>7</no><pde1>8</pde1><pde2>10</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 6 2</rid><no>7</no><pde1>10</pde1><pde2>12</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 6 2</rid><no>7</no><pde1>12</pde1><pde2>13</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 7 1</rid><no>7</no><pde1>1</pde1><pde2>1</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 7 1</rid><no>7</no><pde1>2</pde1><pde2>2</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 7 1</rid><no>7</no><pde1>5</pde1><pde2>4</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 7 1</rid><no>7</no><pde1>6</pde1><pde2>5</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 7 1</rid><no>7</no><pde1>9</pde1><pde2>6</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 7 1</rid><no>7</no><pde1>14</pde1><pde2>8</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 7 1</rid><no>7</no><pde1>18</pde1><pde2>10</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 7 1</rid><no>7</no><pde1>19</pde1><pde2>13</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 811</rid><no>7</no><pde1>2</pde1><pde2>1</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 811</rid><no>7</no><pde1>3</pde1><pde2>3</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 811</rid><no>7</no><pde1>5</pde1><pde2>4</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 811</rid><no>7</no><pde1>6</pde1><pde2>5</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 811</rid><no>7</no><pde1>8</pde1><pde2>6</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 811</rid><no>7</no><pde1>13</pde1><pde2>7</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 811</rid><no>7</no><pde1>14</pde1><pde2>12</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 811</rid><no>7</no><pde1>16</pde1><pde2>17</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 910</rid><no>7</no><pde1>1</pde1><pde2>2</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 910</rid><no>7</no><pde1>2</pde1><pde2>3</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 910</rid><no>7</no><pde1>4</pde1><pde2>5</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 910</rid><no>7</no><pde1>6</pde1><pde2>7</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 910</rid><no>7</no><pde1>7</pde1><pde2>9</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 910</rid><no>7</no><pde1>8</pde1><pde2>12</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 910</rid><no>7</no><pde1>11</pde1><pde2>13</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 910</rid><no>7</no><pde1>13</pde1><pde2>15</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>1210</rid><no>8</no><pde1>3</pde1><pde2>1</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>1210</rid><no>8</no><pde1>4</pde1><pde2>2</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid>1210</rid><no>8</no><pde1>5</pde1><pde2>4</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>1210</rid><no>8</no><pde1>6</pde1><pde2>5</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid>1210</rid><no>8</no><pde1>7</pde1><pde2>6</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>1210</rid><no>8</no><pde1>8</pde1><pde2>7</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid>1210</rid><no>8</no><pde1>13</pde1><pde2>9</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>1210</rid><no>8</no><pde1>19</pde1><pde2>15</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>11 9</rid><no>8</no><pde1>1</pde1><pde2>1</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>11 9</rid><no>8</no><pde1>3</pde1><pde2>2</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>11 9</rid><no>8</no><pde1>4</pde1><pde2>3</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>11 9</rid><no>8</no><pde1>5</pde1><pde2>6</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>11 9</rid><no>8</no><pde1>6</pde1><pde2>7</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>11 9</rid><no>8</no><pde1>7</pde1><pde2>8</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid>11 9</rid><no>8</no><pde1>9</pde1><pde2>11</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>11 9</rid><no>8</no><pde1>12</pde1><pde2>14</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 1 8</rid><no>8</no><pde1>1</pde1><pde2>1</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 1 8</rid><no>8</no><pde1>2</pde1><pde2>2</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 1 8</rid><no>8</no><pde1>3</pde1><pde2>5</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 1 8</rid><no>8</no><pde1>5</pde1><pde2>6</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 1 8</rid><no>8</no><pde1>6</pde1><pde2>7</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 1 8</rid><no>8</no><pde1>8</pde1><pde2>9</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 1 8</rid><no>8</no><pde1>9</pde1><pde2>12</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 1 8</rid><no>8</no><pde1>10</pde1><pde2>16</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 2 7</rid><no>8</no><pde1>1</pde1><pde2>1</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 2 7</rid><no>8</no><pde1>2</pde1><pde2>2</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 2 7</rid><no>8</no><pde1>4</pde1><pde2>3</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 2 7</rid><no>8</no><pde1>6</pde1><pde2>5</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 2 7</rid><no>8</no><pde1>7</pde1><pde2>6</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 2 7</rid><no>8</no><pde1>10</pde1><pde2>9</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 2 7</rid><no>8</no><pde1>11</pde1><pde2>13</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 2 7</rid><no>8</no><pde1>12</pde1><pde2>14</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 3 6</rid><no>8</no><pde1>1</pde1><pde2>1</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 3 6</rid><no>8</no><pde1>4</pde1><pde2>2</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 3 6</rid><no>8</no><pde1>5</pde1><pde2>4</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 3 6</rid><no>8</no><pde1>6</pde1><pde2>5</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 3 6</rid><no>8</no><pde1>7</pde1><pde2>6</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 3 6</rid><no>8</no><pde1>8</pde1><pde2>12</pde2><scr1>1F</scr1><scr2>0F</scr2><sct1>0.5</sct1><sct2>0.5</sct2><type /></game>
+<game><rid> 3 6</rid><no>8</no><pde1>9</pde1><pde2>11</pde2><scr1>1F</scr1><scr2>0F</scr2><sct1>1</sct1><sct2>0</sct2><type /></game>
+<game><rid> 3 6</rid><no>8</no><pde1>11</pde1><pde2>0</pde2><scr1>1F</scr1><scr2>0F</scr2><type /></game>
+<game><rid> 4 5</rid><no>8</no><pde1>1</pde1><pde2>1</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 4 5</rid><no>8</no><pde1>2</pde1><pde2>2</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 4 5</rid><no>8</no><pde1>4</pde1><pde2>3</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 4 5</rid><no>8</no><pde1>5</pde1><pde2>4</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 4 5</rid><no>8</no><pde1>6</pde1><pde2>5</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 4 5</rid><no>8</no><pde1>8</pde1><pde2>7</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 4 5</rid><no>8</no><pde1>9</pde1><pde2>8</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 4 5</rid><no>8</no><pde1>14</pde1><pde2>9</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 512</rid><no>9</no><pde1>1</pde1><pde2>1</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 512</rid><no>9</no><pde1>3</pde1><pde2>3</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 512</rid><no>9</no><pde1>4</pde1><pde2>4</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 512</rid><no>9</no><pde1>7</pde1><pde2>5</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 512</rid><no>9</no><pde1>9</pde1><pde2>6</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 512</rid><no>9</no><pde1>14</pde1><pde2>7</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 512</rid><no>9</no><pde1>16</pde1><pde2>9</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 512</rid><no>9</no><pde1>17</pde1><pde2>10</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 6 4</rid><no>9</no><pde1>1</pde1><pde2>1</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 6 4</rid><no>9</no><pde1>2</pde1><pde2>2</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 6 4</rid><no>9</no><pde1>4</pde1><pde2>4</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 6 4</rid><no>9</no><pde1>6</pde1><pde2>5</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 6 4</rid><no>9</no><pde1>10</pde1><pde2>6</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 6 4</rid><no>9</no><pde1>12</pde1><pde2>8</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 6 4</rid><no>9</no><pde1>13</pde1><pde2>9</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 6 4</rid><no>9</no><pde1>15</pde1><pde2>14</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 7 3</rid><no>9</no><pde1>1</pde1><pde2>1</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 7 3</rid><no>9</no><pde1>2</pde1><pde2>3</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 7 3</rid><no>9</no><pde1>5</pde1><pde2>4</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 7 3</rid><no>9</no><pde1>6</pde1><pde2>7</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 7 3</rid><no>9</no><pde1>8</pde1><pde2>9</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 7 3</rid><no>9</no><pde1>9</pde1><pde2>10</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 7 3</rid><no>9</no><pde1>13</pde1><pde2>13</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 7 3</rid><no>9</no><pde1>17</pde1><pde2>16</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 8 2</rid><no>9</no><pde1>2</pde1><pde2>1</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 8 2</rid><no>9</no><pde1>3</pde1><pde2>2</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 8 2</rid><no>9</no><pde1>4</pde1><pde2>4</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 8 2</rid><no>9</no><pde1>5</pde1><pde2>5</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 8 2</rid><no>9</no><pde1>6</pde1><pde2>6</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 8 2</rid><no>9</no><pde1>7</pde1><pde2>7</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 8 2</rid><no>9</no><pde1>8</pde1><pde2>10</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 8 2</rid><no>9</no><pde1>16</pde1><pde2>11</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid> 9 1</rid><no>9</no><pde1>1</pde1><pde2>1</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 9 1</rid><no>9</no><pde1>2</pde1><pde2>2</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid> 9 1</rid><no>9</no><pde1>3</pde1><pde2>3</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 9 1</rid><no>9</no><pde1>4</pde1><pde2>4</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 9 1</rid><no>9</no><pde1>6</pde1><pde2>5</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 9 1</rid><no>9</no><pde1>7</pde1><pde2>6</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 9 1</rid><no>9</no><pde1>8</pde1><pde2>7</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid> 9 1</rid><no>9</no><pde1>14</pde1><pde2>8</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>1011</rid><no>9</no><pde1>2</pde1><pde2>1</pde2><scr1>0.5</scr1><scr2>0.5</scr2><type /></game>
+<game><rid>1011</rid><no>9</no><pde1>4</pde1><pde2>2</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>1011</rid><no>9</no><pde1>7</pde1><pde2>3</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>1011</rid><no>9</no><pde1>8</pde1><pde2>4</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid>1011</rid><no>9</no><pde1>9</pde1><pde2>5</pde2><scr1>0</scr1><scr2>1</scr2><type /></game>
+<game><rid>1011</rid><no>9</no><pde1>10</pde1><pde2>9</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>1011</rid><no>9</no><pde1>13</pde1><pde2>10</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>1011</rid><no>9</no><pde1>15</pde1><pde2>15</pde2><scr1>1</scr1><scr2>0</scr2><type /></game>
+<game><rid>1211</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid>1211</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid>1211</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid>1211</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid>1211</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid>1211</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid>1211</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid>1211</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 110</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 110</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 110</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 110</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 110</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 110</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 110</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 110</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 2 9</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 2 9</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 2 9</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 2 9</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 2 9</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 2 9</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 2 9</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 2 9</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 3 8</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 3 8</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 3 8</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 3 8</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 3 8</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 3 8</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 3 8</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 3 8</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 4 7</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 4 7</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 4 7</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 4 7</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 4 7</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 4 7</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 4 7</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 4 7</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 5 6</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 5 6</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 5 6</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 5 6</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 5 6</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 5 6</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 5 6</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 5 6</rid><no>10</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 612</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 612</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 612</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 612</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 612</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 612</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 612</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 612</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 7 5</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 7 5</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 7 5</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 7 5</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 7 5</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 7 5</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 7 5</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 7 5</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 8 4</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 8 4</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 8 4</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 8 4</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 8 4</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 8 4</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 8 4</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 8 4</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 9 3</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 9 3</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 9 3</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 9 3</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 9 3</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 9 3</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 9 3</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid> 9 3</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid>10 2</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid>10 2</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid>10 2</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid>10 2</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid>10 2</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid>10 2</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid>10 2</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid>10 2</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid>11 1</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid>11 1</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid>11 1</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid>11 1</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid>11 1</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid>11 1</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid>11 1</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+<game><rid>11 1</rid><no>11</no><pde1>0</pde1><pde2>0</pde2><scr1>0</scr1><scr2>0</scr2><type /></game>
+</tournament>
+</chess>

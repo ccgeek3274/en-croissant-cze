@@ -276,15 +276,15 @@ interface WindowsState {
   currentNode: MosaicNode<ViewId> | null;
 }
 
-const windowsStateAtom = atomWithStorage<WindowsState>("windowsState", {
+const windowsStateAtom = atomWithStorage<WindowsState>("windowsState2", {
   currentNode: {
     direction: "row",
-    first: "left",
-    second: {
+    first: {
       direction: "column",
-      first: "topRight",
+      first: "left",
       second: "bottomRight",
     },
+    second: "topRight",
   },
 });
 
