@@ -379,7 +379,7 @@ function Board({
 
   return (
     <>
-      <Box w="100%" h="100%">
+      <Box w="100%" h="100%" style={{ containerType: "size" }}>
         <Box
           style={{
             display: "flex",
@@ -391,7 +391,7 @@ function Board({
             overflow: "hidden",
             maxWidth:
               //            topbar   bottompadding                tabs                                  bottomb    topbar   evalbar                                gaps    ???
-              `calc(100vh - 2.25rem - var(--mantine-spacing-sm) - 2.5rem - var(--mantine-spacing-sm) - ${BAR_HEIGHT} - ${BAR_HEIGHT} + 1.563rem + var(--mantine-spacing-md) - 1rem  - 0.2rem)`,
+              `calc(100cqh - 2.25rem - var(--mantine-spacing-sm) - 2.5rem - var(--mantine-spacing-sm) - ${BAR_HEIGHT} - ${BAR_HEIGHT} + 1.563rem + var(--mantine-spacing-md) - 1rem  - 0.2rem)`,
           }}
         >
           <BoardBar
