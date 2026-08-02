@@ -112,6 +112,22 @@ async getOpeningFromName(name: string) : Promise<Result<string, string>> {
     else return { status: "error", error: e  as any };
 }
 },
+async getEcoFromFen(fen: string) : Promise<Result<string, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("get_eco_from_fen", { fen }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async getEcoFromFens(fens: string[]) : Promise<Result<string, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("get_eco_from_fens", { fens }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async getPlayersGameInfo(file: string, id: number) : Promise<Result<PlayerGameInfo, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("get_players_game_info", { file, id }) };

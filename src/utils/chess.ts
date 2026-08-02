@@ -350,6 +350,29 @@ export async function getOpening(root: TreeNode, position: number[]): Promise<st
     return "";
 }
 
+/** Compute the ECO code for a whole game given as PGN text: parse it, collect the
+ *  main line's FENs and ask the backend for the deepest matching opening's ECO.
+ *  Returns "" when no book position matches (also filters out the pseudo "Extra"
+ *  / "FRC" codes the backend uses for the start/empty/Chess960 positions). */
+export async function getEcoFromGame(pgn: string): Promise<string> {
+    let root: TreeNode;
+    try {
+        ({ root } = await parsePGN(pgn));
+    } catch {
+        return "";
+    }
+    const fens: string[] = [root.fen];
+    let node = root;
+    while (node.children.length > 0) {
+        node = node.children[0];
+        fens.push(node.fen);
+    }
+
+    const res = await commands.getEcoFromFens(fens);
+    if (res.status === "error") return "";
+    return /^[A-E]\d\d$/.test(res.data) ? res.data : "";
+}
+
 function innerParsePGN(tokens: Token[], fen: string = INITIAL_FEN, halfMoves = 0): TreeState {
     const tree = defaultTree(fen);
     let root = tree.root;

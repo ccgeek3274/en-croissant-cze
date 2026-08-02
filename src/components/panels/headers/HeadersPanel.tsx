@@ -6,6 +6,7 @@
 import {
   Button,
   Group,
+  Menu,
   ScrollArea,
   SegmentedControl,
   Stack,
@@ -26,7 +27,7 @@ import { TreeStateContext } from "@/components/common/TreeStateContext";
 import { KontrolaModal } from "@/components/files/PgnToolsDialogs";
 import ConfirmChangesModal from "@/components/tabs/ConfirmChangesModal";
 import { currentTabAtom } from "@/state/atoms";
-import { parsePGN } from "@/utils/chess";
+import { getEcoFromGame, parsePGN } from "@/utils/chess";
 import { setGameTag } from "@/utils/pgn/check";
 import { getTag, splitGame } from "@/utils/pgn/tags";
 import { getTabFile, getTabGameNumber } from "@/utils/tabs";
@@ -280,6 +281,76 @@ function HeadersPanel() {
     }
   }
 
+  // Recompute the derived ECO and PlyCount tags and write them back to disk.
+  // scope: "all" every game · "empty" only where the tag is missing/blank ·
+  // "selected" only the currently open game. ECO is only written when a book
+  // position actually matches, so we never clobber a value we can't recompute.
+  async function recompute(scope: "all" | "empty" | "selected") {
+    if (!path || numGames === 0) return;
+    setBusy(true);
+    try {
+      const next = games.slice();
+      const indices =
+        scope === "selected"
+          ? gameNumber >= 0 && gameNumber < next.length
+            ? [gameNumber]
+            : []
+          : next.map((_, i) => i);
+
+      let changed = 0;
+      for (const idx of indices) {
+        const { tags, movetext } = splitGame(next[idx]);
+        const curEco = getTag(tags, "ECO") ?? "";
+        const curPly = getTag(tags, "PlyCount") ?? "";
+        let g = next[idx];
+        let touched = false;
+
+        if (scope !== "empty" || curPly === "") {
+          const ply = String(countPlies(movetext));
+          if (ply !== curPly) {
+            g = setGameTag(g, "PlyCount", ply);
+            touched = true;
+          }
+        }
+        if (scope !== "empty" || curEco === "") {
+          const eco = await getEcoFromGame(next[idx]);
+          if (eco && eco !== curEco) {
+            g = setGameTag(g, "ECO", eco);
+            touched = true;
+          }
+        }
+        if (touched) {
+          next[idx] = g;
+          changed++;
+        }
+      }
+
+      if (changed === 0) {
+        notifications.show({
+          title: t("Board.Tabs.Headers"),
+          message: t("Headers.Recompute.None"),
+        });
+        return;
+      }
+
+      const touchedCurrent = indices.includes(gameNumber);
+      await writeTextFile(path, next.join("\n\n\n") + "\n");
+      if (touchedCurrent && !dirty) {
+        setState(await parsePGN(next[gameNumber]));
+      }
+      await reload();
+      notifications.show({
+        title: t("Board.Tabs.Headers"),
+        message: t("Headers.Recompute.Done", { n: changed }),
+        color: "teal",
+      });
+    } catch (e) {
+      notifications.show({ title: t("Board.Tabs.Headers"), message: String(e), color: "red" });
+    } finally {
+      setBusy(false);
+    }
+  }
+
   if (!tabFile) {
     return (
       <Text p="sm" c="dimmed">
@@ -323,6 +394,25 @@ function HeadersPanel() {
               <Button size="xs" variant="default" disabled={numGames === 0} onClick={enterEditMode}>
                 {t("Headers.Edit")}
               </Button>
+              <Menu shadow="md" position="bottom-end">
+                <Menu.Target>
+                  <Button size="xs" variant="default" loading={busy} disabled={numGames === 0}>
+                    {t("Headers.Recompute.Button")}
+                  </Button>
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Label>{t("Headers.Recompute.Label")}</Menu.Label>
+                  <Menu.Item onClick={() => recompute("all")}>
+                    {t("Headers.Recompute.All")}
+                  </Menu.Item>
+                  <Menu.Item onClick={() => recompute("empty")}>
+                    {t("Headers.Recompute.Empty")}
+                  </Menu.Item>
+                  <Menu.Item onClick={() => recompute("selected")}>
+                    {t("Headers.Recompute.Selected")}
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
               <Button size="xs" variant="default" onClick={() => setKontrolaOpen(true)}>
                 {t("PgnTools.Kontrola.Title")}
               </Button>
@@ -373,7 +463,7 @@ function HeadersPanel() {
                     {cols.map((c) => {
                       const orig =
                         c.h === "PlyCount"
-                          ? String(countPlies(games[index]))
+                          ? String(countPlies(g.movetext))
                           : (getTag(g.tags, c.h) ?? "");
                       if (editMode && c.h !== "PlyCount") {
                         const edited = edits[index]?.[c.h];

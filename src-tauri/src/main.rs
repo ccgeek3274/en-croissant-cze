@@ -67,7 +67,8 @@ use crate::{
     },
     fs::{download_file, file_exists, get_file_metadata},
     opening::{
-        get_opening_from_fen, get_opening_from_fens, get_opening_from_name, search_opening_name,
+        get_eco_from_fen, get_eco_from_fens, get_opening_from_fen, get_opening_from_fens,
+        get_opening_from_name, search_opening_name,
     },
 };
 use std::sync::atomic::AtomicBool;
@@ -123,6 +124,8 @@ fn main() {
             get_opening_from_fen,
             get_opening_from_fens,
             get_opening_from_name,
+            get_eco_from_fen,
+            get_eco_from_fens,
             get_players_game_info,
             get_engine_config,
             file_exists,

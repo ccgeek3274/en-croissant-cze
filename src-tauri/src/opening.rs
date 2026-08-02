@@ -10,7 +10,7 @@ use crate::error::Error;
 
 #[derive(Debug, Clone)]
 struct Opening {
-    _eco: String,
+    eco: String,
     name: String,
     setup: Setup,
     pgn: Option<String>,
@@ -83,6 +83,35 @@ pub fn get_opening_from_setup(setup: Setup) -> Result<String, Error> {
 
 #[tauri::command]
 #[specta::specta]
+pub fn get_eco_from_fen(fen: &str) -> Result<String, Error> {
+    let fen: Fen = fen.parse()?;
+    get_eco_from_setup(fen.into_setup())
+}
+
+/// Return the ECO code of the deepest position (from a game's main line) that
+/// matches a known opening. FENs are passed most-shallow first, so we scan from
+/// the back — mirroring `get_opening_from_fens`.
+#[tauri::command]
+#[specta::specta]
+pub fn get_eco_from_fens(fens: Vec<String>) -> Result<String, Error> {
+    for fen in fens.into_iter().rev() {
+        if let Ok(eco) = get_eco_from_fen(&fen) {
+            return Ok(eco);
+        }
+    }
+    Err(Error::NoOpeningFound)
+}
+
+pub fn get_eco_from_setup(setup: Setup) -> Result<String, Error> {
+    OPENINGS
+        .iter()
+        .find(|o| o.setup == setup)
+        .map(|o| o.eco.clone())
+        .ok_or_else(|| Error::NoOpeningFound)
+}
+
+#[tauri::command]
+#[specta::specta]
 pub async fn search_opening_name(query: String) -> Result<Vec<OutOpening>, Error> {
     let lower_query = query.to_lowercase();
     let scores = OPENINGS
@@ -120,13 +149,13 @@ lazy_static! {
 
         let mut positions = vec![
             Opening {
-                _eco: "Extra".to_string(),
+                eco: "Extra".to_string(),
                 name: "Starting Position".to_string(),
                 setup: Setup::default(),
                 pgn: None,
             },
             Opening {
-                _eco: "Extra".to_string(),
+                eco: "Extra".to_string(),
                 name: "Empty Board".to_string(),
                 setup: Setup::empty(),
                 pgn: None,
@@ -144,7 +173,7 @@ lazy_static! {
                     }
                 }
                 positions.push(Opening {
-                    _eco: record.eco,
+                    eco: record.eco,
                     name: record.name,
                     setup: pos.into_setup(EnPassantMode::Legal),
                     pgn: Some(record.pgn),
@@ -158,7 +187,7 @@ lazy_static! {
             let record: FischerRandomRecord = result.expect("Failed to deserialize opening");
             let fen: Fen = record.fen.parse().expect("Failed to parse fen");
             positions.push(Opening {
-                _eco: "FRC".to_string(),
+                eco: "FRC".to_string(),
                 name: record.name,
                 setup: fen.into_setup(),
                 pgn: None,
