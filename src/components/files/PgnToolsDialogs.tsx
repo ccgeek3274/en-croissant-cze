@@ -12,8 +12,11 @@ import {
   Group,
   Loader,
   Modal,
+  Paper,
   ScrollArea,
+  SegmentedControl,
   Select,
+  SimpleGrid,
   Stack,
   Table,
   Text,
@@ -48,7 +51,7 @@ import {
   type VariationsCard,
 } from "@/utils/pgn/check";
 import { type CleanupOptions, FULL_CLEANUP } from "@/utils/pgn/cleanup";
-import { buildExportGame } from "@/utils/pgn/export";
+import { buildExportGame, STANDARD_TAGS } from "@/utils/pgn/export";
 import {
   applyMergedMovetext,
   matchLevel,
@@ -142,6 +145,9 @@ export function KontrolaModal({
   const [tagKey, setTagKey] = useState<string>("Event");
   const [checkedValues, setCheckedValues] = useState<Set<string>>(new Set());
   const [desired, setDesired] = useState("");
+  // Export-only: which tags to write out, and the Standardní/Plné pre-selection.
+  const [exportTags, setExportTags] = useState<Set<string>>(new Set());
+  const [tagPreset, setTagPreset] = useState<"standard" | "full">("full");
 
   async function reload() {
     setLoading(true);
@@ -159,6 +165,7 @@ export function KontrolaModal({
     setTagKey("Event");
     setCheckedValues(new Set());
     setDesired("");
+    setTagPreset("full");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [opened, file]);
 
@@ -177,6 +184,29 @@ export function KontrolaModal({
   const tagValues = useMemo(() => distinctTagValues(games, tagKey), [games, tagKey]);
   const maxCount = tagValues[0]?.count ?? 0;
   const tagsWarn = tagValues.some((v) => v.suspicious);
+
+  // Export tag picker: every standard tag, then any non-standard tag actually
+  // present in the games (in order of first appearance).
+  const displayTags = useMemo(() => {
+    const seen = new Set<string>(STANDARD_TAGS);
+    const extra: string[] = [];
+    for (const g of games) {
+      for (const name of splitGame(g).tags.order) {
+        if (!seen.has(name)) {
+          seen.add(name);
+          extra.push(name);
+        }
+      }
+    }
+    return [...STANDARD_TAGS, ...extra];
+  }, [games]);
+
+  // Re-apply the current preset when it changes or the tag universe changes.
+  // Manual checkbox toggles don't touch either, so they persist.
+  useEffect(() => {
+    if (mode !== "export") return;
+    setExportTags(new Set(tagPreset === "standard" ? STANDARD_TAGS : displayTags));
+  }, [mode, tagPreset, displayTags]);
 
   // Apply `next`: in-place mode rewrites the source DB and re-checks; export mode
   // only updates the in-memory working copy (the source DB stays untouched — the
@@ -216,7 +246,18 @@ export function KontrolaModal({
     if (!dest) return;
     setBusy(true);
     try {
-      await writeTextFile(dest, games.join("\n\n\n") + "\n");
+      const keep = displayTags.filter((tag) => exportTags.has(tag));
+      const out = games
+        .map((g) =>
+          buildExportGame(g, {
+            headers: "all",
+            keepTags: keep,
+            cleanup: null,
+            stripDiacritics: false,
+          }),
+        )
+        .join("\n\n\n");
+      await writeTextFile(dest, out + "\n");
       notifications.show({
         title: toolTitle,
         message: t("PgnTools.Export.Done", { count: games.length }),
@@ -265,6 +306,15 @@ export function KontrolaModal({
     });
   }
 
+  function toggleExportTag(tag: string) {
+    setExportTags((prev) => {
+      const next = new Set(prev);
+      if (next.has(tag)) next.delete(tag);
+      else next.add(tag);
+      return next;
+    });
+  }
+
   async function replaceTag() {
     if (checkedValues.size === 0) return;
     if (!desired.trim()) {
@@ -305,6 +355,42 @@ export function KontrolaModal({
               <Alert color="blue" variant="light">
                 {t("PgnTools.Export.Note")}
               </Alert>
+            )}
+            {mode === "export" && (
+              <Paper withBorder p="sm">
+                <Stack gap="xs">
+                  <Group justify="space-between" wrap="nowrap">
+                    <Text fw={600} size="sm">
+                      {t("PgnTools.Export.Tags.Title")}
+                    </Text>
+                    <SegmentedControl
+                      size="xs"
+                      value={tagPreset}
+                      onChange={(v) => setTagPreset(v as "standard" | "full")}
+                      data={[
+                        { value: "standard", label: t("PgnTools.Export.Tags.Standard") },
+                        { value: "full", label: t("PgnTools.Export.Tags.Full") },
+                      ]}
+                    />
+                  </Group>
+                  <Text size="xs" c="dimmed">
+                    {t("PgnTools.Export.Tags.Hint")}
+                  </Text>
+                  <ScrollArea.Autosize mah={200}>
+                    <SimpleGrid cols={3} spacing={4} verticalSpacing={4}>
+                      {displayTags.map((tag) => (
+                        <Checkbox
+                          key={tag}
+                          size="xs"
+                          label={tag}
+                          checked={exportTags.has(tag)}
+                          onChange={() => toggleExportTag(tag)}
+                        />
+                      ))}
+                    </SimpleGrid>
+                  </ScrollArea.Autosize>
+                </Stack>
+              </Paper>
             )}
             <Text size="sm" c="dimmed">
               {t("PgnTools.Check.Summary", { total: report.total })}
@@ -689,7 +775,7 @@ export function KontrolaModal({
                   <Button variant="default" onClick={onClose}>
                     {t("Common.Cancel")}
                   </Button>
-                  <Button loading={busy} onClick={saveExport}>
+                  <Button loading={busy} disabled={exportTags.size === 0} onClick={saveExport}>
                     {t("PgnTools.Export.Save")}
                   </Button>
                 </>

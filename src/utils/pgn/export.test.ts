@@ -28,11 +28,28 @@ describe("buildExportGame", () => {
         expect(out).toContain("{a solid reply}");
     });
 
-    it("standard headers keep only the STR subset + Elo/ECO", () => {
+    it("standard headers keep the standard subset incl. team tags", () => {
         const out = buildExportGame(GAME, { ...keepAll, headers: "standard" });
         expect(out).toContain('[WhiteElo "2100"]');
         expect(out).toContain('[ECO "C50"]');
-        expect(out).not.toContain("WhiteTeam");
+        expect(out).toContain('[WhiteTeam "Praha"]');
+        expect(out).toContain('[BlackTeam "Brno"]');
+    });
+
+    it("keepTags selects exactly the given tags, in order, skipping absent ones", () => {
+        const out = buildExportGame(GAME, {
+            ...keepAll,
+            keepTags: ["White", "Black", "Result", "Annotator"],
+        });
+        const { tags } = splitGame(out);
+        expect(tags.order).toEqual(["White", "Black", "Result"]);
+        expect(out).not.toContain("Event");
+    });
+
+    it("keepTags fills roster defaults for selected-but-absent roster tags", () => {
+        const bare = '[White "A"]\n[Black "B"]\n\n1. e4 e5 *';
+        const out = buildExportGame(bare, { ...keepAll, keepTags: ["Event", "White", "Black"] });
+        expect(out).toContain('[Event "?"]');
     });
 
     it("cleaned movetext leaves no dangling ellipsis", () => {

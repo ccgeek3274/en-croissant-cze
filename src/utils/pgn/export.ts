@@ -21,15 +21,36 @@ export type HeaderMode = "all" | "standard";
 
 export type ExportOptions = {
     headers: HeaderMode;
+    /** When set, keep exactly these tags, in this order; roster tags are filled with
+     *  their STR default if absent, other selected-but-absent tags are simply skipped.
+     *  Takes precedence over `headers`. */
+    keepTags?: string[];
     /** null = keep movetext verbatim; otherwise clean per these toggles. */
     cleanup: CleanupOptions | null;
     stripDiacritics: boolean;
 };
 
-// The "standard" export subset: Seven Tag Roster in canonical order, then the few
-// widely-understood optional tags. Everything else is dropped in "standard" mode.
+// The Seven Tag Roster, always present in a valid PGN (filled with defaults below).
 const SEVEN_TAG_ROSTER = ["Event", "Site", "Date", "Round", "White", "Black", "Result"];
-const STANDARD_OPTIONAL = ["WhiteElo", "BlackElo", "ECO", "PlyCount"];
+
+// The "standard" export subset: STR plus the widely-understood optional tags and the
+// team tags used by ŠSČR match files. Also the default pre-selection in the export
+// dialog's tag picker; everything else is dropped in "standard" mode.
+export const STANDARD_TAGS = [
+    "Event",
+    "Site",
+    "Date",
+    "Round",
+    "White",
+    "Black",
+    "Result",
+    "ECO",
+    "WhiteElo",
+    "BlackElo",
+    "PlyCount",
+    "WhiteTeam",
+    "BlackTeam",
+];
 
 const STR_DEFAULTS: Record<string, string> = {
     Event: "?",
@@ -41,19 +62,19 @@ const STR_DEFAULTS: Record<string, string> = {
     Result: "*",
 };
 
-/** Reduce tags to the standard subset, filling STR defaults and canonical order. */
-function toStandardTags(tags: PgnTags): PgnTags {
+/** Keep only `keep` tags, in that order. Roster tags are always emitted (filled with
+ *  their STR default when absent); any other selected-but-absent tag is skipped. */
+function selectTags(tags: PgnTags, keep: string[]): PgnTags {
     const order: string[] = [];
     const map: Record<string, string> = {};
-    for (const name of SEVEN_TAG_ROSTER) {
-        order.push(name);
-        map[name] = getTag(tags, name) ?? STR_DEFAULTS[name] ?? "?";
-    }
-    for (const name of STANDARD_OPTIONAL) {
+    for (const name of keep) {
         const v = getTag(tags, name);
         if (v !== undefined && v !== "") {
             order.push(name);
             map[name] = v;
+        } else if (SEVEN_TAG_ROSTER.includes(name)) {
+            order.push(name);
+            map[name] = STR_DEFAULTS[name] ?? "?";
         }
     }
     return { order, map };
@@ -62,7 +83,11 @@ function toStandardTags(tags: PgnTags): PgnTags {
 /** Build the export text for a single game (given its raw PGN block). */
 export function buildExportGame(gameText: string, opts: ExportOptions): string {
     const { tags, movetext } = splitGame(gameText);
-    const outTags = opts.headers === "standard" ? toStandardTags(tags) : tags;
+    const outTags = opts.keepTags
+        ? selectTags(tags, opts.keepTags)
+        : opts.headers === "standard"
+          ? selectTags(tags, STANDARD_TAGS)
+          : tags;
 
     let moves = opts.cleanup ? cleanMovetext(movetext, opts.cleanup) : movetext;
     // Keep the movetext terminator in sync with the Result header (cleaning can
