@@ -4,6 +4,7 @@ import {
   IconDatabase,
   IconInfoCircle,
   IconNotes,
+  IconTable,
   IconTargetArrow,
   IconZoomCheck,
 } from "@tabler/icons-react";
@@ -35,6 +36,7 @@ import { TreeStateContext } from "../common/TreeStateContext";
 import AnalysisPanel from "../panels/analysis/AnalysisPanel";
 import AnnotationPanel from "../panels/annotation/AnnotationPanel";
 import DatabasePanel from "../panels/database/DatabasePanel";
+import HeadersPanel from "../panels/headers/HeadersPanel";
 import InfoPanel from "../panels/info/InfoPanel";
 import PracticePanel from "../panels/practice/PracticePanel";
 import Board from "./Board";
@@ -225,6 +227,9 @@ function BoardAnalysis() {
               <Tabs.Tab value="annotate" leftSection={<IconNotes size="1rem" />}>
                 {t("Board.Tabs.Annotate")}
               </Tabs.Tab>
+              <Tabs.Tab value="headers" leftSection={<IconTable size="1rem" />}>
+                {t("Board.Tabs.Headers")}
+              </Tabs.Tab>
               <Tabs.Tab value="info" leftSection={<IconInfoCircle size="1rem" />}>
                 {t("Board.Tabs.Info")}
               </Tabs.Tab>
@@ -242,6 +247,9 @@ function BoardAnalysis() {
             </Tabs.Panel>
             <Tabs.Panel value="annotate" flex={1} style={{ overflowY: "hidden" }}>
               <AnnotationPanel />
+            </Tabs.Panel>
+            <Tabs.Panel value="headers" flex={1} style={{ overflowY: "hidden" }}>
+              <HeadersPanel />
             </Tabs.Panel>
             <Tabs.Panel value="analysis" flex={1} style={{ overflowY: "hidden" }}>
               <AnalysisPanel />

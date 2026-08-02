@@ -39,6 +39,8 @@ export default defineConfig({
             "Annotate.*",
             "GoMode.*",
             "Errors.*",
+            // HeadersPanel renders column labels via a dynamic t(col.labelKey).
+            "Headers.Col.*",
         ],
         sort: true,
     },
