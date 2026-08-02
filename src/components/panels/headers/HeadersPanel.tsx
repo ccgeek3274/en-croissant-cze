@@ -24,7 +24,11 @@ import { useTranslation } from "react-i18next";
 import { useStore } from "zustand";
 import { commands } from "@/bindings";
 import { TreeStateContext } from "@/components/common/TreeStateContext";
-import { KontrolaModal } from "@/components/files/PgnToolsDialogs";
+import {
+  ExportPgnModal,
+  ImportGamesModal,
+  KontrolaModal,
+} from "@/components/files/PgnToolsDialogs";
 import ConfirmChangesModal from "@/components/tabs/ConfirmChangesModal";
 import { currentTabAtom } from "@/state/atoms";
 import { getEcoFromGame, parsePGN } from "@/utils/chess";
@@ -145,6 +149,8 @@ function HeadersPanel() {
   const [loading, setLoading] = useState(false);
   const [busy, setBusy] = useState(false);
   const [kontrolaOpen, setKontrolaOpen] = useState(false);
+  const [importOpen, setImportOpen] = useState(false);
+  const [exportOpen, setExportOpen] = useState(false);
 
   const [viewMode, setViewMode] = useState<ViewMode>(() => {
     const s = localStorage.getItem("headers-view-mode");
@@ -416,6 +422,22 @@ function HeadersPanel() {
               <Button size="xs" variant="default" onClick={() => setKontrolaOpen(true)}>
                 {t("PgnTools.Kontrola.Title")}
               </Button>
+              <Button
+                size="xs"
+                variant="default"
+                disabled={numGames === 0}
+                onClick={() => setImportOpen(true)}
+              >
+                {t("PgnTools.Import.Title")}
+              </Button>
+              <Button
+                size="xs"
+                variant="default"
+                disabled={numGames === 0}
+                onClick={() => setExportOpen(true)}
+              >
+                {t("PgnTools.Export.Title")}
+              </Button>
             </Group>
           </>
         )}
@@ -529,6 +551,13 @@ function HeadersPanel() {
         file={tabFile}
         onChanged={reload}
       />
+      <ImportGamesModal
+        opened={importOpen}
+        onClose={() => setImportOpen(false)}
+        file={tabFile}
+        onChanged={reload}
+      />
+      <ExportPgnModal opened={exportOpen} onClose={() => setExportOpen(false)} file={tabFile} />
     </Stack>
   );
 }
