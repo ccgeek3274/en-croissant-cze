@@ -208,4 +208,22 @@ mod tests {
                 .unwrap();
         assert_eq!(opening, "Bongcloud Attack");
     }
+
+    #[test]
+    fn test_get_eco_from_fen() {
+        let eco =
+            get_eco_from_fen("rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPPKPPP/RNBQ1BNR b kq - 1 2").unwrap();
+        assert_eq!(eco, "C20");
+    }
+
+    #[test]
+    fn test_get_eco_from_fens_deepest() {
+        // Main-line FENs for 1. e4 c5 (Sicilian, B20); shallow → deep.
+        let fens = vec![
+            "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".to_string(),
+            "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1".to_string(),
+            "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2".to_string(),
+        ];
+        assert_eq!(get_eco_from_fens(fens).unwrap(), "B20");
+    }
 }
