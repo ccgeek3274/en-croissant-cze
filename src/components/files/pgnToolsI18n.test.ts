@@ -97,6 +97,23 @@ const PLAIN_KEYS = [
     "Competition.Sync.ConflictsHelp",
     "Competition.Sync.AcceptAll",
     "Competition.Sync.AcceptNone",
+    "Competition.Open",
+    "Competition.Node.Competition",
+    "Competition.Node.Stray",
+    "Competition.Forfeit",
+    "Competition.Moves.Yes",
+    "Competition.Moves.No",
+    "Competition.Col.Round",
+    "Competition.Col.White",
+    "Competition.Col.Black",
+    "Competition.Col.Result",
+    "Competition.Col.Moves",
+    "Competition.Stats.Games",
+    "Competition.Stats.WithMoves",
+    "Competition.Stats.Decided",
+    "Competition.Stats.Placeholders",
+    "Competition.Stats.Forfeits",
+    "Competition.Headers.Title",
 ];
 
 // Parse-issue codes are rendered through a dynamic key, so extract can't see them;
@@ -149,6 +166,8 @@ const INTERP_KEYS: [string, Record<string, unknown>][] = [
     ["Competition.Sync.ConflictsTitle", { n: 3 }],
     ["Competition.Sync.Orphans", { n: 3 }],
     ["Competition.Sync.Duplicates", { rounds: "1.1.1" }],
+    ["Competition.Headers.Scope", { label: "1. kolo", count: 48 }],
+    ["Competition.Headers.Done", { tag: "Event", count: 2 }],
 ];
 
 const LANGS = { "en-US": enUS.translation, "cs-CZ": csCZ.translation };

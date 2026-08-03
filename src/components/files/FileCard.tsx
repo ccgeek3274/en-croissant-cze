@@ -1,4 +1,15 @@
-import { ActionIcon, Badge, Box, Divider, Group, Stack, Text, Tooltip } from "@mantine/core";
+import {
+  ActionIcon,
+  Badge,
+  Box,
+  Button,
+  Divider,
+  Group,
+  Modal,
+  Stack,
+  Text,
+  Tooltip,
+} from "@mantine/core";
 import {
   IconEdit,
   IconFileExport,
@@ -20,6 +31,7 @@ import { unwrap } from "@/utils/unwrap";
 import GamePreview from "../databases/GamePreview";
 import GameSelector from "../panels/info/GameSelector";
 import { CompetitionResyncModal } from "./CompetitionDialogs";
+import { CompetitionView } from "./CompetitionView";
 import type { FileMetadata } from "./file";
 import { ExportPgnModal, ImportGamesModal, KontrolaModal } from "./PgnToolsDialogs";
 
@@ -48,6 +60,7 @@ function FileCard({
   const [exportOpen, setExportOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
   const [resyncOpen, setResyncOpen] = useState(false);
+  const [leaderOpen, setLeaderOpen] = useState(false);
   // A .pgn with a manifest beside it is a competition — it gets the XML actions.
   const [isCompetition, setIsCompetition] = useState(false);
 
@@ -96,6 +109,11 @@ function FileCard({
           {selected?.name}
         </Text>
         <Badge>{t(`Files.FileType.${capitalize(selected.metadata.type)}`)}</Badge>
+        {isCompetition && (
+          <Button size="xs" onClick={() => setLeaderOpen(true)}>
+            {t("Competition.Open")}
+          </Button>
+        )}
       </Stack>
       <Divider />
 
@@ -180,6 +198,30 @@ function FileCard({
           pgnPath={selected.path}
           onChanged={onChanged}
         />
+      )}
+      {isCompetition && (
+        <Modal
+          opened={leaderOpen}
+          onClose={() => setLeaderOpen(false)}
+          title={t("Competition.Open")}
+          fullScreen
+          padding={0}
+          styles={{ body: { height: "calc(100vh - 60px)" } }}
+        >
+          <CompetitionView
+            file={selected}
+            onChanged={onChanged}
+            onOpenGame={async (gameIndex) => {
+              const data = unwrap(await commands.readGames(selected.path, gameIndex, gameIndex));
+              await openFile(selected, setTabs, setActiveTab, {
+                gameNumber: gameIndex,
+                pgn: data[0] ?? "",
+              });
+              setLeaderOpen(false);
+              navigate({ to: "/" });
+            }}
+          />
+        </Modal>
       )}
     </Stack>
   );

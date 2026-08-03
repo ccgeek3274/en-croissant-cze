@@ -68,6 +68,28 @@ async function readAllGames(file: FileMetadata): Promise<string[]> {
   return unwrap(await commands.readGames(file.path, 0, file.numGames - 1));
 }
 
+/** Restricts a tool to part of a database — one round, one match, one game — as
+ *  selected in the competition tree. `indices` point into the full game list; the
+ *  tool works on that subset and splices its result back before writing. */
+export type ToolScope = {
+  indices: number[];
+  label: string;
+};
+
+function pickScoped(all: string[], scope: ToolScope | undefined): string[] {
+  if (!scope) return all;
+  return scope.indices.map((i) => all[i]).filter((g) => g !== undefined);
+}
+
+function spliceScoped(all: string[], scope: ToolScope | undefined, next: string[]): string[] {
+  if (!scope) return next;
+  const out = [...all];
+  scope.indices.forEach((fileIndex, i) => {
+    if (next[i] !== undefined) out[fileIndex] = next[i];
+  });
+  return out;
+}
+
 // ————————————————————————————————————————————————————————————————
 // Kontrola — a per-check card report (powered by the pure `pgncheck`) plus the
 // fix actions each card offers. Every check runs on open; cards expand to show the
@@ -123,6 +145,8 @@ export function KontrolaModal({
   file,
   onChanged,
   mode = "inplace",
+  scope,
+  matchChecks,
 }: {
   opened: boolean;
   onClose: () => void;
@@ -132,10 +156,19 @@ export function KontrolaModal({
   /** "inplace" writes fixes back to the source DB (Kontrola); "export" applies them
    *  to an in-memory working copy that is finally saved to a separate .pgn file. */
   mode?: "inplace" | "export";
+  /** Restrict the report and its fixes to part of the database (competition tree). */
+  scope?: ToolScope;
+  /** Run the match-only checks (uniform Event, colour alternation across boards).
+   *  Defaults to the file's type; the competition tree turns them off above match
+   *  level, where "one Event, alternating colours" is not the invariant. */
+  matchChecks?: boolean;
 }) {
   const { t } = useTranslation();
-  const isMatch = file.metadata.type === "tournament";
+  const isMatch = matchChecks ?? file.metadata.type === "tournament";
   const toolTitle = mode === "export" ? t("PgnTools.Export.Title") : t("PgnTools.Kontrola.Title");
+  // `games` is what the report and the fixes see; `allGames` is the whole file, so a
+  // scoped fix can be written back without touching anything outside the scope.
+  const [allGames, setAllGames] = useState<string[]>([]);
   const [games, setGames] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -152,7 +185,9 @@ export function KontrolaModal({
   async function reload() {
     setLoading(true);
     try {
-      setGames(await readAllGames(file));
+      const all = await readAllGames(file);
+      setAllGames(all);
+      setGames(pickScoped(all, scope));
     } finally {
       setLoading(false);
     }
@@ -167,7 +202,7 @@ export function KontrolaModal({
     setDesired("");
     setTagPreset("full");
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [opened, file]);
+  }, [opened, file, scope]);
 
   const report = useMemo(() => pgncheck(games, { isMatch }), [games, isMatch]);
   const get = <T extends CheckCard>(id: CheckCard["id"]) =>
@@ -217,7 +252,7 @@ export function KontrolaModal({
       if (mode === "export") {
         setGames(next);
       } else {
-        await writeTextFile(file.path, next.join("\n\n\n") + "\n");
+        await writeTextFile(file.path, spliceScoped(allGames, scope, next).join("\n\n\n") + "\n");
         await reload();
         onChanged?.();
       }
@@ -343,7 +378,12 @@ export function KontrolaModal({
   const ok = t("PgnTools.Check.Ok");
 
   return (
-    <Modal opened={opened} onClose={onClose} title={toolTitle} size="lg">
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      title={scope ? `${toolTitle} — ${scope.label}` : toolTitle}
+      size="lg"
+    >
       <Stack>
         {loading ? (
           <Group justify="center" p="md">
@@ -800,12 +840,25 @@ export function ExportPgnModal({
   opened,
   onClose,
   file,
+  scope,
+  matchChecks,
 }: {
   opened: boolean;
   onClose: () => void;
   file: FileMetadata;
+  scope?: ToolScope;
+  matchChecks?: boolean;
 }) {
-  return <KontrolaModal opened={opened} onClose={onClose} file={file} mode="export" />;
+  return (
+    <KontrolaModal
+      opened={opened}
+      onClose={onClose}
+      file={file}
+      mode="export"
+      scope={scope}
+      matchChecks={matchChecks}
+    />
+  );
 }
 
 // ————————————————————————————————————————————————————————————————
@@ -832,13 +885,17 @@ export function ImportGamesModal({
   onClose,
   file,
   onChanged,
+  scope,
 }: {
   opened: boolean;
   onClose: () => void;
   file: FileMetadata;
   onChanged: () => void;
+  /** Merge into part of the database only — typically the match the captain sent. */
+  scope?: ToolScope;
 }) {
   const { t } = useTranslation();
+  const [allGames, setAllGames] = useState<string[]>([]);
   const [targets, setTargets] = useState<string[]>([]);
   const [imported, setImported] = useState<string[]>([]);
   const [pasted, setPasted] = useState("");
@@ -851,8 +908,11 @@ export function ImportGamesModal({
     setImported([]);
     setPasted("");
     setAssignment([]);
-    readAllGames(file).then(setTargets);
-  }, [opened, file]);
+    readAllGames(file).then((all) => {
+      setAllGames(all);
+      setTargets(pickScoped(all, scope));
+    });
+  }, [opened, file, scope]);
 
   const targetSides = useMemo(
     () => targets.map((g) => pairSideFromTags(splitGame(g).tags)),
@@ -894,7 +954,9 @@ export function ImportGamesModal({
         return j != null ? applyMergedMovetext(g, imported[j]) : g;
       });
       const appended = leftovers.map((j) => imported[j]);
-      await writeTextFile(file.path, [...merged, ...appended].join("\n\n\n") + "\n");
+      // Unmatched imports are appended to the file, never inserted into the scope.
+      const next = [...spliceScoped(allGames, scope, merged), ...appended];
+      await writeTextFile(file.path, next.join("\n\n\n") + "\n");
       notifications.show({
         title: t("PgnTools.Import.Title"),
         message: t("PgnTools.Import.Done", { matched: matchedCount, appended: appended.length }),
@@ -925,7 +987,12 @@ export function ImportGamesModal({
   const importedOptions = importedSides.map((s, j) => ({ value: String(j), label: sideLabel(s) }));
 
   return (
-    <Modal opened={opened} onClose={onClose} title={t("PgnTools.Import.Title")} size="xl">
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      title={scope ? `${t("PgnTools.Import.Title")} — ${scope.label}` : t("PgnTools.Import.Title")}
+      size="xl"
+    >
       <Stack>
         <Text size="sm" c="dimmed">
           {t("PgnTools.Import.Help")}
