@@ -66,7 +66,63 @@ const PLAIN_KEYS = [
     "PgnTools.Import.Unassigned",
     "PgnTools.Import.Legend",
     "PgnTools.Import.Apply",
+    "Competition.PickXml",
+    "Competition.Issues",
+    "Competition.Teams",
+    "Competition.Rounds",
+    "Competition.Boards",
+    "Competition.Games",
+    "Competition.Round.Complete",
+    "Competition.Round.Partial",
+    "Competition.Round.Empty",
+    "Competition.EloSource",
+    "Competition.EloFide",
+    "Competition.EloCze",
+    "Competition.NotACompetition",
+    "Competition.Import.Title",
+    "Competition.Import.Help",
+    "Competition.Import.Name",
+    "Competition.Import.Create",
+    "Competition.Sync.Title",
+    "Competition.Sync.Help",
+    "Competition.Sync.Apply",
+    "Competition.Sync.SameFile",
+    "Competition.Sync.UpToDate",
+    "Competition.Sync.Unreadable",
+    "Competition.Sync.Added",
+    "Competition.Sync.Fill",
+    "Competition.Sync.Update",
+    "Competition.Sync.Conflict",
+    "Competition.Sync.Unchanged",
+    "Competition.Sync.ConflictsHelp",
+    "Competition.Sync.AcceptAll",
+    "Competition.Sync.AcceptNone",
 ];
+
+// Parse-issue codes are rendered through a dynamic key, so extract can't see them;
+// they survive via the Competition.Issue.* preserve pattern. This list must match
+// every code `parseCompetitionXml` can emit.
+const ISSUE_CODES = [
+    "XmlUnreadable",
+    "NotACompetitionXml",
+    "MissingInfo",
+    "MissingCompName",
+    "MissingBoardCount",
+    "NoTeams",
+    "NoRounds",
+    "TeamWithoutNumber",
+    "DuplicateTeamNumber",
+    "TeamCountMismatch",
+    "RosterRowWithoutKey",
+    "DuplicateRosterSlot",
+    "RosterUnknownTeam",
+    "RoundWithoutNumber",
+    "ScheduleLengthOdd",
+    "MatchWithoutGames",
+    "BoardCountMismatch",
+    "OrphanGameGroup",
+    "ByeSkipped",
+].map((code) => `Competition.Issue.${code}`);
 
 const INTERP_KEYS: [string, Record<string, unknown>][] = [
     ["PgnTools.Check.Summary", { total: 3 }],
@@ -87,6 +143,12 @@ const INTERP_KEYS: [string, Record<string, unknown>][] = [
     ["PgnTools.Export.Done", { count: 2 }],
     ["PgnTools.Import.Done", { matched: 2, appended: 1 }],
     ["PgnTools.Import.WillAppend", { count: 2 }],
+    ["Competition.RoundNr", { n: 3 }],
+    ["Competition.Import.Created", { count: 528 }],
+    ["Competition.Sync.Done", { count: 528 }],
+    ["Competition.Sync.ConflictsTitle", { n: 3 }],
+    ["Competition.Sync.Orphans", { n: 3 }],
+    ["Competition.Sync.Duplicates", { rounds: "1.1.1" }],
 ];
 
 const LANGS = { "en-US": enUS.translation, "cs-CZ": csCZ.translation };
@@ -106,7 +168,7 @@ describe.each(Object.keys(LANGS))("PGN-tools i18n keys resolve in %s", (lng) => 
     const resolve = (key: string, vars?: Record<string, unknown>) =>
         i18next.getFixedT(lng)(key, vars ?? {});
 
-    it.each(PLAIN_KEYS)("%s is present and non-empty", (key) => {
+    it.each([...PLAIN_KEYS, ...ISSUE_CODES])("%s is present and non-empty", (key) => {
         const value = resolve(key);
         expect(value, `${key} in ${lng}`).not.toBe(key);
         expect(value.trim(), `${key} in ${lng}`).not.toBe("");

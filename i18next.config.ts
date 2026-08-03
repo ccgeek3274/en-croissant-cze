@@ -41,6 +41,8 @@ export default defineConfig({
             "Errors.*",
             // HeadersPanel renders column labels via a dynamic t(col.labelKey).
             "Headers.Col.*",
+            // Competition-XML parse issues are rendered via t(`…${issue.code}`).
+            "Competition.Issue.*",
         ],
         sort: true,
     },

@@ -20,6 +20,7 @@ import {
   IconFolderPlus,
   IconSearch,
   IconFolder,
+  IconTrophy,
 } from "@tabler/icons-react";
 import { useLoaderData } from "@tanstack/react-router";
 import { readDir, remove } from "@tauri-apps/plugin-fs";
@@ -29,6 +30,7 @@ import useSWR from "swr";
 import { capitalize } from "@/utils/format";
 import ConfirmModal from "../common/ConfirmModal";
 import OpenFolderButton from "../common/OpenFolderButton";
+import { CompetitionImportModal } from "./CompetitionDialogs";
 import DirectoryTree from "./DirectoryTree";
 import { DragContext } from "./DirectoryTree";
 import FileCard from "./FileCard";
@@ -90,6 +92,7 @@ function FilesPage() {
   const [createModal, toggleCreateModal] = useToggle();
   const [createDirModal, toggleCreateDirModal] = useToggle();
   const [editModal, toggleEditModal] = useToggle();
+  const [competitionModal, toggleCompetitionModal] = useToggle();
 
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -242,6 +245,16 @@ function FilesPage() {
         mutate={mutate}
         selected={selected}
       />
+      <CompetitionImportModal
+        opened={competitionModal}
+        onClose={() => toggleCompetitionModal(false)}
+        dir={selected?.type === "directory" ? selected.path : documentDir}
+        onCreated={async (pgnPath) => {
+          const next = await mutate();
+          const entry = next ? findEntryByPath(next, pgnPath) : null;
+          if (entry) setSelected(entry);
+        }}
+      />
       {selected && files && selected.type === "file" && (
         <EditModal
           key={selected.name}
@@ -287,6 +300,11 @@ function FilesPage() {
               <Tooltip label={t("Files.CreateDirectory.Title")}>
                 <ActionIcon variant="default" size="lg" onClick={() => toggleCreateDirModal()}>
                   <IconFolderPlus size="1rem" />
+                </ActionIcon>
+              </Tooltip>
+              <Tooltip label={t("Competition.Import.Title")}>
+                <ActionIcon variant="default" size="lg" onClick={() => toggleCompetitionModal()}>
+                  <IconTrophy size="1rem" />
                 </ActionIcon>
               </Tooltip>
             </Group>

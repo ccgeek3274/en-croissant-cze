@@ -10,8 +10,11 @@ import type { FileMetadata } from "@/components/files/file";
 import { addRecentFileAtom, tabFamily } from "@/state/atoms";
 import { unwrap } from "@/utils/unwrap";
 import { parsePGN } from "./chess";
+import { sanitizeFilename } from "./filename";
 import { createTab, isInTempDir, type Tab } from "./tabs";
 import { getGameName } from "./treeReducer";
+
+export { sanitizeFilename };
 
 export function usePlatform() {
     const r = useSWR("os", async () => {
@@ -106,13 +109,6 @@ export async function openFile(
  *  that are illegal on common filesystems, collapse whitespace. Without this a name
  *  derived from data (e.g. a ŠSČR Event like "KP StC 24/25 A-B") would smuggle a "/"
  *  into the path and writeTextFile would fail against a non-existent subdirectory. */
-export function sanitizeFilename(name: string): string {
-    return name
-        .replace(/[/\\:*?"<>|]/g, "-")
-        .replace(/\s+/g, " ")
-        .trim();
-}
-
 export async function createFile({
     filename,
     filetype,

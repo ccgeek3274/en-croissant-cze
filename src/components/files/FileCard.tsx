@@ -4,6 +4,7 @@ import {
   IconFileExport,
   IconFileImport,
   IconListCheck,
+  IconRefresh,
   IconZoomCheck,
 } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
@@ -14,9 +15,11 @@ import { commands } from "@/bindings";
 import { activeTabAtom, tabsAtom } from "@/state/atoms";
 import { openFile } from "@/utils/files";
 import { capitalize } from "@/utils/format";
+import { isCompetitionFile } from "@/utils/sscr/storage";
 import { unwrap } from "@/utils/unwrap";
 import GamePreview from "../databases/GamePreview";
 import GameSelector from "../panels/info/GameSelector";
+import { CompetitionResyncModal } from "./CompetitionDialogs";
 import type { FileMetadata } from "./file";
 import { ExportPgnModal, ImportGamesModal, KontrolaModal } from "./PgnToolsDialogs";
 
@@ -44,6 +47,9 @@ function FileCard({
   const [kontrolaOpen, setKontrolaOpen] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
+  const [resyncOpen, setResyncOpen] = useState(false);
+  // A .pgn with a manifest beside it is a competition — it gets the XML actions.
+  const [isCompetition, setIsCompetition] = useState(false);
 
   function onChanged() {
     setGames(new Map());
@@ -54,6 +60,17 @@ function FileCard({
   useEffect(() => {
     setPage(0);
   }, [selected]);
+
+  useEffect(() => {
+    let cancelled = false;
+    setIsCompetition(false);
+    isCompetitionFile(selected.path).then((yes) => {
+      if (!cancelled) setIsCompetition(yes);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [selected.path]);
 
   useEffect(() => {
     async function loadGames() {
@@ -109,6 +126,13 @@ function FileCard({
               <IconFileExport />
             </ActionIcon>
           </Tooltip>
+          {isCompetition && (
+            <Tooltip label={t("Competition.Sync.Title")}>
+              <ActionIcon size="sm" variant="default" onClick={() => setResyncOpen(true)}>
+                <IconRefresh />
+              </ActionIcon>
+            </Tooltip>
+          )}
         </Group>
         <Text ta="center" c="dimmed">
           {selected?.numGames} {t("Common.Games")}
@@ -149,6 +173,14 @@ function FileCard({
         file={selected}
         onChanged={onChanged}
       />
+      {isCompetition && (
+        <CompetitionResyncModal
+          opened={resyncOpen}
+          onClose={() => setResyncOpen(false)}
+          pgnPath={selected.path}
+          onChanged={onChanged}
+        />
+      )}
     </Stack>
   );
 }
