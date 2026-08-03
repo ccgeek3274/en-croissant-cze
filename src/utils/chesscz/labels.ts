@@ -138,6 +138,16 @@ export async function computeCompetitionLabels(compId: number): Promise<Competit
     return { prefix, compName, labelByTeamId };
 }
 
+/** Short labels for a team list we already have in hand — no API call, no compId.
+ * This is the path the XML-driven competition mode uses: the roster comes out of
+ * the Swiss-Manager file, so only the bundled dictionary is needed. */
+export function shortenTeamNames(teams: TeamInput[]): Map<number, string> {
+    const out = new Map<number, string>();
+    if (teams.length === 0) return out;
+    for (const t of resolveCompetition(teams, getShortenData())) out.set(t.teamId, t.label);
+    return out;
+}
+
 /** Compose the Event tag for one match: "<prefix> <home>-<away>", or the full
  * competition name when no prefix/labels are available. */
 export function composeEventName(

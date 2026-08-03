@@ -228,14 +228,36 @@ Drží to, co není per-partie a co by se z PGN nedalo spolehlivě rekonstruovat
 - kola: číslo → datum + pořadí zápasů,
 - předvolby exportu.
 
-## Rozdělení práce
+## Co je hotové
 
-| Část                    | Obsah                                                                                                                                                           |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **1. Datová vrstva**    | `src/utils/sscr/`: parser XML, dělení jmen, generátor kostry, schéma manifestu. Čisté funkce + vitest nad reálnými daty.                                        |
-| **2. Import + re-sync** | Dialog „Nová soutěž z XML“, `syncFromXml` s diff reportem a klasifikací konfliktů. Tahy se nikdy nepřepíšou.                                                    |
-| **3. GUI stromu**       | Route + strom Soutěž → Kolo → Zápas → Partie, stav uzlů, hlavičkové operace / Kontrola / Import tahů se scopem na uzel.                                         |
-| **4. Export ŠSČR**      | Exportní profil (2úrovňový `Round`, zkrácený `Event`, bez diakritiky, pořadí tagů dle referenčního souboru), editovatelný adresář zkratek, předletová kontrola. |
+| Část                    | Kde                                                                                                                    |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **1. Datová vrstva**    | `src/utils/sscr/{competitionXml,names,skeleton,manifest}.ts` — parser, dělení jmen, generátor kostry, schéma manifestu |
+| **2. Import + re-sync** | `sync.ts` + `storage.ts` + `components/files/CompetitionDialogs.tsx`                                                   |
+| **3. GUI stromu**       | `tree.ts` + `components/files/CompetitionView.tsx`; nástroje berou `ToolScope`                                         |
+| **4. Export ŠSČR**      | `export.ts` + `components/files/SscrExportDialogs.tsx`                                                                 |
+
+### Záruky re-syncu
+
+Re-sync běží jednou za kolo po celou sezónu, takže na jeho zárukách záleží víc
+než na chytrosti. Každou hlídá test:
+
+1. **Tahy se nikdy neztratí.** Změna hlavičky u partie, která už nese tahy od
+   kapitána, je _konflikt_, který vedoucí zaškrtne — a movetext přežije tak či tak.
+2. **Regrese nikdy nepřepisuje.** Data ve Swiss-Manageru zaostávají; kolo, které
+   v novém souboru přišlo o sestavu, znamená „nevím“, ne „vymaž“.
+3. **Nic se nemaže.** Partie, které nové XML nepopisuje, zůstávají — označené, na
+   konci souboru.
+4. **`Event` a `Site` patří vedoucímu.** Jsou otisk importu a adresáře zkratek;
+   totéž pravidlo, na kterém skončil pgn-base u „Načíst výsledky“.
+
+### Nástroje se scopem
+
+`Kontrola`, `Export PGN` i `Import tahů` berou nepovinný `ToolScope` (indexy
+partií + popisek). Pracují nad podmnožinou a výsledek zase vloží zpět, takže
+oprava na jedné úrovni nesáhne na nic mimo ni. Kontrola navíc bere `matchChecks`,
+vypnuté nad úrovní zápasu: „jeden Event, barvy se střídají po šachovnicích“ je
+invariant zápasu, ne ročníku — jinak by se označilo všech 528 partií.
 
 ## Okrajové případy
 

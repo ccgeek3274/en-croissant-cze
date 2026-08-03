@@ -87,6 +87,31 @@ Keep this list current. When merging, conflicts can only appear in the
   direct competition-number field (for competitions missing from the current-season
   catalog) and computes/uses the short-label Event prefix.
 - `src/translation/cs-CZ.json` — the Czech translation
+- `src/utils/filename.ts` — `sanitizeFilename`, extracted out of `utils/files.ts` so
+  data-layer modules can use it without pulling in jotai atoms/tabs/bindings.
+  `utils/files.ts` re-exports it, so existing call sites are unchanged.
+- `src/utils/pgn/*.ts` — database-agnostic PGN text layer (tags, cleanup, check,
+  merge, export) behind Kontrola / Export PGN / Import moves. Ported from pgn-base.
+- `src/utils/sscr/*.ts` — the **competition-leader mode** (`docs/feat-vedouci-souteze.md`):
+  `competitionXml.ts` (parser for the undocumented Swiss-Manager competition XML),
+  `names.ts`, `skeleton.ts` (XML → full-format PGN skeleton, keyed by
+  `Round` = kolo.zápas.šachovnice), `manifest.ts` (the `*.competition.json` sidecar),
+  `sync.ts` (re-sync against a newer XML), `tree.ts` (the derived
+  competition → round → match → game tree), `storage.ts` (Tauri I/O),
+  `export.ts` (the ŠSČR export profile).
+- `src/utils/sscr/__fixtures__/` — real trimmed data (`competition.xml`) plus the PGN
+  Swiss-Manager exported from the same tournament (`swissmanager.pgn`). The golden
+  test in `skeleton.test.ts` diffs the two; **they must always come from the same
+  source file**, or the reverse-engineering guard is meaningless.
+- `src/components/files/PgnToolsDialogs.tsx` — Kontrola / Export PGN / Import moves.
+  All three take an optional `ToolScope` so the competition tree can run them at one
+  level.
+- `src/components/files/CompetitionDialogs.tsx` — "Nová soutěž z XML" + "Aktualizovat z XML"
+- `src/components/files/CompetitionView.tsx` — the competition-leader tree mode
+- `src/components/files/SscrExportDialogs.tsx` — the label directory + the ŠSČR export
+- `src/components/panels/headers/HeadersPanel.tsx` — the pgn-base-style header grid
+- `docs/feat-vedouci-souteze.md` — the reverse-engineered XML schema, the verification
+  counts against Swiss-Manager's own PGN, and the data-model rationale
 
 ### Modified upstream files — structural (watch these on upstream refactors)
 
@@ -95,11 +120,20 @@ Keep this list current. When merging, conflicts can only appear in the
   reworks the header grid, re-apply the swap.
 - `src/components/files/Modals.tsx` — adds the "Import from ŠSČR" button above the
   PGN textarea and mounts `<ChessczImportDialog>` (one import + one `Group` + state).
+- `src/components/files/FileCard.tsx` — adds the Kontrola / Import / Export actions,
+  and (for a .pgn with a `*.competition.json` beside it) the re-sync action plus the
+  full-screen competition-leader mode.
+- `src/components/files/FilesPage.tsx` — adds the "Nová soutěž z XML" action and
+  mounts `<CompetitionImportModal>`.
+- `src/utils/files.ts` — `sanitizeFilename` moved to `utils/filename.ts` and
+  re-exported from here (two import lines).
 
 ### Modified upstream files — one-liners (low risk)
 
 - `src/index.tsx` — import `cs_CZ` and register `"cs-CZ"` in `resources`
-- `i18next.config.ts` — add `"cs-CZ"` to `locales`
+- `i18next.config.ts` — add `"cs-CZ"` to `locales`; add `Headers.Col.*` and
+  `Competition.Issue.*` to `preservePatterns` (both are rendered via dynamic keys,
+  so `extract` would otherwise prune them)
 - `src/components/settings/SettingsPage.tsx` — add the `Čeština` language option
 - `src-tauri/capabilities/main.json` — allow `https://api.chess.cz/**` in `http:default`
 
@@ -121,8 +155,15 @@ Keep this list current. When merging, conflicts can only appear in the
   turns on strict key typing and breaks the app's dynamic keys
   (`t(\`Annotate.${x}\`)`, `t(\`GoMode.${x}\`)`, …). If it was run by accident,
 delete both files and `tsconfig.tsbuildinfo`, then re-run `tsgo --noEmit`.
-- The keys live under the flat `Chesscz.*` namespace. i18next resolves flat dotted
-  keys directly (verified), so no nesting is needed.
+- The keys live under the flat `Chesscz.*` / `PgnTools.*` / `Competition.*` /
+  `Headers.*` namespaces. i18next resolves flat dotted keys directly (verified), so
+  no nesting is needed.
+- **A `{{count}}` key must carry its plural forms, not a base value.** `extract`
+  moves the copy onto `_one`/`_few`/`_many`/`_other` and leaves the base key behind
+  as dead weight; if the plural forms are empty, the message renders empty at
+  runtime. `src/components/files/pgnToolsI18n.test.ts` resolves every key the PGN
+  and competition dialogs use — in both en-US and cs-CZ — and is the guard against
+  exactly this. Add new keys there.
 
 ## Release procedure
 

@@ -33,6 +33,8 @@ import {
   IconFileImport,
   IconListCheck,
   IconRefresh,
+  IconTags,
+  IconTrophy,
   IconZoomCheck,
 } from "@tabler/icons-react";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
@@ -58,6 +60,7 @@ import {
 import { CompetitionResyncModal } from "./CompetitionDialogs";
 import type { FileMetadata } from "./file";
 import { ExportPgnModal, ImportGamesModal, KontrolaModal, type ToolScope } from "./PgnToolsDialogs";
+import { CompetitionLabelsDialog, SscrExportModal } from "./SscrExportDialogs";
 
 /** "12/48" style progress, coloured by how done it is. */
 function Progress({ done, total }: { done: number; total: number }) {
@@ -168,6 +171,8 @@ export function CompetitionView({
   const [exportOpen, setExportOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
   const [resyncOpen, setResyncOpen] = useState(false);
+  const [labelsOpen, setLabelsOpen] = useState(false);
+  const [sscrOpen, setSscrOpen] = useState(false);
 
   // Tag editor (the "work on headers at any level" part).
   const [tagKey, setTagKey] = useState("Event");
@@ -300,6 +305,16 @@ export function CompetitionView({
           <Tooltip label={t("PgnTools.Export.Title")}>
             <ActionIcon variant="default" onClick={() => setExportOpen(true)}>
               <IconFileExport size="1rem" />
+            </ActionIcon>
+          </Tooltip>
+          <Tooltip label={t("Competition.Labels.Title")}>
+            <ActionIcon variant="default" onClick={() => setLabelsOpen(true)}>
+              <IconTags size="1rem" />
+            </ActionIcon>
+          </Tooltip>
+          <Tooltip label={t("Competition.Export.Title")}>
+            <ActionIcon variant="filled" onClick={() => setSscrOpen(true)}>
+              <IconTrophy size="1rem" />
             </ActionIcon>
           </Tooltip>
           <Tooltip label={t("Competition.Sync.Title")}>
@@ -524,6 +539,20 @@ export function CompetitionView({
         pgnPath={file.path}
         onChanged={refresh}
       />
+      <CompetitionLabelsDialog
+        opened={labelsOpen}
+        onClose={() => setLabelsOpen(false)}
+        pgnPath={file.path}
+        onSaved={refresh}
+      />
+      <SscrExportModal
+        opened={sscrOpen}
+        onClose={() => setSscrOpen(false)}
+        pgnPath={file.path}
+        indices={scope.indices}
+        scopeLabel={scope.label}
+        defaultFileName={exportFileName(file.name, scope.id)}
+      />
     </Stack>
   );
 }
@@ -636,6 +665,12 @@ function GameRow({
       }
     />
   );
+}
+
+/** Suggested export file name: the competition, narrowed by the selected node. */
+function exportFileName(base: string, scopeId: string): string {
+  if (scopeId === "competition") return base;
+  return `${base}-${scopeId.replace(/\./g, "-")}`;
 }
 
 /** Stats for a non-root scope, found by walking the tree for the matching node. */

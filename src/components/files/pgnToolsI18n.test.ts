@@ -114,6 +114,29 @@ const PLAIN_KEYS = [
     "Competition.Stats.Placeholders",
     "Competition.Stats.Forfeits",
     "Competition.Headers.Title",
+    "Competition.Labels.Title",
+    "Competition.Labels.Help",
+    "Competition.Labels.Prefix",
+    "Competition.Labels.PrefixHelp",
+    "Competition.Labels.Teams",
+    "Competition.Labels.TeamName",
+    "Competition.Labels.Label",
+    "Competition.Labels.Site",
+    "Competition.Labels.Suggest",
+    "Competition.Labels.Save",
+    "Competition.Labels.Saved",
+    "Competition.Export.Title",
+    "Competition.Export.Help",
+    "Competition.Export.SampleEvent",
+    "Competition.Export.DropForfeits",
+    "Competition.Export.StripDiacritics",
+    "Competition.Export.WillExport",
+    "Competition.Export.WithoutMoves",
+    "Competition.Export.WithoutResult",
+    "Competition.Export.Placeholders",
+    "Competition.Export.Dropped",
+    "Competition.Export.Clean",
+    "Competition.Export.Save",
 ];
 
 // Parse-issue codes are rendered through a dynamic key, so extract can't see them;
@@ -168,6 +191,10 @@ const INTERP_KEYS: [string, Record<string, unknown>][] = [
     ["Competition.Sync.Duplicates", { rounds: "1.1.1" }],
     ["Competition.Headers.Scope", { label: "1. kolo", count: 48 }],
     ["Competition.Headers.Done", { tag: "Event", count: 2 }],
+    ["Competition.Export.Done", { count: 185 }],
+    ["Competition.Export.MatchesWithoutMoves", { n: 3, list: "1.2, 1.3" }],
+    ["Competition.Export.Unlabelled", { list: "ŠK Rakovník A" }],
+    ["Competition.Export.DuplicateEvents", { list: "KSA X-X" }],
 ];
 
 const LANGS = { "en-US": enUS.translation, "cs-CZ": csCZ.translation };
