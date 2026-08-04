@@ -1,19 +1,17 @@
 import { describe, expect, it } from "vitest";
 import { getTag, splitGame, splitPgnGames } from "@/utils/pgn/tags";
-import { competitionXml, parseFixture } from "./__fixtures__";
+import { parseFixture } from "./__fixtures__";
 import {
     buildSscrEvent,
     buildSscrExport,
     DEFAULT_EXPORT_OPTIONS,
     defaultEventPrefix,
     exportPreflight,
-    labelMapFrom,
     readGameFacts,
     type SscrExportOptions,
     SSCR_TAGS,
     toSscrGame,
 } from "./export";
-import { buildManifest } from "./manifest";
 import { buildSkeleton, skeletonToPgn } from "./skeleton";
 
 const LABELS = new Map([
@@ -23,9 +21,16 @@ const LABELS = new Map([
     ["TJ Hostivice A", "Hostivice A"],
 ]);
 
+const SITES = new Map([
+    ["ŠK KDJS Sedlčany A", "Sedlčany"],
+    ["Klokani z Kralup", "Kralupy"],
+    ["Dubno A", "Dubno"],
+]);
+
 const OPTS: SscrExportOptions = {
     prefix: "KSA SSS 25/26",
     labelByTeamName: LABELS,
+    siteByTeamName: SITES,
     ...DEFAULT_EXPORT_OPTIONS,
 };
 
@@ -109,6 +114,7 @@ describe("toSscrGame", () => {
         const { tags, movetext } = splitGame(game.text);
         expect(tags.order).toEqual([
             "Event",
+            "Site",
             "Date",
             "Round",
             "White",
@@ -130,6 +136,26 @@ describe("toSscrGame", () => {
         );
     });
 
+    it("takes Site from the home team, whichever colour it has", () => {
+        const list = games();
+        // 1.1 is played at Sedlčany. Board 1 has the home team as White, board 2 as
+        // Black — the venue is the same either way.
+        for (const round of ["1.1.1", "1.1.2"]) {
+            expect(splitGame(toSscrGame(find(list, round), OPTS)!.text).tags.map.Site).toBe(
+                "Sedlcany",
+            );
+        }
+        // 10.1 is Klokani hosting Hostivice.
+        expect(splitGame(toSscrGame(find(list, "10.1.1"), OPTS)!.text).tags.map.Site).toBe(
+            "Kralupy",
+        );
+    });
+
+    it("leaves Site out when the home team has no venue", () => {
+        // 1.5 is hosted by ŠK Rakovník A, which is in neither directory.
+        expect(toSscrGame(find(games(), "1.5.1"), OPTS)!.text).not.toContain("[Site ");
+    });
+
     it("strips diacritics everywhere", () => {
         const { tags } = splitGame(toSscrGame(find(games(), "1.1.1"), OPTS)!.text);
         expect(tags.map.White).toBe("Simak, Roman");
@@ -146,9 +172,14 @@ describe("toSscrGame", () => {
 
     it("leaves the team tags, ids and Board behind", () => {
         const text = toSscrGame(find(games(), "1.1.1"), OPTS)!.text;
-        for (const tag of ["WhiteTeam", "BlackTeam", "WhiteCzeId", "Board", "EventDate", "Site"]) {
+        for (const tag of ["WhiteTeam", "BlackTeam", "WhiteCzeId", "Board", "EventDate"]) {
             expect(text).not.toContain(`[${tag} `);
         }
+    });
+
+    it("ignores the Site the game was imported with", () => {
+        const stored = find(games(), "1.1.1").replace('[Site ""]', '[Site "Stará hala"]');
+        expect(splitGame(toSscrGame(stored, OPTS)!.text).tags.map.Site).toBe("Sedlcany");
     });
 
     it("drops a forfeit nobody played, and keeps one that was", () => {
@@ -248,17 +279,5 @@ describe("exportPreflight", () => {
             duplicateEvents: [],
             clean: true,
         });
-    });
-});
-
-describe("labelMapFrom", () => {
-    it("takes only the labels the leader actually set", () => {
-        const manifest = buildManifest(parseFixture(), {
-            fileName: "3005.XML",
-            xml: competitionXml,
-        });
-        expect(labelMapFrom(manifest).size).toBe(0);
-        manifest.teams[0].label = "Sedlčany A";
-        expect(labelMapFrom(manifest)).toEqual(new Map([["ŠK KDJS Sedlčany A", "Sedlčany A"]]));
     });
 });

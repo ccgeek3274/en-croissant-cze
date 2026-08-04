@@ -115,15 +115,22 @@ describe("CompetitionLabelsDialog", () => {
     expect(document.body.textContent).not.toMatch(/Competition\.[A-Z]/);
   });
 
-  it("fills empty labels from the bundled club dictionary", async () => {
-    seed(false);
+  it("arrives with labels and venues already filled in", async () => {
+    seed(false); // manifest with nothing stored, as before the directory existed
     renderDialog();
     await screen.findByDisplayValue("KSA SSS 25/26");
 
-    const field = screen.getByLabelText("Short label — ŠK KDJS Sedlčany A") as HTMLInputElement;
-    expect(field.value).toBe("");
+    const label = screen.getByLabelText("Short label — ŠK KDJS Sedlčany A") as HTMLInputElement;
+    const site = screen.getByLabelText("Venue (Site) — ŠK KDJS Sedlčany A") as HTMLInputElement;
+    expect(label.value).toBe("Sedlcany A");
+    expect(site.value).toBe("Sedlcany"); // the venue is the label minus the team letter
+
+    // Emptied by hand, "Suggest empty ones" puts both back.
+    fireEvent.change(label, { target: { value: "" } });
+    fireEvent.change(site, { target: { value: "" } });
     fireEvent.click(screen.getByText("Suggest empty ones"));
-    expect(field.value).not.toBe("");
+    expect(label.value).toBe("Sedlcany A");
+    expect(site.value).toBe("Sedlcany");
   });
 
   it("writes the prefix and the labels into the manifest", async () => {
@@ -176,8 +183,11 @@ describe("SscrExportModal", () => {
     expect(document.body.textContent).not.toMatch(/Competition\.[A-Z]/);
   });
 
-  it("warns about matches with no moves and teams with no label", async () => {
+  it("warns about matches with no moves and teams the directory does not know", async () => {
     seed(false);
+    // A team the games spell differently from the manifest is the one case the
+    // directory cannot cover: its Event would carry the full name.
+    files.set(PGN_PATH, files.get(PGN_PATH)!.replaceAll('"Dubno A"', '"Dubno A — B tým"'));
     renderModal(); // whole competition: rounds 6/8/10 have no moves at all
     await screen.findByText("Export ŠSČR — 1. kolo");
     expect(screen.getByText(/matches have no moves at all/)).toBeTruthy();
@@ -197,6 +207,9 @@ describe("SscrExportModal", () => {
     const first = splitGame(exported[0]);
     expect(getTag(first.tags, "Round")).toBe("1.1");
     expect(getTag(first.tags, "Event")).toBe("KSA SSS 25/26 T1-T12");
+    // Site is the home team's venue, derived from its label because the manifest
+    // stores none — not the empty Site the skeleton was built with.
+    expect(getTag(first.tags, "Site")).toBe("T1");
     expect(getTag(first.tags, "White")).toBe("Simak, Roman");
     expect(first.tags.order).not.toContain("WhiteTeam");
     expect(files.get(SAVE_PATH)).not.toMatch(/[ěščřžýáíé]/);

@@ -138,6 +138,7 @@ ne z PGN.
 
 ```
 [Event "KSA SSS 25/26 Sedlcany-Kralupy B"]   ← zkratka soutěže + zkrácená družstva, bez diakritiky
+[Site "Sedlcany"]                             ← místo konání domácích (z adresáře družstev)
 [Date "2025.10.12"]
 [Round "1.1"]                                 ← kolo.šachovnice (zápas je v Event)
 [White "Simak, Roman"]
@@ -243,7 +244,7 @@ Drží to, co není per-partie a co by se z PGN nedalo spolehlivě rekonstruovat
 | **1. Datová vrstva**    | `src/utils/sscr/{competitionXml,names,skeleton,manifest}.ts` — parser, dělení jmen, generátor kostry, schéma manifestu |
 | **2. Import + re-sync** | `sync.ts` + `storage.ts` + `components/files/CompetitionDialogs.tsx`                                                   |
 | **3. GUI stromu**       | `tree.ts` + `components/files/CompetitionView.tsx`; nástroje berou `ToolScope`                                         |
-| **4. Export ŠSČR**      | `export.ts` + `components/files/SscrExportDialogs.tsx`                                                                 |
+| **4. Export ŠSČR**      | `export.ts` + `directory.ts` + `components/files/SscrExportDialogs.tsx`                                                |
 
 ### Záruky re-syncu
 
@@ -291,20 +292,36 @@ tahů, takže její zavření se nikdy neptá na uložení.
 Archiv `*.xml-archiv/` se ze seznamu souborů **vynechává** — je to účetnictví, ne
 databáze, a prázdná složka na místě, kde vedoucí čeká sezónu, mate.
 
-### Zkratky družstev
+### Adresář družstev (zkratky a místa konání)
 
-Zkratky se **předvyplní hned při importu** (`prefillLabels` v `storage.ts`)
-projektovým shortenerem `resolveCompetition` nad zabudovaným slovníkem klubů ŠSČR —
-tedy tím samým, co používá pgn-base, včetně rozpadu kolizí v rámci uzavřené množiny
-družstev jedné soutěže. Na datech KSA 2025/26 dostane všech 12 družstev rozumnou
-zkratku bez diakritiky a s písmenem družstva (`ŠK KDJS Sedlčany A` → `Sedlcany A`,
-`Cayman Pharma Neratovice B` → `Neratovice B`). Prefix `Event` vznikne z `compAbbr`
-(`KSA 25/26`; region v XML není, takže vedoucí si případné `SSS` doplní sám).
+Adresář (`directory.ts`) drží na družstvo dvě věci: **zkratku** do tagu `Event` a
+**místo konání** do tagu `Site`. Obojí má odvozenou výchozí hodnotu a uloženou
+ruční, která vyhrává:
 
-Přepisují se jen prázdné hodnoty, takže po re-syncu se ruční úpravy nevrací zpátky,
-a nové družstvo v novějším XML zkratku přesto dostane. Editace zkratek i `Site`
-je v dialogu „Zkratky soutěže“. Používají se **výhradně při exportu** — interní PGN
-drží plné názvy.
+- zkratka: projektový shortener `resolveCompetition` nad zabudovaným slovníkem klubů
+  ŠSČR — tedy ten samý, co používá pgn-base, včetně rozpadu kolizí v rámci uzavřené
+  množiny družstev jedné soutěže. Na datech KSA 2025/26 dostane všech 12 družstev
+  rozumnou zkratku bez diakritiky a s písmenem družstva (`ŠK KDJS Sedlčany A` →
+  `Sedlcany A`, `Cayman Pharma Neratovice B` → `Neratovice B`);
+- místo: **zkratka bez samostatného písmene družstva** (`Sedlcany A` → `Sedlcany`),
+  jako v pgn-base. Béčko hraje tam co áčko — písmeno je o týmu, ne o hale.
+
+Prefix `Event` vznikne z `compAbbr` (`KSA 25/26`; region v XML není, takže vedoucí si
+případné `SSS` doplní sám).
+
+Odvození se **předvyplní při importu i re-syncu** (`prefillDirectory` v `storage.ts`)
+a přepisují se jen prázdné hodnoty, takže ruční úpravy se po re-syncu nevrací zpátky
+a nové družstvo v novějším XML zkratku i místo přesto dostane. Prázdný `site` uložený
+naschvál znamená „bez místa“, ne „odvoď“.
+
+Rozhodující je ale to, že se odvozuje i **při čtení** (`resolveDirectory`): dialog
+„Zkratky soutěže“ i export sahají na tutéž funkci, takže soutěž založená dřív, než
+adresář vznikl (v manifestu samé `null`), exportuje zkratky a místa taky — a vedoucí
+v dialogu vidí přesně to, co export zapíše.
+
+Adresář se uplatní **výhradně při exportu** — interní PGN drží plné názvy. `Site` se
+bere podle **domácího družstva** zápasu (tedy ne z uloženého tagu `Site`, který je
+zmrazený z importu, kdežto adresář vedoucí průběžně udržuje).
 
 ### Nástroje se scopem
 

@@ -5,23 +5,27 @@
 // a bulletin a competition leader published:
 //
 //   [Event "KSA SSS 25/26 Sedlcany-Kralupy B"]   prefix + short team names, no diacritics
+//   [Site "Sedlcany"]                             where the home team plays
 //   [Date "2025.10.12"]
 //   [Round "1.1"]                                 kolo.šachovnice — the match is in Event
 //   [White "Simak, Roman"] [Black "Hanl, Frantisek"] [Result "1/2-1/2"]
 //   [ECO "B36"] [WhiteElo "1896"] [BlackElo "2158"] [PlyCount "73"]
+//
+// `Site` is the one addition: the bulletin left the venue out, but it is in the STR
+// and the team directory knows it, so the export fills it from the home team.
 //
 // Nothing here mutates the database; it is a projection, computed at export time.
 
 import { removeDiacritics } from "@/utils/pgn/cleanup";
 import { getTag, type PgnTags, serializeGame, splitGame } from "@/utils/pgn/tags";
 import { compAbbr, seasonAbbr } from "@/utils/chesscz/teamShorten";
-import type { CompetitionManifest } from "./manifest";
 import { parseRoundTag } from "./skeleton";
 import { hasMoves, isUninformative } from "./sync";
 
 /** Tag set and order of the ŠSČR profile, matching the reference bulletin. */
 export const SSCR_TAGS = [
     "Event",
+    "Site",
     "Date",
     "Round",
     "White",
@@ -38,13 +42,19 @@ export type SscrExportOptions = {
     prefix: string;
     /** Full team name → short label. Unknown names fall through unchanged. */
     labelByTeamName: Map<string, string>;
+    /** Full team name → venue. The *home* team's entry becomes `Site`; a team with
+     *  no entry (or an empty one) leaves the tag out. */
+    siteByTeamName: Map<string, string>;
     /** Drop forfeited boards nobody played — Swiss-Manager's own export and the
      *  reference bulletin both omit them. */
     dropEmptyForfeits: boolean;
     stripDiacritics: boolean;
 };
 
-export const DEFAULT_EXPORT_OPTIONS: Omit<SscrExportOptions, "prefix" | "labelByTeamName"> = {
+export const DEFAULT_EXPORT_OPTIONS: Omit<
+    SscrExportOptions,
+    "prefix" | "labelByTeamName" | "siteByTeamName"
+> = {
     dropEmptyForfeits: true,
     stripDiacritics: true,
 };
@@ -56,15 +66,6 @@ export function defaultEventPrefix(compName: string, year: number | null): strin
     const [abbr] = compAbbr(compName);
     const season = year != null ? seasonAbbr(year) : "";
     return [abbr, season].filter(Boolean).join(" ").trim();
-}
-
-/** Name → label map from the manifest, with the leader's overrides winning. */
-export function labelMapFrom(manifest: CompetitionManifest): Map<string, string> {
-    const out = new Map<string, string>();
-    for (const team of manifest.teams) {
-        if (team.label) out.set(team.name, team.label);
-    }
-    return out;
 }
 
 /** "<prefix> <home>-<away>", diacritics stripped like the rest of the profile. */
@@ -118,6 +119,12 @@ function label(name: string, map: Map<string, string>): string {
     return map.get(name) ?? name;
 }
 
+/** The venue of the match, i.e. the home team's. Blank when nobody set one — the
+ *  `Site` tag is then left out rather than filled with "?". */
+function site(homeTeam: string, map: Map<string, string>): string {
+    return map.get(homeTeam) ?? "";
+}
+
 /** Project one stored game into the ŠSČR profile. Returns null when the game is
  *  dropped (an unplayed forfeit) or is not a competition game at all. */
 export function toSscrGame(gameText: string, opts: SscrExportOptions): ExportedGame | null {
@@ -137,9 +144,13 @@ export function toSscrGame(gameText: string, opts: SscrExportOptions): ExportedG
         const value =
             tag === "Event"
                 ? event
-                : tag === "Round"
-                  ? `${facts.roundNr}.${facts.boardNr}`
-                  : (getTag(facts.tags, tag) ?? "");
+                : tag === "Site"
+                  ? // Not the stored `Site`: that one was frozen at import, while the
+                    // directory is what the leader has been maintaining since.
+                    site(facts.homeTeam, opts.siteByTeamName)
+                  : tag === "Round"
+                    ? `${facts.roundNr}.${facts.boardNr}`
+                    : (getTag(facts.tags, tag) ?? "");
         // Only the Seven Tag Roster is mandatory; the rest is skipped when empty,
         // exactly as the reference bulletin does.
         if (value === "" && !["Event", "Date", "Round", "White", "Black", "Result"].includes(tag)) {

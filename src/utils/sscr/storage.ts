@@ -13,10 +13,9 @@
 
 import { resolve } from "@tauri-apps/api/path";
 import { exists, mkdir, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
-import { shortenTeamNames } from "@/utils/chesscz/labels";
 import { splitPgnGames } from "@/utils/pgn/tags";
 import { sanitizeFilename } from "@/utils/filename";
-import { defaultEventPrefix } from "./export";
+import { prefillDirectory } from "./directory";
 import { type Competition, type ParseIssue, parseCompetitionXml } from "./competitionXml";
 import {
     buildManifest,
@@ -78,28 +77,6 @@ async function archiveXml(pgnPath: string, sourceName: string, xml: string): Pro
     await writeTextFile(await resolve(dir, `${stamp}-${base}.xml`), xml);
 }
 
-/** Fill in the export defaults the leader would otherwise have to type: the Event
- *  prefix, and a short label per team.
- *
- *  The labels come from the project's own shortener (`resolveCompetition` over the
- *  bundled ŠSČR club dictionary), the same one pgn-base uses — including its
- *  closed-set collision breaking, so two clubs that shorten alike inside one
- *  competition get told apart. Only empty fields are touched, so this can run again
- *  after a re-sync without undoing anything the leader edited by hand. */
-function prefillLabels(manifest: CompetitionManifest): CompetitionManifest {
-    const suggested = shortenTeamNames(
-        manifest.teams.map((team) => ({ teamId: team.no, teamName: team.name })),
-    );
-    for (const team of manifest.teams) {
-        if (!team.label) team.label = suggested.get(team.no) ?? null;
-    }
-    if (!manifest.options.eventPrefix) {
-        manifest.options.eventPrefix =
-            defaultEventPrefix(manifest.competition.name, manifest.competition.year) || null;
-    }
-    return manifest;
-}
-
 // ── the two write operations ────────────────────────────────────────────────
 
 export type ImportPreview = {
@@ -148,7 +125,7 @@ export async function createCompetition(
     const pgnPath = await resolve(input.dir, `${safeName}.pgn`);
     if (await exists(pgnPath)) throw new Error("File already exists");
 
-    const manifest = prefillLabels(
+    const manifest = prefillDirectory(
         buildManifest(
             input.competition,
             { fileName: input.sourceFileName, xml: input.xml },
@@ -216,8 +193,8 @@ export async function applyResync(input: ApplyResyncInput): Promise<{ games: str
     const games = applySync(loaded.games, preview.skeleton, preview.plan, {
         acceptedConflicts: input.acceptedConflicts,
     });
-    // A team that only appears in the newer XML still gets a suggested label.
-    const manifest = prefillLabels(
+    // A team that only appears in the newer XML still gets a label and a venue.
+    const manifest = prefillDirectory(
         mergeManifest(
             loaded.manifest,
             buildManifest(preview.competition, { fileName: input.sourceFileName, xml: input.xml }),

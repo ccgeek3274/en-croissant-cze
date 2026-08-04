@@ -25,13 +25,17 @@ import { save } from "@tauri-apps/plugin-dialog";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { shortenTeamNames } from "@/utils/chesscz/labels";
+import {
+  deriveDirectory,
+  labelMapFrom,
+  resolveDirectory,
+  siteMapFrom,
+} from "@/utils/sscr/directory";
 import {
   buildSscrExport,
   DEFAULT_EXPORT_OPTIONS,
   defaultEventPrefix,
   exportPreflight,
-  labelMapFrom,
   type SscrExportOptions,
 } from "@/utils/sscr/export";
 import type { CompetitionManifest } from "@/utils/sscr/manifest";
@@ -67,24 +71,32 @@ export function CompetitionLabelsDialog({
       setPrefix(
         m.options.eventPrefix ?? defaultEventPrefix(m.competition.name, m.competition.year),
       );
-      setLabels(Object.fromEntries(m.teams.map((team) => [team.no, team.label ?? ""])));
-      setSites(Object.fromEntries(m.teams.map((team) => [team.no, team.site ?? ""])));
+      // Resolved, not stored: a competition imported before the directory existed has
+      // nothing on file, and the leader should still see what the export will write.
+      const resolved = resolveDirectory(m);
+      setLabels(Object.fromEntries(resolved.map((team) => [team.no, team.label])));
+      setSites(Object.fromEntries(resolved.map((team) => [team.no, team.site])));
     });
     return () => {
       cancelled = true;
     };
   }, [opened, pgnPath]);
 
-  /** Fill every empty label from the bundled club dictionary. */
+  /** Fill every field the leader emptied back in from the bundled club dictionary. */
   function suggest() {
     if (!manifest) return;
-    const suggested = shortenTeamNames(
-      manifest.teams.map((team) => ({ teamId: team.no, teamName: team.name })),
-    );
+    const derived = deriveDirectory(manifest.teams);
     setLabels((prev) => {
       const next = { ...prev };
       for (const team of manifest.teams) {
-        if (!next[team.no]) next[team.no] = suggested.get(team.no) ?? "";
+        if (!next[team.no]) next[team.no] = derived.get(team.no)?.label ?? "";
+      }
+      return next;
+    });
+    setSites((prev) => {
+      const next = { ...prev };
+      for (const team of manifest.teams) {
+        if (!next[team.no]) next[team.no] = derived.get(team.no)?.site ?? "";
       }
       return next;
     });
@@ -257,6 +269,7 @@ export function SscrExportModal({
         manifest.options.eventPrefix ??
         defaultEventPrefix(manifest.competition.name, manifest.competition.year),
       labelByTeamName: labelMapFrom(manifest),
+      siteByTeamName: siteMapFrom(manifest),
       dropEmptyForfeits,
       stripDiacritics,
     };
