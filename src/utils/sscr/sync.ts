@@ -12,6 +12,7 @@
 //   4. **`Event` and `Site` are the leader's.** They are the fingerprint of the
 //      original import (and of the label directory); re-sync does not touch them —
 //      the same rule pgn-base settled on for "Načíst výsledky".
+//   5. **Elo is a snapshot, not a current fact.** See `SNAPSHOT_TAGS`.
 //
 // Pure: takes and returns PGN text, does no I/O.
 
@@ -47,6 +48,15 @@ export const SYNCED_TAGS = [
 /** Tags whose *absence* is a statement, not a gap: the skeleton emits them exactly
  *  when the XML says so, so a forfeit that was reversed has to clear them again. */
 const FLAG_TAGS = new Set(["Termination", "RatedResult"]);
+
+/** Tags that record the state of the world when the game was played, not a current
+ *  fact. The roster carries one rating per player for the whole season — always
+ *  *today's* list — so every new export drifts the Elo of games played months ago.
+ *  Once a game is played its rating is history: re-sync fills these in while the
+ *  board is still empty, and never rewrites them afterwards. Without this a routine
+ *  FIDE-list update turns the whole season into conflicts (416 of them on the
+ *  2025/26 KSA data), and accepting any of them would rewrite a published bulletin. */
+const SNAPSHOT_TAGS = new Set(["WhiteElo", "BlackElo"]);
 
 export type SyncRowKind =
     /** Nothing to do. */
@@ -144,16 +154,19 @@ function indexByRound(games: string[]): {
  *  Returns null when the proposal must be ignored.
  *
  *  `informative` says whether the new skeleton knows anything about this game at
- *  all; a round that regressed to "not drawn up yet" must not clear flag tags. */
+ *  all; a round that regressed to "not drawn up yet" must not clear flag tags.
+ *  `played` freezes the snapshot tags — see `SNAPSHOT_TAGS`. */
 function proposeChange(
     tag: string,
     current: string | undefined,
     next: string | undefined,
     informative: boolean,
+    played: boolean,
 ): SyncFieldChange | null {
     const from = (current ?? "").trim();
     const to = (next ?? "").trim();
     if (from === to) return null;
+    if (SNAPSHOT_TAGS.has(tag) && played && !isUninformative(from)) return null;
     if (isUninformative(to) && !isUninformative(from)) {
         // Guard 2: the XML got *less* specific — it does not know, so keep what we
         // have. The exception is a flag the XML is entitled to withdraw.
@@ -165,6 +178,14 @@ function proposeChange(
 /** Does the new skeleton actually know who is playing this board? */
 function isInformative(tags: PgnTags): boolean {
     return !isUninformative(tags.map.White) || !isUninformative(tags.map.Black);
+}
+
+/** Has this board been played, as the file currently records it? A decisive result
+ *  is the moment Swiss-Manager scored the round; moves are the captain's own
+ *  evidence. Either way the rating that applied is now a matter of record. */
+function isPlayed(tags: PgnTags, movetext: string): boolean {
+    const result = (getTag(tags, "Result") ?? "").trim();
+    return (result !== "" && result !== "*") || hasMoves(movetext);
 }
 
 // ── plan ────────────────────────────────────────────────────────────────────
@@ -196,10 +217,17 @@ export function planSync(currentGames: string[], skeleton: SkeletonGame[]): Sync
         const moves = hasMoves(movetext);
 
         const informative = isInformative(game.tags);
+        const played = isPlayed(tags, movetext);
         const changes: SyncFieldChange[] = [];
         let onlyFills = true;
         for (const tag of SYNCED_TAGS) {
-            const change = proposeChange(tag, getTag(tags, tag), game.tags.map[tag], informative);
+            const change = proposeChange(
+                tag,
+                getTag(tags, tag),
+                game.tags.map[tag],
+                informative,
+                played,
+            );
             if (!change) continue;
             changes.push(change);
             if (!isUninformative(change.from)) onlyFills = false;

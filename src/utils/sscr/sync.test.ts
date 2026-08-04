@@ -113,6 +113,39 @@ describe("planSync", () => {
         expect(row.hasMoves).toBe(true);
     });
 
+    it("freezes Elo on a played game, so a new rating list is not a conflict", () => {
+        // Round 1 is played. Every later XML export carries a fresher FIDE list;
+        // that must not reopen games whose rating is already a matter of record.
+        const games = importedGames().map((g) =>
+            splitGame(g).tags.map.Round.startsWith("1.")
+                ? setTag(setTag(g, "WhiteElo", "1500"), "BlackElo", "1600")
+                : g,
+        );
+        const rows = planSync(games, skeleton()).rows.filter((r) => r.round.startsWith("1."));
+        expect(rows.every((r) => r.kind === "unchanged")).toBe(true);
+    });
+
+    it("still moves Elo while the board has not been played", () => {
+        // Drawn but not played yet: the rating is a preview, so it may still move.
+        const games = importedGames().map((g) =>
+            splitGame(g).tags.map.Round === "1.1.1"
+                ? setTag(setTag(g, "Result", "*"), "WhiteElo", "1500")
+                : g,
+        );
+        const row = planSync(games, skeleton()).rows.find((r) => r.round === "1.1.1")!;
+        expect(row.kind).toBe("update");
+        expect(row.changes.map((c) => c.tag).sort()).toEqual(["Result", "WhiteElo"]);
+    });
+
+    it("fills Elo on a played game that never had one", () => {
+        const games = importedGames().map((g) =>
+            splitGame(g).tags.map.Round === "1.1.1" ? setTag(g, "WhiteElo", "") : g,
+        );
+        const row = planSync(games, skeleton()).rows.find((r) => r.round === "1.1.1")!;
+        expect(row.kind).toBe("fill");
+        expect(row.changes.map((c) => c.tag)).toEqual(["WhiteElo"]);
+    });
+
     it("never proposes replacing a known value with a placeholder", () => {
         // The file knows round 10's line-up; the (older) XML does not.
         const games = importedGames().map((g) =>

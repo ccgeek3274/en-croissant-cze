@@ -27,13 +27,15 @@ Typický životní cyklus:
 ## Podkladová data — co bylo ověřeno
 
 Validováno proti souborům, které dodal vedoucí soutěže KS A StčŠS 2025/26:
-`3005_09.XML`, `3005_full.XML`, `KSA_SSS_25_26_SM.pgn` (PGN vygenerovaný
-Swiss-Managerem), `KSA_SSS_25_26.pgn` (PGN vedoucího soutěže, tj. cílový formát).
+`3005_09.XML` (stav po 9. kole), `3005.XML` (celá sezóna),
+`KSA_SSS_25_26_SM.pgn` (PGN vygenerovaný Swiss-Managerem),
+`KSA_SSS_25_26.pgn` (PGN vedoucího soutěže, tj. cílový formát).
 
-**Pozor: oba XML soubory jsou obsahově identické** — liší se jen v `<info><id>`
-(3005 vs 3318). Oba mají vyplněná kola 1–9 a prázdná kola 10–11. „Plný“ soubor
-tedy plný není; použitelný rozdíl mezi stavy sezóny z nich nevyčteme. PGN od
-Swiss-Manageru je naopak už z pozdějšího stavu (kola 1–11 s výsledky).
+Ta dvojice XML je **jediný skutečný pár dvou stavů sezóny**, který máme, a proto
+na ní stojí ověření re-syncu. Liší se přesně dvěma věcmi: kola 10 a 11 přešla
+z vylosovaných-nulových na dohraná, a mezitím vyšla nová FIDE listina. (První
+dodaná dvojice `3005_09.XML` / `3005_full.XML` použitelná nebyla — byla obsahově
+identická, lišila se jen v `<info><id>`.)
 
 ### Dokumentace XML formátu
 
@@ -109,16 +111,22 @@ v dokumentu je pořadí šachovnic** (1…8).
 
 ### Ověření
 
-Kostra odvozená z XML se porovnala s PGN, které Swiss-Manager vyexportoval
-z týchž dat (`KSA_SSS_25_26_SM.pgn`, `Round` = `kolo.zápas.šachovnice`):
+Kostra odvozená z `3005.XML` se porovnala s PGN, které Swiss-Manager vyexportoval
+z týchž dat (`KSA_SSS_25_26_SM.pgn`, `Round` = `kolo.zápas.šachovnice`).
+Celá sezóna, všech 11 kol, **žádný rozdíl**:
 
-| Pole                      | Shoda   | Poznámka                                                                                    |
-| ------------------------- | ------- | ------------------------------------------------------------------------------------------- |
-| `Date`                    | 514/514 | —                                                                                           |
-| `WhiteTeam` / `BlackTeam` | 514/514 | potvrzuje pořadí zápasů i paritu barev                                                      |
-| `White` / `Black`         | 421/422 | zbytek jsou kola 10–11, která XML nemá; 1 rozdíl = `Aulický st.` (opraveno pravidlem výše)  |
-| `Result`                  | 422/422 | zbytek jsou kola 10–11                                                                      |
-| `WhiteElo`/`BlackElo`     | ~12 %   | **XML nese snímek ELO k začátku sezóny**, Swiss-Manager exportuje FIDE ELO aktuální ke kolu |
+| Pole                      | Shoda     | Poznámka                                      |
+| ------------------------- | --------- | --------------------------------------------- |
+| `Date`                    | 514/514   | —                                             |
+| `WhiteTeam` / `BlackTeam` | 514/514   | potvrzuje pořadí zápasů i paritu barev        |
+| `White` / `Black`         | 514/514   | včetně `Aulický st.` (pravidlo o příponách)   |
+| `Result`                  | 514/514   | —                                             |
+| `WhiteElo`/`BlackElo`     | 1009/1028 | 98 %, proti `3005_09.XML` jen 11 % — viz níže |
+
+Elo je jediné pole, kde shoda závisí na tom, ze které generace XML kostru
+stavíme: 98 % proti souběžnému exportu, 11 % proti staršímu. Roster tedy **je**
+zdroj, kterým SM razítkuje partie — jen vždycky tím dnešním. Odtud pátá záruka
+re-syncu.
 
 **XML je bohatší kostra než PGN Swiss-Manageru**: SM vynechává kontumované
 šachovnice úplně (514 z 528 partií), XML je má všechny. Proto je kostra ze XML,
@@ -250,6 +258,19 @@ než na chytrosti. Každou hlídá test:
    konci souboru.
 4. **`Event` a `Site` patří vedoucímu.** Jsou otisk importu a adresáře zkratek;
    totéž pravidlo, na kterém skončil pgn-base u „Načíst výsledky“.
+5. **Elo je snímek, ne aktuální údaj.** Soupiska nese jednu Elo na hráče na celou
+   sezónu — vždy tu dnešní listinu. Jakmile je partie odehraná, její Elo je
+   historický fakt: re-sync ho doplní na prázdné šachovnici a víc už s ním nehne.
+
+Pátá záruka vznikla až na reálné dvojici XML (viz níže) a je to jediné místo, kde
+se záměrně rozcházíme se Swiss-Managerem. SM při každém exportu orazítkuje i
+říjnové partie dnešní listinou — partie `1.1.1` má v `3005_09.XML` `BlackElo 2160`
+a v `3005.XML` `2202`, aniž by se cokoli odehrálo. Kdybychom to přebírali, každá
+nová FIDE listina by otevřela celou sezónu jako konflikty (na datech KSA 2025/26
+jich bylo **416**, a všechny do jednoho jen posun Elo) — a odsouhlasit je by
+znamenalo přepsat rating v už rozeslaném bulletinu. Rozhoduje stav partie
+v _našem_ souboru: rozhodnutý `Result` nebo tahy = odehráno = zmrazeno; dokud je
+šachovnice prázdná, Elo se dál aktualizuje jako každý jiný tag.
 
 ### Nástroje se scopem
 
