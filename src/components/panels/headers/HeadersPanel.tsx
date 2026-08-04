@@ -18,7 +18,7 @@ import { useToggle } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { confirm as confirmDialog } from "@tauri-apps/plugin-dialog";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useStore } from "zustand";
@@ -30,10 +30,12 @@ import {
   KontrolaModal,
 } from "@/components/files/PgnToolsDialogs";
 import ConfirmChangesModal from "@/components/tabs/ConfirmChangesModal";
-import { currentTabAtom } from "@/state/atoms";
+import { activeTabAtom, currentTabAtom, tabsAtom } from "@/state/atoms";
 import { getEcoFromGame, parsePGN } from "@/utils/chess";
 import { setGameTag } from "@/utils/pgn/check";
 import { getTag, splitGame } from "@/utils/pgn/tags";
+import { openCompetitionTab } from "@/utils/competitionTab";
+import { isCompetitionFile } from "@/utils/sscr/storage";
 import { getTabFile, getTabGameNumber } from "@/utils/tabs";
 import { unwrap } from "@/utils/unwrap";
 
@@ -141,6 +143,8 @@ function HeadersPanel() {
   const dirty = useStore(store, (s) => s.dirty);
   const setState = useStore(store, (s) => s.setState);
   const [currentTab, setCurrentTab] = useAtom(currentTabAtom);
+  const [, setTabs] = useAtom(tabsAtom);
+  const setActiveTab = useSetAtom(activeTabAtom);
   const tabFile = getTabFile(currentTab);
   const gameNumber = getTabGameNumber(currentTab);
   const isMatch = tabFile?.metadata.type === "tournament";
@@ -151,6 +155,8 @@ function HeadersPanel() {
   const [kontrolaOpen, setKontrolaOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
+  // A game opened out of a competition offers a way back up to the whole season.
+  const [isCompetition, setIsCompetition] = useState(false);
 
   const [viewMode, setViewMode] = useState<ViewMode>(() => {
     const s = localStorage.getItem("headers-view-mode");
@@ -163,6 +169,18 @@ function HeadersPanel() {
   useEffect(() => {
     if (!isMatch && viewMode === "match") setViewMode("standard");
   }, [isMatch, viewMode]);
+
+  useEffect(() => {
+    let cancelled = false;
+    setIsCompetition(false);
+    if (!tabFile) return;
+    isCompetitionFile(tabFile.path).then((yes) => {
+      if (!cancelled) setIsCompetition(yes);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [tabFile]);
 
   // Inline bulk editing: edits[gameIndex][tag] = new value (diffs only).
   const [editMode, setEditMode] = useState(false);
@@ -438,6 +456,14 @@ function HeadersPanel() {
               >
                 {t("PgnTools.Export.Title")}
               </Button>
+              {isCompetition && tabFile && (
+                <Button
+                  size="xs"
+                  onClick={() => openCompetitionTab(tabFile, setTabs, setActiveTab)}
+                >
+                  {t("Competition.Open")}
+                </Button>
+              )}
             </Group>
           </>
         )}

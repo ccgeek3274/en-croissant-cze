@@ -15,6 +15,7 @@ import { unwrap } from "@/utils/unwrap";
 import BoardAnalysis from "../boards/BoardAnalysis";
 import BoardGame from "../boards/BoardGame";
 import { TreeStateProvider } from "../common/TreeStateContext";
+import CompetitionTab from "../files/CompetitionTab";
 import Puzzles from "../puzzles/Puzzles";
 import { BoardTab } from "./BoardTab";
 import ConfirmChangesModal from "./ConfirmChangesModal";
@@ -343,5 +344,6 @@ function TabSwitch({
         <Puzzles id={tab.value} />
       </TreeStateProvider>
     ))
+    .with("competition", () => <CompetitionTab tab={tab} />)
     .exhaustive();
 }

@@ -10,7 +10,12 @@ import { initReactI18next } from "react-i18next";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import enUS from "@/translation/en-US.json";
 import { competitionXml, parseFixture } from "@/utils/sscr/__fixtures__";
-import { buildManifest, manifestPathFor, serializeManifest } from "@/utils/sscr/manifest";
+import {
+  buildManifest,
+  manifestPathFor,
+  parseManifest,
+  serializeManifest,
+} from "@/utils/sscr/manifest";
 import { buildSkeleton, skeletonToPgn } from "@/utils/sscr/skeleton";
 
 const PGN_PATH = "/docs/KSA.pgn";
@@ -131,6 +136,27 @@ describe("CompetitionImportModal", () => {
       tags: [],
     });
     expect(files.get(manifestPathFor(pgnPath))).toContain('"version": 1');
+  });
+
+  it("prefills the Event prefix and a short label for every team", async () => {
+    picked.path = "/xml/3005.XML";
+    files.set(picked.path, competitionXml);
+    const onCreated = vi.fn();
+    renderModal(onCreated);
+    await screen.findByText("New competition from XML");
+    fireEvent.click(screen.getByText("Choose XML…"));
+    await screen.findByText("Krajská soutěž SŠS 2025/26 - skupina A");
+    fireEvent.click(screen.getByText("Create competition"));
+
+    await vi.waitFor(() => expect(onCreated).toHaveBeenCalled());
+    const manifest = parseManifest(
+      files.get(manifestPathFor(onCreated.mock.calls[0][0] as string))!,
+    )!;
+    expect(manifest.options.eventPrefix).toBe("KSA 25/26");
+    // Every team is labelled, diacritics-free, and keeps its team letter.
+    expect(manifest.teams.every((team) => !!team.label)).toBe(true);
+    expect(manifest.teams.find((team) => team.no === 1)!.label).toBe("Sedlcany A");
+    expect(manifest.teams.find((team) => team.no === 10)!.label).toBe("Neratovice B");
   });
 });
 

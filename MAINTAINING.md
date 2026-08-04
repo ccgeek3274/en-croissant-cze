@@ -108,6 +108,10 @@ Keep this list current. When merging, conflicts can only appear in the
   level.
 - `src/components/files/CompetitionDialogs.tsx` — "Nová soutěž z XML" + "Aktualizovat z XML"
 - `src/components/files/CompetitionView.tsx` — the competition-leader tree mode
+- `src/components/files/CompetitionTab.tsx` — hosts `CompetitionView` as a tab
+- `src/utils/competitionTab.ts` — `openCompetitionTab()`, the single entry point every
+  caller uses (file list, Headers panel, Recent files); focuses an existing tab rather
+  than stacking duplicates
 - `src/components/files/SscrExportDialogs.tsx` — the label directory + the ŠSČR export
 - `src/components/panels/headers/HeadersPanel.tsx` — the pgn-base-style header grid
 - `docs/feat-vedouci-souteze.md` — the reverse-engineered XML schema, the verification
@@ -122,11 +126,21 @@ Keep this list current. When merging, conflicts can only appear in the
   PGN textarea and mounts `<ChessczImportDialog>` (one import + one `Group` + state).
 - `src/components/files/FileCard.tsx` — adds the Kontrola / Import / Export actions,
   and (for a .pgn with a `*.competition.json` beside it) the re-sync action plus the
-  full-screen competition-leader mode.
+  button that opens the competition-leader tab.
 - `src/components/files/FilesPage.tsx` — adds the "Nová soutěž z XML" action and
   mounts `<CompetitionImportModal>`.
+- `src/components/tabs/BoardsPage.tsx` — one `.with("competition", …)` arm in
+  `renderTabContent`. `match(...).exhaustive()` means a new upstream tab type will
+  fail the type-check here rather than silently render nothing.
+- `src/components/tabs/NewTabHome.tsx` — a recent file that is a competition opens in
+  competition mode instead of on a board.
+- `src/components/files/file.ts` — skips `*.xml-archiv` sidecar directories, and drops
+  the `baseDir: AppLocalData` that upstream passes to `readDir` alongside an already
+  absolute path (it throws, and one throw rejects the whole listing).
 - `src/utils/files.ts` — `sanitizeFilename` moved to `utils/filename.ts` and
   re-exported from here (two import lines).
+- `src/utils/tabs.ts` — `"competition"` added to the tab-type enum. Additive, so
+  previously persisted sessions still parse.
 
 ### Modified upstream files — one-liners (low risk)
 

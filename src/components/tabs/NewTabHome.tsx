@@ -21,7 +21,9 @@ import {
   tabsAtom,
 } from "@/state/atoms";
 import type { Tab } from "@/utils/tabs";
+import { openCompetitionTab } from "@/utils/competitionTab";
 import { openFile } from "@/utils/files";
+import { isCompetitionFile } from "@/utils/sscr/storage";
 import { unwrap } from "@/utils/unwrap";
 import CreateRepertoireModal from "./CreateRepertoireModal";
 import ImportModal from "./ImportModal";
@@ -42,6 +44,7 @@ import { commands } from "@/bindings";
 import { getStats } from "@/components/files/opening";
 import Chessboard from "../icons/Chessboard";
 import { FileIcon } from "@/components/files/FileIcon";
+import type { FileMetadata } from "@/components/files/file";
 
 dayjs.extend(relativeTime);
 
@@ -135,18 +138,21 @@ export default function NewTabHome({ id }: { id: string }) {
   const openRecentFile = useCallback(
     async (file: RecentFile) => {
       const numGames = unwrap(await commands.countPgnGames(file.path));
-      await openFile(
-        {
-          type: "file",
-          name: file.name,
-          path: file.path,
-          numGames,
-          metadata: { type: file.type, tags: [] },
-          lastModified: Math.floor(Date.now() / 1000),
-        },
-        setTabs,
-        setActiveTab,
-      );
+      const meta: FileMetadata = {
+        type: "file",
+        name: file.name,
+        path: file.path,
+        numGames,
+        metadata: { type: file.type, tags: [] },
+        lastModified: Math.floor(Date.now() / 1000),
+      };
+      // A competition belongs in its own mode, not on a board: opening 528 games
+      // at game 0 is never what the leader meant by clicking the season.
+      if (await isCompetitionFile(file.path)) {
+        await openCompetitionTab(meta, setTabs, setActiveTab);
+      } else {
+        await openFile(meta, setTabs, setActiveTab);
+      }
       navigate({ to: "/" });
     },
     [setTabs, setActiveTab, navigate],

@@ -272,6 +272,40 @@ znamenalo přepsat rating v už rozeslaném bulletinu. Rozhoduje stav partie
 v _našem_ souboru: rozhodnutý `Result` nebo tahy = odehráno = zmrazeno; dokud je
 šachovnice prázdná, Elo se dál aktualizuje jako každý jiný tag.
 
+### Kde režim žije
+
+Režim je **karta** (`Tab` typu `competition`), ne modal. Původně visel jako
+fullscreen modal nad Soubory, což znamenalo, že existoval jen dokud existovala ta
+stránka — po restartu se k němu nedalo vrátit. Otevírá se ze tří míst, všechna přes
+jediný `openCompetitionTab()`:
+
+- **Soubory** → tlačítko „Režim Vedoucí soutěže“ na kartě souboru,
+- **Nová karta → Nedávné soubory** → kliknutí na soutěž ji otevře rovnou v režimu
+  (otevřít 528 partií na partii č. 0 nikdy není, co vedoucí myslel),
+- **Hlavičky** → tlačítko zpět nahoru na celou sezónu, když je otevřená jedna partie
+  z ní.
+
+Jedna soutěž = jedna karta: druhé otevření zaostří tu existující. Karta nedrží strom
+tahů, takže její zavření se nikdy neptá na uložení.
+
+Archiv `*.xml-archiv/` se ze seznamu souborů **vynechává** — je to účetnictví, ne
+databáze, a prázdná složka na místě, kde vedoucí čeká sezónu, mate.
+
+### Zkratky družstev
+
+Zkratky se **předvyplní hned při importu** (`prefillLabels` v `storage.ts`)
+projektovým shortenerem `resolveCompetition` nad zabudovaným slovníkem klubů ŠSČR —
+tedy tím samým, co používá pgn-base, včetně rozpadu kolizí v rámci uzavřené množiny
+družstev jedné soutěže. Na datech KSA 2025/26 dostane všech 12 družstev rozumnou
+zkratku bez diakritiky a s písmenem družstva (`ŠK KDJS Sedlčany A` → `Sedlcany A`,
+`Cayman Pharma Neratovice B` → `Neratovice B`). Prefix `Event` vznikne z `compAbbr`
+(`KSA 25/26`; region v XML není, takže vedoucí si případné `SSS` doplní sám).
+
+Přepisují se jen prázdné hodnoty, takže po re-syncu se ruční úpravy nevrací zpátky,
+a nové družstvo v novějším XML zkratku přesto dostane. Editace zkratek i `Site`
+je v dialogu „Zkratky soutěže“. Používají se **výhradně při exportu** — interní PGN
+drží plné názvy.
+
 ### Nástroje se scopem
 
 `Kontrola`, `Export PGN` i `Import tahů` berou nepovinný `ToolScope` (indexy

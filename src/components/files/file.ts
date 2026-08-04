@@ -1,4 +1,4 @@
-import { BaseDirectory, basename, join } from "@tauri-apps/api/path";
+import { basename, join } from "@tauri-apps/api/path";
 import { type DirEntry, exists, readDir, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { z } from "zod";
 import { commands } from "@/bindings";
@@ -65,18 +65,26 @@ export type Directory = {
     name: string;
 };
 
+/** A competition keeps its imported XML snapshots in `<name>.xml-archiv/` beside the
+ *  .pgn. That is bookkeeping, not a database: listing it puts an empty folder in the
+ *  user's file tree where they expect the season. */
+function isSidecarDir(name: string): boolean {
+    return name.endsWith(".xml-archiv");
+}
+
 export async function processEntriesRecursively(parent: string, entries: DirEntry[]) {
     const processedEntries = await Promise.all(
         entries.map(async (entry) => {
             if (entry.isFile) {
                 return await readFileMetadata(await join(parent, entry.name));
             }
-            if (entry.isDirectory) {
+            if (entry.isDirectory && !isSidecarDir(entry.name)) {
                 const dir = await join(parent, entry.name);
-                const newEntries = await processEntriesRecursively(
-                    dir,
-                    await readDir(dir, { baseDir: BaseDirectory.AppLocalData }),
-                );
+                // `dir` is already absolute (it comes from `join(parent, …)`), so no
+                // baseDir: passing one asks the fs scope to resolve an absolute path
+                // against AppLocalData, which throws — and one throw here rejects the
+                // whole Promise.all, so a single subdirectory empties the file list.
+                const newEntries = await processEntriesRecursively(dir, await readDir(dir));
                 const directory: Directory = {
                     type: "directory",
                     name: entry.name,

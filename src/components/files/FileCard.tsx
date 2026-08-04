@@ -5,7 +5,6 @@ import {
   Button,
   Divider,
   Group,
-  Modal,
   Stack,
   Text,
   Tooltip,
@@ -24,6 +23,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { commands } from "@/bindings";
 import { activeTabAtom, tabsAtom } from "@/state/atoms";
+import { openCompetitionTab } from "@/utils/competitionTab";
 import { openFile } from "@/utils/files";
 import { capitalize } from "@/utils/format";
 import { isCompetitionFile } from "@/utils/sscr/storage";
@@ -31,7 +31,6 @@ import { unwrap } from "@/utils/unwrap";
 import GamePreview from "../databases/GamePreview";
 import GameSelector from "../panels/info/GameSelector";
 import { CompetitionResyncModal } from "./CompetitionDialogs";
-import { CompetitionView } from "./CompetitionView";
 import type { FileMetadata } from "./file";
 import { ExportPgnModal, ImportGamesModal, KontrolaModal } from "./PgnToolsDialogs";
 
@@ -60,7 +59,6 @@ function FileCard({
   const [exportOpen, setExportOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
   const [resyncOpen, setResyncOpen] = useState(false);
-  const [leaderOpen, setLeaderOpen] = useState(false);
   // A .pgn with a manifest beside it is a competition — it gets the XML actions.
   const [isCompetition, setIsCompetition] = useState(false);
 
@@ -102,6 +100,11 @@ function FileCard({
     navigate({ to: "/" });
   }
 
+  async function openCompetition() {
+    await openCompetitionTab(selected, setTabs, setActiveTab);
+    navigate({ to: "/" });
+  }
+
   return (
     <Stack h="100%">
       <Stack align="center">
@@ -110,7 +113,7 @@ function FileCard({
         </Text>
         <Badge>{t(`Files.FileType.${capitalize(selected.metadata.type)}`)}</Badge>
         {isCompetition && (
-          <Button size="xs" onClick={() => setLeaderOpen(true)}>
+          <Button size="xs" onClick={openCompetition}>
             {t("Competition.Open")}
           </Button>
         )}
@@ -198,30 +201,6 @@ function FileCard({
           pgnPath={selected.path}
           onChanged={onChanged}
         />
-      )}
-      {isCompetition && (
-        <Modal
-          opened={leaderOpen}
-          onClose={() => setLeaderOpen(false)}
-          title={t("Competition.Open")}
-          fullScreen
-          padding={0}
-          styles={{ body: { height: "calc(100vh - 60px)" } }}
-        >
-          <CompetitionView
-            file={selected}
-            onChanged={onChanged}
-            onOpenGame={async (gameIndex) => {
-              const data = unwrap(await commands.readGames(selected.path, gameIndex, gameIndex));
-              await openFile(selected, setTabs, setActiveTab, {
-                gameNumber: gameIndex,
-                pgn: data[0] ?? "",
-              });
-              setLeaderOpen(false);
-              navigate({ to: "/" });
-            }}
-          />
-        </Modal>
       )}
     </Stack>
   );
