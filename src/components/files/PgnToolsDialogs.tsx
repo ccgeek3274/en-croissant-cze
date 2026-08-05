@@ -25,10 +25,11 @@ import {
   ThemeIcon,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import { IconAlertTriangle, IconCheck, IconMinus } from "@tabler/icons-react";
+import { IconAlertTriangle, IconCheck, IconFileImport, IconMinus } from "@tabler/icons-react";
+import { getCurrentWebview } from "@tauri-apps/api/webview";
 import { confirm as confirmDialog, open as openDialog, save } from "@tauri-apps/plugin-dialog";
 import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { commands } from "@/bindings";
 import {
@@ -917,17 +918,51 @@ export function ImportGamesModal({
   // assignment[t] = index into `imported` paired with target t, or null.
   const [assignment, setAssignment] = useState<(number | null)[]>([]);
   const [busy, setBusy] = useState(false);
+  // Where the imported games came from ("3 files"), and whether a drag is over us.
+  const [sourceLabel, setSourceLabel] = useState("");
+  const [dragOver, setDragOver] = useState(false);
 
   useEffect(() => {
     if (!opened) return;
     setImported([]);
     setPasted("");
     setAssignment([]);
+    setSourceLabel("");
+    setDragOver(false);
     readAllGames(file).then((all) => {
       setAllGames(all);
       setTargets(pickScoped(all, scope));
     });
   }, [opened, file, scope]);
+
+  // Dropping files on the window: with Tauri's own drag-drop enabled (the default),
+  // the webview never sees an HTML5 drop — the paths arrive as an event instead.
+  // The handler goes through a ref because it closes over `targets`, which is still
+  // empty on the render that registers the listener.
+  const dropHandler = useRef<(paths: string[]) => void>(() => {});
+  useEffect(() => {
+    if (!opened) return;
+    let unlisten: (() => void) | undefined;
+    let cancelled = false;
+    try {
+      getCurrentWebview()
+        .onDragDropEvent((event) => {
+          if (event.payload.type === "over") setDragOver(true);
+          else if (event.payload.type === "drop") {
+            setDragOver(false);
+            dropHandler.current(event.payload.paths);
+          } else setDragOver(false);
+        })
+        .then((fn) => (cancelled ? fn() : (unlisten = fn)))
+        .catch(() => {});
+    } catch {
+      // No webview (tests, browser preview). Picking and pasting still work.
+    }
+    return () => {
+      cancelled = true;
+      unlisten?.();
+    };
+  }, [opened]);
 
   const targetSides = useMemo(
     () => targets.map((g) => pairSideFromTags(splitGame(g).tags)),
@@ -990,14 +1025,44 @@ export function ImportGamesModal({
     }
   }
 
+  /** Read every path and treat the lot as one stream of games — a captain who sends
+   *  eight single-game files is the normal case, not an edge one. */
+  async function loadFiles(paths: string[]) {
+    const pgns = paths.filter((p) => /\.pgn$/i.test(p));
+    if (pgns.length === 0) {
+      notifications.show({
+        title: t("PgnTools.Import.Title"),
+        message: t("PgnTools.Import.NoPgnFiles"),
+        color: "orange",
+      });
+      return;
+    }
+    try {
+      const texts = await Promise.all(pgns.map((p) => readTextFile(p)));
+      loadImported(texts.join("\n\n\n"));
+      setSourceLabel(t("PgnTools.Import.Loaded", { count: pgns.length }));
+    } catch (e) {
+      notifications.show({
+        title: t("PgnTools.Import.Title"),
+        message: String(e),
+        color: "red",
+      });
+    }
+  }
+
   async function pickFile() {
     const selected = await openDialog({
-      multiple: false,
+      multiple: true,
       filters: [{ name: "PGN", extensions: ["pgn"] }],
     });
-    if (!selected || Array.isArray(selected)) return;
-    loadImported(await readTextFile(selected));
+    if (!selected) return;
+    await loadFiles(Array.isArray(selected) ? selected : [selected]);
   }
+
+  // Keep the drop listener pointed at the current closure (see the effect above).
+  useEffect(() => {
+    dropHandler.current = (paths) => void loadFiles(paths);
+  });
 
   const importedOptions = importedSides.map((s, j) => ({ value: String(j), label: sideLabel(s) }));
 
@@ -1012,11 +1077,30 @@ export function ImportGamesModal({
         <Text size="sm" c="dimmed">
           {t("PgnTools.Import.Help")}
         </Text>
-        <Group>
-          <Button variant="default" onClick={pickFile}>
-            {t("PgnTools.Import.PickFile")}
-          </Button>
-        </Group>
+        <Paper
+          withBorder
+          p="md"
+          style={{
+            borderStyle: "dashed",
+            borderColor: dragOver ? "var(--mantine-color-blue-5)" : undefined,
+            backgroundColor: dragOver ? "var(--mantine-color-blue-light)" : undefined,
+          }}
+        >
+          <Group justify="center" gap="sm">
+            <IconFileImport size="1.2rem" opacity={0.6} />
+            <Text size="sm" c="dimmed">
+              {t("PgnTools.Import.DropHint")}
+            </Text>
+            <Button variant="default" size="xs" onClick={pickFile}>
+              {t("PgnTools.Import.PickFile")}
+            </Button>
+          </Group>
+          {sourceLabel && (
+            <Text size="xs" c="dimmed" ta="center" mt="xs">
+              {sourceLabel}
+            </Text>
+          )}
+        </Paper>
         <Textarea
           placeholder={t("PgnTools.Import.PastePlaceholder")}
           value={pasted}

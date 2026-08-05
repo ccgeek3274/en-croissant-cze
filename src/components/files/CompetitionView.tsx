@@ -127,6 +127,86 @@ function TreeRow({
   );
 }
 
+// ── tree pane width ─────────────────────────────────────────────────────────
+// A whole season's tree is deep ("11. kolo" → "Sedlčany A – Klokani z Kralup" →
+// eight games), so no single width is right for everyone. The pane is dragged, and
+// the choice is global — it is a habit, not a property of one competition.
+
+const TREE_WIDTH_KEY = "competition-tree-width";
+const TREE_WIDTH_MIN = 180;
+const TREE_WIDTH_MAX = 720;
+const TREE_WIDTH_DEFAULT = 320;
+
+function clampTreeWidth(px: number): number {
+  return Math.min(TREE_WIDTH_MAX, Math.max(TREE_WIDTH_MIN, Math.round(px)));
+}
+
+function useTreeWidth(): [number, (px: number) => void] {
+  const [width, setWidth] = useState(() => {
+    const stored = Number(localStorage.getItem(TREE_WIDTH_KEY));
+    return Number.isFinite(stored) && stored > 0 ? clampTreeWidth(stored) : TREE_WIDTH_DEFAULT;
+  });
+  return [
+    width,
+    (px: number) => {
+      const next = clampTreeWidth(px);
+      setWidth(next);
+      localStorage.setItem(TREE_WIDTH_KEY, String(next));
+    },
+  ];
+}
+
+/** The draggable border between the tree and the game list. Doubles as the divider,
+ *  so nothing moves when it appears. */
+function TreeResizer({ width, onWidth }: { width: number; onWidth: (px: number) => void }) {
+  const [dragging, setDragging] = useState(false);
+
+  function start(e: React.PointerEvent<HTMLDivElement>) {
+    e.preventDefault();
+    const startX = e.clientX;
+    const startWidth = width;
+    setDragging(true);
+    // Pointer capture on the window, not the handle: the cursor routinely outruns a
+    // 5px strip, and losing the drag there feels broken.
+    const move = (ev: PointerEvent) => onWidth(startWidth + ev.clientX - startX);
+    const up = () => {
+      setDragging(false);
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+  }
+
+  return (
+    // biome-ignore lint/a11y/useKeyWithClickEvents: keyboard resizing is covered by
+    // the arrow keys below, on a focusable separator.
+    <div
+      role="separator"
+      aria-orientation="vertical"
+      aria-label="Resize tree"
+      tabIndex={0}
+      onPointerDown={start}
+      onKeyDown={(e) => {
+        if (e.key === "ArrowLeft") onWidth(width - 16);
+        else if (e.key === "ArrowRight") onWidth(width + 16);
+        else return;
+        e.preventDefault();
+      }}
+      onDoubleClick={() => onWidth(TREE_WIDTH_DEFAULT)}
+      style={{
+        flex: "0 0 auto",
+        width: 5,
+        cursor: "col-resize",
+        alignSelf: "stretch",
+        backgroundColor: dragging
+          ? "var(--mantine-color-blue-5)"
+          : "var(--mantine-color-default-border)",
+      }}
+    />
+  );
+}
+
 function StatsLine({ stats }: { stats: NodeStats }) {
   const { t } = useTranslation();
   return (
@@ -168,6 +248,7 @@ export function CompetitionView({
   const [selectedId, setSelectedId] = useState("competition");
   const [expanded, setExpanded] = useState<Set<string>>(new Set(["competition"]));
   const [reloadKey, setReloadKey] = useState(0);
+  const [treeWidth, setTreeWidth] = useTreeWidth();
 
   const [kontrolaOpen, setKontrolaOpen] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
@@ -328,16 +409,10 @@ export function CompetitionView({
       </Group>
       <Divider />
 
-      <Group flex={1} gap={0} align="stretch" style={{ overflow: "hidden" }}>
+      <Group flex={1} gap={0} align="stretch" style={{ overflow: "hidden", minHeight: 0 }}>
         {/* ── tree ─────────────────────────────────────────────────────── */}
-        <Paper
-          w={320}
-          style={{
-            overflow: "hidden",
-            borderRight: "1px solid var(--mantine-color-default-border)",
-          }}
-        >
-          <ScrollArea h="100%">
+        <Paper w={treeWidth} style={{ overflow: "hidden", flex: "0 0 auto" }}>
+          <ScrollArea h="100%" type="auto">
             <Stack gap={0} py={4}>
               <TreeRow
                 depth={0}
@@ -374,8 +449,10 @@ export function CompetitionView({
           </ScrollArea>
         </Paper>
 
+        <TreeResizer width={treeWidth} onWidth={setTreeWidth} />
+
         {/* ── detail ───────────────────────────────────────────────────── */}
-        <Stack flex={1} gap="xs" p="sm" style={{ overflow: "hidden" }}>
+        <Stack flex={1} gap="xs" p="sm" style={{ overflow: "hidden", minWidth: 0 }}>
           <Text fw={600} size="sm">
             {scope.label}
           </Text>

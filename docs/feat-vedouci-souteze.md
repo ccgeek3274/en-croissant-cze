@@ -367,8 +367,15 @@ zásahu se nic nemění:
 Zástupné výrazy: `{zkratka}` (jak je uložená), `{soutez}` (první slovo, malými, ASCII),
 `{kolo}` (dvojmístné), `{domaci}`, `{hoste}`. Neznámý výraz zůstane ve výstupu tak,
 jak je, aby byl překlep vidět v náhledu. Edituje se v „Zkratky soutěže“ → sekce
-**Vzory názvů**, s živým náhledem na prvním zápase prvního kola; prázdné pole = reset
-na výchozí. Formát `Event` tím má **jediné místo** v kódu — `composeEventName`
+**Vzory názvů**, s živým náhledem na prvním zápase prvního kola.
+
+Pole nesou výchozí vzor jako **editovatelný text**, ne jako placeholder — vedoucí
+upravuje ten, který zrovna platí, místo aby ho opisoval; vedle je tlačítko „Vrátit
+výchozí“. Uloží se `null`, kdykoli pole říká totéž co výchozí vzor (nebo je prázdné),
+takže manifest pořád rozlišuje „vlastní vzor“ od „výchozí“ a prázdný `Event` nemůže
+vzniknout.
+
+Formát `Event` má **jediné místo** v kódu — `composeEventName`
 (import zápasu z chess.cz) volá týž `buildEventFromPattern`, jen bez možnosti vzor
 změnit, protože tam žádný manifest není.
 
@@ -395,6 +402,25 @@ partií + popisek). Pracují nad podmnožinou a výsledek zase vloží zpět, ta
 oprava na jedné úrovni nesáhne na nic mimo ni. Kontrola navíc bere `matchChecks`,
 vypnuté nad úrovní zápasu: „jeden Event, barvy se střídají po šachovnicích“ je
 invariant zápasu, ne ročníku — jinak by se označilo všech 528 partií.
+
+**Import tahů bere víc souborů najednou a přetažení.** Kapitán typicky pošle osm
+jednopartiových PGN, ne jeden osmipartiový, takže výběr souboru je `multiple` a
+všechny se přečtou do jednoho proudu partií (párování pak běží jako dřív). Nad
+tlačítkem je zóna, na kterou jdou soubory přetáhnout: Tauri má vlastní drag-drop
+zapnutý (výchozí stav), takže webview žádný HTML5 `drop` nedostane — poslouchá se
+`getCurrentWebview().onDragDropEvent` a čtou se cesty, které přijdou v události.
+Ne-`.pgn` soubory se zahodí s hláškou. Posluchač volá handler přes ref: registruje
+se při otevření dialogu, kdy `targets` jsou ještě prázdné, a bez refu by párování
+běželo proti prázdnému seznamu.
+
+### Šířka stromu
+
+Strom je hluboký (`11. kolo` → `Sedlčany A – Klokani z Kralup` → osm partií), takže
+jedna napevno daná šířka nevyhoví. Dělicí čára mezi stromem a seznamem partií se
+**táhne myší** (180–720 px, dvojklik = výchozích 320), hodnota se drží v
+`localStorage` globálně — je to zvyk uživatele, ne vlastnost soutěže. Táhne se přes
+`pointermove` na `window`, ne na tom 5px proužku: kurzor ho při rychlém tahu předběhne
+a drag by se ztratil. Šipky ←/→ dělají totéž z klávesnice po 16 px.
 
 ## Okrajové případy
 

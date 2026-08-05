@@ -163,7 +163,13 @@ describe("CompetitionLabelsDialog", () => {
     renderDialog();
     await screen.findByDisplayValue("KSA SSS 25/26");
 
-    // Empty fields mean "use the default", and the preview says what that produces.
+    // The fields carry the default as editable text, and preview what it produces.
+    expect((screen.getByLabelText("Event tag") as HTMLInputElement).value).toBe(
+      "{zkratka} {domaci}-{hoste}",
+    );
+    expect((screen.getByLabelText("Round file name") as HTMLInputElement).value).toBe(
+      "{soutez}_{kolo}",
+    );
     expect(screen.getByText("Preview: KSA SSS 25/26 T1-T12")).toBeTruthy();
     expect(screen.getByText("Preview: ksa_01.pgn")).toBeTruthy();
 
@@ -177,7 +183,7 @@ describe("CompetitionLabelsDialog", () => {
     expect(screen.getByText("Preview: KSA-kolo01_SSCR.pgn")).toBeTruthy();
   });
 
-  it("stores the patterns, and an emptied one resets to the default", async () => {
+  it("stores the patterns; the default and an emptied field both mean none", async () => {
     seed(true);
     const onSaved = vi.fn();
     renderDialog(onSaved);
@@ -193,10 +199,15 @@ describe("CompetitionLabelsDialog", () => {
       filePattern: null,
     });
 
+    // Reopened, the field shows the stored pattern; the reset button puts the
+    // default back, and saving that stores null again rather than the literal text.
     cleanup();
     renderDialog(onSaved);
     await screen.findByDisplayValue("{zkratka} {domaci} vs {hoste}");
-    fireEvent.change(screen.getByLabelText("Event tag"), { target: { value: "  " } });
+    fireEvent.click(screen.getByLabelText("Restore the default"));
+    expect((screen.getByLabelText("Event tag") as HTMLInputElement).value).toBe(
+      "{zkratka} {domaci}-{hoste}",
+    );
     fireEvent.click(screen.getByText("Save"));
     await vi.waitFor(() =>
       expect(parseManifest(files.get(manifestPathFor(PGN_PATH))!)!.options.eventPattern).toBeNull(),

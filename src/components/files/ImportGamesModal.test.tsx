@@ -11,7 +11,7 @@ import { initReactI18next } from "react-i18next";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import enUS from "@/translation/en-US.json";
 
-const { TARGET } = vi.hoisted(() => ({
+const { TARGET, drop, fileTexts } = vi.hoisted(() => ({
   TARGET: `[Event "Cup"]
 [Round "1.1"]
 [White "Kovar, Jiri"]
@@ -19,6 +19,10 @@ const { TARGET } = vi.hoisted(() => ({
 [Result "*"]
 
 *`,
+  // The registered Tauri drag-drop listener, so a test can fire a real drop.
+  drop: { fire: null as null | ((payload: unknown) => void) },
+  // path → contents, for readTextFile.
+  fileTexts: new Map<string, string>(),
 }));
 
 // Tauri boundary — the component reads existing games through commands.readGames.
@@ -26,11 +30,25 @@ vi.mock("@/bindings", () => ({
   commands: { readGames: vi.fn(async () => ({ status: "ok", data: [TARGET] })) },
 }));
 vi.mock("@tauri-apps/plugin-dialog", () => ({ open: vi.fn(), save: vi.fn() }));
-vi.mock("@tauri-apps/plugin-fs", () => ({ readTextFile: vi.fn(), writeTextFile: vi.fn() }));
+vi.mock("@tauri-apps/plugin-fs", () => ({
+  readTextFile: vi.fn(async (p: string) => fileTexts.get(p) ?? ""),
+  writeTextFile: vi.fn(),
+}));
+vi.mock("@tauri-apps/api/webview", () => ({
+  getCurrentWebview: () => ({
+    onDragDropEvent: async (handler: (e: { payload: unknown }) => void) => {
+      drop.fire = (payload) => handler({ payload });
+      return () => {
+        drop.fire = null;
+      };
+    },
+  }),
+}));
 vi.mock("@tauri-apps/plugin-log", () => ({ error: vi.fn() }));
 vi.mock("@mantine/notifications", () => ({ notifications: { show: vi.fn() } }));
 
 // The dialog is imported after the mocks are registered.
+import { open as openDialog } from "@tauri-apps/plugin-dialog";
 import { ImportGamesModal } from "./PgnToolsDialogs";
 
 const FILE = {
@@ -87,7 +105,23 @@ beforeAll(async () => {
   });
 });
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  fileTexts.clear();
+  drop.fire = null;
+  vi.mocked(openDialog).mockReset();
+});
+
+/** One game per file, the way captains actually send them. */
+function seedFiles(...names: string[]) {
+  names.forEach((name, i) => {
+    fileTexts.set(
+      name,
+      `[Event "Cup"]\n[Round "1.${i + 1}"]\n[White "P${i}, A"]\n[Black "Q${i}, B"]\n[Result "1-0"]\n\n1. e4 e5 1-0`,
+    );
+  });
+  return names;
+}
 
 function renderModal() {
   return render(
@@ -118,6 +152,33 @@ describe("ImportGamesModal", () => {
     // The exact bug the user hit: with one leftover import, the append notice must
     // be resolved copy — not the raw "PgnTools.Import.WillAppend" key.
     expect(screen.getByText(/will be appended/i)).toBeTruthy();
+    expect(document.body.textContent).not.toMatch(/PgnTools\./);
+  });
+
+  it("loads the games of every picked file at once", async () => {
+    const picked = seedFiles("/in/board1.pgn", "/in/board2.pgn", "/in/board3.pgn");
+    vi.mocked(openDialog).mockResolvedValue(picked as never);
+    renderModal();
+    await screen.findByText("Import moves");
+
+    fireEvent.click(screen.getByText("Choose files…"));
+
+    // Three files, one game each → three games offered, and the count is stated.
+    expect(await screen.findByText("Loaded from 3 files.")).toBeTruthy();
+    // One of them pairs with the single target; the other two are appended — which
+    // only adds up if all three files were read.
+    expect(screen.getByText(/2 imported games match no existing game/i)).toBeTruthy();
+  });
+
+  it("takes dropped files, ignoring anything that is not a .pgn", async () => {
+    seedFiles("/in/board1.pgn", "/in/board2.pgn");
+    renderModal();
+    await screen.findByText("Import moves");
+
+    await vi.waitFor(() => expect(drop.fire).toBeTruthy());
+    drop.fire?.({ type: "drop", paths: ["/in/board1.pgn", "/in/notes.txt", "/in/board2.pgn"] });
+
+    expect(await screen.findByText("Loaded from 2 files.")).toBeTruthy();
     expect(document.body.textContent).not.toMatch(/PgnTools\./);
   });
 });

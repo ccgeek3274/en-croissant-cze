@@ -7,6 +7,7 @@
 // publish an incomplete round on purpose.
 
 import {
+  ActionIcon,
   Alert,
   Button,
   Checkbox,
@@ -20,8 +21,10 @@ import {
   Table,
   Text,
   TextInput,
+  Tooltip,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
+import { IconRestore } from "@tabler/icons-react";
 import { save } from "@tauri-apps/plugin-dialog";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { useEffect, useMemo, useState } from "react";
@@ -53,6 +56,32 @@ import { loadCompetition, saveCompetition } from "@/utils/sscr/storage";
 
 // ── Zkratky soutěže ─────────────────────────────────────────────────────────
 
+/** Put the default back — the field is editable text now, so there has to be a way
+ *  home that isn't "remember what it used to say". */
+function ResetPattern({ hidden, onReset }: { hidden: boolean; onReset: () => void }) {
+  const { t } = useTranslation();
+  if (hidden) return null;
+  return (
+    <Tooltip label={t("Competition.Labels.ResetPattern")}>
+      <ActionIcon
+        size="sm"
+        variant="subtle"
+        color="gray"
+        aria-label={t("Competition.Labels.ResetPattern")}
+        onClick={onReset}
+      >
+        <IconRestore size="0.9rem" />
+      </ActionIcon>
+    </Tooltip>
+  );
+}
+
+/** What a pattern field saves as: null whenever it says the same as the default. */
+function storedPattern(value: string, fallback: string): string | null {
+  const v = value.trim();
+  return v === "" || v === fallback ? null : v;
+}
+
 export function CompetitionLabelsDialog({
   opened,
   onClose,
@@ -83,10 +112,12 @@ export function CompetitionLabelsDialog({
       setPrefix(
         m.options.eventPrefix ?? defaultEventPrefix(m.competition.name, m.competition.year),
       );
-      // Empty field = "use the default", which is what an empty pattern means on
-      // save too — so the placeholder can show the default without pre-filling it.
-      setEventPattern(m.options.eventPattern ?? "");
-      setFilePattern(m.options.filePattern ?? "");
+      // Pre-filled with the default rather than shown as a placeholder: the leader
+      // edits their own convention starting from the working one, instead of having
+      // to retype it. Saving a value equal to the default stores null again, so the
+      // manifest still says "no custom pattern".
+      setEventPattern(m.options.eventPattern ?? DEFAULT_EVENT_PATTERN);
+      setFilePattern(m.options.filePattern ?? DEFAULT_FILE_PATTERN);
       // Resolved, not stored: a competition imported before the directory existed has
       // nothing on file, and the leader should still see what the export will write.
       const resolved = resolveDirectory(m);
@@ -153,10 +184,10 @@ export function CompetitionLabelsDialog({
         options: {
           ...loaded.manifest.options,
           eventPrefix: prefix.trim() || null,
-          // An emptied pattern resets to the default rather than producing a blank
-          // Event / file name.
-          eventPattern: eventPattern.trim() || null,
-          filePattern: filePattern.trim() || null,
+          // Emptied, or left at the default: both mean "no custom pattern". An empty
+          // one must never be stored — it would compose a blank Event / file name.
+          eventPattern: storedPattern(eventPattern, DEFAULT_EVENT_PATTERN),
+          filePattern: storedPattern(filePattern, DEFAULT_FILE_PATTERN),
         },
       };
       await saveCompetition(pgnPath, next, loaded.games);
@@ -201,6 +232,12 @@ export function CompetitionLabelsDialog({
           description={`${t("Competition.Labels.Preview")}: ${preview.event}`}
           value={eventPattern}
           onChange={(e) => setEventPattern(e.currentTarget.value)}
+          rightSection={
+            <ResetPattern
+              hidden={eventPattern === DEFAULT_EVENT_PATTERN}
+              onReset={() => setEventPattern(DEFAULT_EVENT_PATTERN)}
+            />
+          }
         />
         <TextInput
           label={t("Competition.Labels.FilePattern")}
@@ -208,6 +245,12 @@ export function CompetitionLabelsDialog({
           description={`${t("Competition.Labels.Preview")}: ${preview.file}.pgn`}
           value={filePattern}
           onChange={(e) => setFilePattern(e.currentTarget.value)}
+          rightSection={
+            <ResetPattern
+              hidden={filePattern === DEFAULT_FILE_PATTERN}
+              onReset={() => setFilePattern(DEFAULT_FILE_PATTERN)}
+            />
+          }
         />
 
         <Group justify="space-between">
