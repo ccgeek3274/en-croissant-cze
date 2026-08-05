@@ -111,6 +111,19 @@ describe("CompetitionView", () => {
     expect(document.body.textContent).not.toMatch(/Competition\.[A-Z]/);
   });
 
+  // Layout regression, verified in a real browser: Mantine's Group wraps by default,
+  // and in a multi-line flex container `align-items: stretch` sizes items to their
+  // own line — so both panes grew to their content (a 4600px tree inside a 600px
+  // pane) and neither ScrollArea had anything to clip. jsdom computes no layout, so
+  // the guard is the prop itself, which is the thing that must not be dropped.
+  it("keeps the two panes on one flex line, or nothing scrolls", async () => {
+    const { container } = renderView();
+    await screen.findByText("Whole competition");
+    const panes = container.querySelector<HTMLElement>('[style*="--group-wrap"][style*="stretch"]');
+    expect(panes).toBeTruthy();
+    expect(panes?.getAttribute("style")).toContain("--group-wrap: nowrap");
+  });
+
   it("expands round → match → game and labels each level", async () => {
     renderView();
     await screen.findByText("Whole competition");

@@ -409,7 +409,19 @@ export function CompetitionView({
       </Group>
       <Divider />
 
-      <Group flex={1} gap={0} align="stretch" style={{ overflow: "hidden", minHeight: 0 }}>
+      {/* `wrap="nowrap"` is load-bearing, not cosmetic. Mantine's Group wraps by
+          default, and in a *multi-line* flex container `align-items: stretch` sizes
+          items to their line, whose height is the tallest item — so the tree and the
+          game list grew to their content (4000px inside a 600px pane) and their
+          ScrollAreas had nothing to clip. With nowrap the single line is the
+          container's own height, and both panes scroll. */}
+      <Group
+        flex={1}
+        gap={0}
+        align="stretch"
+        wrap="nowrap"
+        style={{ overflow: "hidden", minHeight: 0 }}
+      >
         {/* ── tree ─────────────────────────────────────────────────────── */}
         <Paper w={treeWidth} style={{ overflow: "hidden", flex: "0 0 auto" }}>
           <ScrollArea h="100%" type="auto">

@@ -430,7 +430,18 @@ jedna napevno daná šířka nevyhoví. Dělicí čára mezi stromem a seznamem 
 `pointermove` na `window`, ne na tom 5px proužku: kurzor ho při rychlém tahu předběhne
 a drag by se ztratil. Šipky ←/→ dělají totéž z klávesnice po 16 px.
 
-Svislé posouvání stromu nešlo, dokud se neopravila **výška karty** v `BoardsPage.tsx`.
+Svislé posouvání mají obě části na starosti `ScrollArea`, ale dlouho nefungovalo ani
+v jedné — kvůli dvěma nezávislým chybám v řetězci výšek.
+
+Zaprvé **`Group` se defaultně zalamuje**. Ve víceřádkovém flex kontejneru se
+`align-items: stretch` vztahuje k _řádku_, jehož výška je dána nejvyšší položkou —
+strom i seznam partií si tedy nastavily výšku podle svého obsahu (4600px strom v 600px
+panelu) a jejich `ScrollArea` neměly co oříznout. `wrap="nowrap"` udělá z obou jediný
+řádek, jehož výška je výška kontejneru; teprve pak se ořezává a scrolluje. Je to tedy
+**nosný prop, ne kosmetika** — hlídá ho test v `CompetitionView.test.tsx` (jsdom výšky
+nepočítá, takže se kontroluje samotný prop).
+
+Zadruhé **výška karty** v `BoardsPage.tsx`.
 `Tabs.Panel` měl `h="100%"`, což je 100 % celého sloupce karet — panel tedy začínal
 pod lištou karet a končil právě o tu lištu **pod spodním okrajem okna**. Šachovnici
 to nevadí (Mosaic se pozicuje sám), ale cokoli, co scrolluje, mělo viewport zasahující
