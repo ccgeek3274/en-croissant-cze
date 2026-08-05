@@ -17,29 +17,30 @@
 // Nothing here mutates the database; it is a projection, computed at export time.
 
 import { removeDiacritics } from "@/utils/pgn/cleanup";
+import { STANDARD_TAGS } from "@/utils/pgn/export";
+import {
+    buildEventFromPattern,
+    buildFileBaseFromPattern,
+    FILE_BASE_FALLBACK,
+    sanitizeFileBase,
+} from "@/utils/pgn/namePattern";
+import { toPgnName } from "@/utils/pgn/names";
 import { getTag, type PgnTags, serializeGame, splitGame } from "@/utils/pgn/tags";
 import { compAbbr, seasonAbbr } from "@/utils/chesscz/teamShorten";
 import { parseRoundTag } from "./skeleton";
 import { hasMoves, isUninformative } from "./sync";
+import type { CompetitionNode } from "./tree";
 
-/** Tag set and order of the ŠSČR profile, matching the reference bulletin. */
-export const SSCR_TAGS = [
-    "Event",
-    "Site",
-    "Date",
-    "Round",
-    "White",
-    "Black",
-    "Result",
-    "ECO",
-    "WhiteElo",
-    "BlackElo",
-    "PlyCount",
-];
+/** Tag set and order of the ŠSČR profile, matching the reference bulletin — which
+ *  turned out to be exactly the general "standard" subset, so it is that one list. */
+export const SSCR_TAGS = STANDARD_TAGS;
 
 export type SscrExportOptions = {
     /** Competition abbreviation that opens every Event ("KSA SSS 25/26"). */
     prefix: string;
+    /** Pattern the Event tag is composed from; null/empty = the default
+     *  "{zkratka} {domaci}-{hoste}". */
+    eventPattern?: string | null;
     /** Full team name → short label. Unknown names fall through unchanged. */
     labelByTeamName: Map<string, string>;
     /** Full team name → venue. The *home* team's entry becomes `Site`; a team with
@@ -68,9 +69,77 @@ export function defaultEventPrefix(compName: string, year: number | null): strin
     return [abbr, season].filter(Boolean).join(" ").trim();
 }
 
-/** "<prefix> <home>-<away>", diacritics stripped like the rest of the profile. */
-export function buildSscrEvent(prefix: string, home: string, away: string): string {
-    return `${prefix} ${home}-${away}`.trim().replace(/\s+/g, " ");
+/** The `Event` tag of one match, composed from the competition's pattern. The
+ *  default pattern is "{zkratka} {domaci}-{hoste}", i.e. the format the reference
+ *  bulletin uses; `{kolo}` is offered too, for leaders who number their events. */
+export function buildSscrEvent(
+    opts: Pick<SscrExportOptions, "prefix" | "eventPattern">,
+    home: string,
+    away: string,
+    roundNr?: number | null,
+): string {
+    return buildEventFromPattern(opts.eventPattern, {
+        zkratka: opts.prefix,
+        domaci: home,
+        hoste: away,
+        kolo: roundNr ?? null,
+    });
+}
+
+// ── file names ──────────────────────────────────────────────────────────────
+// Which name an export gets depends on what is being exported, and the levels map
+// onto pgn-base's containers one for one: a round is named from the editable
+// pattern ("ksa_01"), a match after its own Event, a single game after its players,
+// and the whole competition after its file. Everything is finally run through
+// `sanitizeFileBase`, so the leader never gets "Krajsk__soute___A____3__kolo.pgn".
+
+export type FileBaseInput = Pick<SscrExportOptions, "prefix" | "eventPattern"> & {
+    filePattern?: string | null;
+    /** Team labels, for the match-level name. Omit to use the full names. */
+    labelByTeamName?: Map<string, string>;
+};
+
+/** File-name base (no extension) for exporting one node of the competition tree.
+ *  `scopeId` is the tree's own id: "competition", "3", "3.2" or "3.2.1". */
+export function exportFileBase(
+    scopeId: string,
+    tree: CompetitionNode,
+    opts: FileBaseInput,
+    fallback: string,
+): string {
+    if (scopeId === tree.id) return sanitizeFileBase(fallback) || FILE_BASE_FALLBACK;
+
+    for (const round of tree.rounds) {
+        if (round.id === scopeId) {
+            return buildFileBaseFromPattern(opts.filePattern, {
+                zkratka: opts.prefix,
+                kolo: round.roundNr,
+            });
+        }
+        for (const match of round.matches) {
+            if (match.id === scopeId) {
+                const labels = opts.labelByTeamName ?? new Map<string, string>();
+                const event = buildSscrEvent(
+                    opts,
+                    labels.get(match.homeTeam) ?? match.homeTeam,
+                    labels.get(match.awayTeam) ?? match.awayTeam,
+                    match.roundNr,
+                );
+                return sanitizeFileBase(event) || FILE_BASE_FALLBACK;
+            }
+            for (const game of match.games) {
+                if (game.id === scopeId) return playerFileBase(game.white, game.black);
+            }
+        }
+    }
+    for (const stray of tree.strays) {
+        if (stray.id === scopeId) return playerFileBase(stray.white, stray.black);
+    }
+    return sanitizeFileBase(fallback) || FILE_BASE_FALLBACK;
+}
+
+function playerFileBase(white: string, black: string): string {
+    return sanitizeFileBase(`${white}_${black}`) || FILE_BASE_FALLBACK;
 }
 
 export type ExportedGame = {
@@ -133,9 +202,10 @@ export function toSscrGame(gameText: string, opts: SscrExportOptions): ExportedG
     if (opts.dropEmptyForfeits && facts.emptyForfeit) return null;
 
     const event = buildSscrEvent(
-        opts.prefix,
+        opts,
         label(facts.homeTeam, opts.labelByTeamName),
         label(facts.awayTeam, opts.labelByTeamName),
+        facts.roundNr,
     );
 
     const order: string[] = [];
@@ -150,7 +220,12 @@ export function toSscrGame(gameText: string, opts: SscrExportOptions): ExportedG
                     site(facts.homeTeam, opts.siteByTeamName)
                   : tag === "Round"
                     ? `${facts.roundNr}.${facts.boardNr}`
-                    : (getTag(facts.tags, tag) ?? "");
+                    : tag === "White" || tag === "Black"
+                      ? // "Příjmení, Jméno" — the spec form. Applied here rather than
+                        // in storage, so games imported before the rule still export
+                        // right; the placeholder boards ("Domácí 3") stay untouched.
+                        toPgnName(getTag(facts.tags, tag))
+                      : (getTag(facts.tags, tag) ?? "");
         // Only the Seven Tag Roster is mandatory; the rest is skipped when empty,
         // exactly as the reference bulletin does.
         if (value === "" && !["Event", "Date", "Round", "White", "Black", "Result"].includes(tag)) {
@@ -243,9 +318,10 @@ export function exportPreflight(games: string[], opts: SscrExportOptions): Expor
 
         const matchId = `${facts.roundNr}.${getTag(facts.tags, "Round")?.split(".")[1] ?? "?"}`;
         const event = buildSscrEvent(
-            opts.prefix,
+            opts,
             label(facts.homeTeam, opts.labelByTeamName),
             label(facts.awayTeam, opts.labelByTeamName),
+            facts.roundNr,
         );
         const entry = byMatch.get(matchId);
         if (entry) entry.moves += moves ? 1 : 0;

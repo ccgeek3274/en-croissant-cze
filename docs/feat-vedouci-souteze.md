@@ -239,12 +239,12 @@ Drží to, co není per-partie a co by se z PGN nedalo spolehlivě rekonstruovat
 
 ## Co je hotové
 
-| Část                    | Kde                                                                                                                    |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| **1. Datová vrstva**    | `src/utils/sscr/{competitionXml,names,skeleton,manifest}.ts` — parser, dělení jmen, generátor kostry, schéma manifestu |
-| **2. Import + re-sync** | `sync.ts` + `storage.ts` + `components/files/CompetitionDialogs.tsx`                                                   |
-| **3. GUI stromu**       | `tree.ts` + `components/files/CompetitionView.tsx`; nástroje berou `ToolScope`                                         |
-| **4. Export ŠSČR**      | `export.ts` + `directory.ts` + `components/files/SscrExportDialogs.tsx`                                                |
+| Část                    | Kde                                                                                                                                     |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **1. Datová vrstva**    | `src/utils/sscr/{competitionXml,skeleton,manifest}.ts` + `utils/pgn/names.ts` — parser, dělení jmen, generátor kostry, schéma manifestu |
+| **2. Import + re-sync** | `sync.ts` + `storage.ts` + `components/files/CompetitionDialogs.tsx`                                                                    |
+| **3. GUI stromu**       | `tree.ts` + `components/files/CompetitionView.tsx`; nástroje berou `ToolScope`                                                          |
+| **4. Export ŠSČR**      | `export.ts` + `directory.ts` + `components/files/SscrExportDialogs.tsx`                                                                 |
 
 ### Záruky re-syncu
 
@@ -322,6 +322,71 @@ v dialogu vidí přesně to, co export zapíše.
 Adresář se uplatní **výhradně při exportu** — interní PGN drží plné názvy. `Site` se
 bere podle **domácího družstva** zápasu (tedy ne z uloženého tagu `Site`, který je
 zmrazený z importu, kdežto adresář vedoucí průběžně udržuje).
+
+### Tagy, jména a vzory názvů (srovnáno s pgn-base, 2026-08-05)
+
+Tři věci, kterými se export dorovnal na aktuální stav pgn-base
+(`docs/feat-player-name-comma.md`, `docs/feat-name-patterns.md`,
+`docs/feat-export-options-and-standard-columns.md`).
+
+**1. `White`/`Black` = „Příjmení, Jméno“ — jedna funkce, dvě místa.**
+`toPgnName()` se přestěhovala z `sscr/names.ts` do `utils/pgn/names.ts`, protože už
+není jen o XML: běží **na vstupu** (kostra z XML, `api.chess.cz` přes
+`toPgnPlayerName`, který je teď jen alias — dřív to byla druhá, horší kopie téhož
+pravidla) **i na výstupu** (`toSscrGame` a `buildExportGame`). Import ji tedy dělá
+kvůli tomu, co vidí uživatel v GUI, export kvůli tomu, co skutečně odejde: databáze
+založená dřív nebo ručně upravená dostane čárku až tady. **Data se nemigrují**,
+funkce je idempotentní.
+
+Nově má guard na číslici, který v pgn-base je a v en-croissant chyběl — bez něj by
+export ze zástupné šachovnice `Domácí 3` udělal `Domácí, 3`. Na vstupu to nevadilo
+(jela jen nad soupiskou), na výstupu jde o všechny partie.
+
+Rozdíl proti pgn-base: en-croissant otevírá **i cizí PGN**, kde jméno může být
+v západním pořadí (`Magnus Carlsen`), a to by pravidlo rozbilo. V obecném dialogu
+`Export PGN` je proto zaškrtávátko, **předvolené podle typu souboru** (zapnuté pro
+soutěž/zápas, vypnuté jinde); profil ŠSČR normalizuje vždy — tam je zdroj dat známý.
+
+**2. Standardní sada tagů je výchozí.** `STANDARD_TAGS` = STR + `ECO`, `WhiteElo`,
+`BlackElo`, `PlyCount`, tedy přesně sada profilu ŠSČR (`SSCR_TAGS` je teď ta samá
+konstanta) i `headers=standard` v pgn-base. Vypadly z ní `WhiteTeam`/`BlackTeam` —
+družstva jsou naše účetnictví, čtenář bulletinu je nepotřebuje a v referenčním
+bulletinu nejsou. Dialog startuje na „Standardní“ místo „Plné“; **ruční výběr tagů
+zůstává** a je pořád nad presetem (odškrtnutí ho nepřepíše).
+
+**3. `Event` i název souboru se skládají podle vzorů.** `utils/pgn/namePattern.ts`
+(port z pgn-base), uložené per soutěž v `manifest.options.{eventPattern,filePattern}`
+(`null` = výchozí). Výchozí vzory **přesně reprodukují** dosavadní formát, takže bez
+zásahu se nic nemění:
+
+|                 | výchozí vzor                 | výsledek                             |
+| --------------- | ---------------------------- | ------------------------------------ |
+| tag `Event`     | `{zkratka} {domaci}-{hoste}` | `KSA SSS 25/26 Sedlcany A-Kralupy B` |
+| soubor PGN kola | `{soutez}_{kolo}`            | `ksa_01.pgn`                         |
+
+Zástupné výrazy: `{zkratka}` (jak je uložená), `{soutez}` (první slovo, malými, ASCII),
+`{kolo}` (dvojmístné), `{domaci}`, `{hoste}`. Neznámý výraz zůstane ve výstupu tak,
+jak je, aby byl překlep vidět v náhledu. Edituje se v „Zkratky soutěže“ → sekce
+**Vzory názvů**, s živým náhledem na prvním zápase prvního kola; prázdné pole = reset
+na výchozí. Formát `Event` tím má **jediné místo** v kódu — `composeEventName`
+(import zápasu z chess.cz) volá týž `buildEventFromPattern`, jen bez možnosti vzor
+změnit, protože tam žádný manifest není.
+
+Název souboru dostal navíc **úroveň stromu** (`exportFileBase`), což je mapování
+pgn-basových kontejnerů na náš strom:
+
+| scope  | název                  | odpovídá v pgn-base |
+| ------ | ---------------------- | ------------------- |
+| soutěž | název souboru soutěže  | sezóna              |
+| kolo   | vzor `{soutez}_{kolo}` | kolo                |
+| zápas  | vlastní `Event`        | zápasová DB         |
+| partie | `Bily_Cerny`           | jedna partie        |
+
+Všechno prochází `sanitizeFileBase` (diakritika → ASCII, jen `[A-Za-z0-9_-]`), takže
+z `Krajská soutěž 'A' – 3. kolo` je `Krajska_soutez_A_3_kolo.pgn`, ne mojibake.
+Dialog exportu ŠSČR ukazuje výsledný `Event` **z první skutečně exportované partie**
+(dřív zástupné `PREFIX A-B`) a název souboru, takže špatný vzor je vidět dřív, než
+soubor vznikne.
 
 ### Nástroje se scopem
 

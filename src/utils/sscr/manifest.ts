@@ -70,6 +70,12 @@ export const competitionManifestSchema = z.object({
         eloSource: z.enum(["fide", "cze"]),
         /** Event-tag prefix for the ŠSČR export ("KSA SSS 25/26"); null = derive. */
         eventPrefix: z.string().nullable(),
+        /** Pattern the exported `Event` tag is composed from; null = the default
+         *  "{zkratka} {domaci}-{hoste}". Defaulted, not required, so a manifest
+         *  written before patterns existed still parses. */
+        eventPattern: z.string().nullable().default(null),
+        /** Pattern for the file name of an exported round ("{soutez}_{kolo}"). */
+        filePattern: z.string().nullable().default(null),
     }),
 });
 
@@ -133,6 +139,8 @@ export function buildManifest(
         options: {
             eloSource: options?.eloSource ?? "fide",
             eventPrefix: options?.eventPrefix ?? null,
+            eventPattern: options?.eventPattern ?? null,
+            filePattern: options?.filePattern ?? null,
         },
     };
 }

@@ -28,12 +28,26 @@ describe("buildExportGame", () => {
         expect(out).toContain("{a solid reply}");
     });
 
-    it("standard headers keep the standard subset incl. team tags", () => {
+    it("standard headers keep the STR plus ECO/Elo/PlyCount, and nothing else", () => {
         const out = buildExportGame(GAME, { ...keepAll, headers: "standard" });
         expect(out).toContain('[WhiteElo "2100"]');
         expect(out).toContain('[ECO "C50"]');
-        expect(out).toContain('[WhiteTeam "Praha"]');
-        expect(out).toContain('[BlackTeam "Brno"]');
+        // Team tags are ours, not the reader's — the ŠSČR profile drops them too.
+        expect(out).not.toContain("WhiteTeam");
+        expect(out).not.toContain("BlackTeam");
+    });
+
+    it("normalizeNames writes the PGN surname comma, and only then", () => {
+        const raw = GAME.replace('[White "Kovář, Jiří"]', '[White "Kovář Jiří"]');
+        expect(buildExportGame(raw, keepAll)).toContain('[White "Kovář Jiří"]');
+        const out = buildExportGame(raw, { ...keepAll, normalizeNames: true });
+        expect(out).toContain('[White "Kovář, Jiří"]');
+        // Already-correct values and board placeholders are left exactly as they are.
+        expect(out).toContain('[Black "Novák, Petr"]');
+        const scaffold = GAME.replace('[White "Kovář, Jiří"]', '[White "Domácí 3"]');
+        expect(buildExportGame(scaffold, { ...keepAll, normalizeNames: true })).toContain(
+            '[White "Domácí 3"]',
+        );
     });
 
     it("keepTags selects exactly the given tags, in order, skipping absent ones", () => {

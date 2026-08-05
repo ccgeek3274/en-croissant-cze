@@ -6,6 +6,7 @@ import {
     buildSscrExport,
     DEFAULT_EXPORT_OPTIONS,
     defaultEventPrefix,
+    exportFileBase,
     exportPreflight,
     readGameFacts,
     type SscrExportOptions,
@@ -13,6 +14,7 @@ import {
     toSscrGame,
 } from "./export";
 import { buildSkeleton, skeletonToPgn } from "./skeleton";
+import { buildTree } from "./tree";
 
 const LABELS = new Map([
     ["ŠK KDJS Sedlčany A", "Sedlčany A"],
@@ -64,13 +66,23 @@ describe("defaultEventPrefix", () => {
 
 describe("buildSscrEvent", () => {
     it("joins prefix and the two labels the way the bulletin does", () => {
-        expect(buildSscrEvent("KSA SSS 25/26", "Sedlcany A", "Kralupy B")).toBe(
+        expect(buildSscrEvent({ prefix: "KSA SSS 25/26" }, "Sedlcany A", "Kralupy B")).toBe(
             "KSA SSS 25/26 Sedlcany A-Kralupy B",
         );
     });
 
     it("collapses stray whitespace", () => {
-        expect(buildSscrEvent(" KSA  ", "A", "B")).toBe("KSA A-B");
+        expect(buildSscrEvent({ prefix: " KSA  " }, "A", "B")).toBe("KSA A-B");
+    });
+
+    it("follows the competition's own pattern when it has one", () => {
+        const opts = {
+            prefix: "KSA SSS 25/26",
+            eventPattern: "{zkratka} / {kolo}. kolo / {domaci} vs {hoste}",
+        };
+        expect(buildSscrEvent(opts, "Sedlcany A", "Kralupy B", 3)).toBe(
+            "KSA SSS 25/26 / 03. kolo / Sedlcany A vs Kralupy B",
+        );
     });
 });
 
@@ -196,6 +208,55 @@ describe("toSscrGame", () => {
         const { tags } = splitGame(toSscrGame(find(games(), "1.2.1"), OPTS)!.text);
         // Team 2 (Dubno A) is labelled, team 11 (Hostivice A) is too; team 5 is not.
         expect(tags.map.Event.startsWith("KSA SSS 25/26 ")).toBe(true);
+    });
+
+    it("adds the PGN surname comma to a name stored without one", () => {
+        // A database filled before the rule existed, or edited by hand: the comma is
+        // applied at export, so nothing on disk has to be migrated.
+        const stored = find(games(), "1.1.1").replace(
+            '[White "Šimák, Roman"]',
+            '[White "Šimák Roman"]',
+        );
+        expect(splitGame(toSscrGame(stored, OPTS)!.text).tags.map.White).toBe("Simak, Roman");
+    });
+
+    it("never commas a placeholder board", () => {
+        const stored = find(games(), "10.1.1").replace(/\[White "[^"]*"\]/, '[White "Domácí 1"]');
+        expect(splitGame(toSscrGame(stored, OPTS)!.text).tags.map.White).toBe("Domaci 1");
+    });
+
+    it("composes Event from the competition's own pattern", () => {
+        const opts = { ...OPTS, eventPattern: "{zkratka} {kolo} {domaci}-{hoste}" };
+        expect(splitGame(toSscrGame(find(games(), "1.1.1"), opts)!.text).tags.map.Event).toBe(
+            "KSA SSS 25/26 01 Sedlcany A-Kralupy B",
+        );
+    });
+});
+
+describe("exportFileBase", () => {
+    const tree = () => buildTree(games());
+    const opts = { prefix: "KSA SSS 25/26", labelByTeamName: LABELS };
+
+    it("names the whole competition after its file", () => {
+        expect(exportFileBase("competition", tree(), opts, "KSA SSS 25/26")).toBe("KSA_SSS_25_26");
+    });
+
+    it("names a round from the file pattern", () => {
+        // The fixture carries rounds 1, 6, 8 and 10.
+        expect(exportFileBase("1", tree(), opts, "x")).toBe("ksa_01");
+        expect(exportFileBase("10", tree(), opts, "x")).toBe("ksa_10");
+        expect(
+            exportFileBase("6", tree(), { ...opts, filePattern: "{soutez}-kolo{kolo}" }, "x"),
+        ).toBe("ksa-kolo06");
+    });
+
+    it("names a match after its Event and a game after its players", () => {
+        expect(exportFileBase("1.1", tree(), opts, "x")).toBe("KSA_SSS_25_26_Sedlcany_A-Kralupy_B");
+        expect(exportFileBase("1.1.1", tree(), opts, "x")).toBe("Simak_Roman_Hanl_Frantisek");
+    });
+
+    it("falls back to the file name for a node it cannot find", () => {
+        expect(exportFileBase("99.9", tree(), opts, "Krajská soutěž A")).toBe("Krajska_soutez_A");
     });
 });
 

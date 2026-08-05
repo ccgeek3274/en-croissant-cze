@@ -1,10 +1,11 @@
 // PGN export with pgn-base-style options, applied to any database of games.
 //
-// Three orthogonal axes, exactly like pgn-base's buildPgn, plus the Kontrola
+// Four orthogonal axes, exactly like pgn-base's buildPgn, plus the Kontrola
 // cleanup toggles so an export can be as clean as a "Kontrola"-processed file:
-//   - headers:        "all" (keep every tag, original order) | "standard" (STR subset)
+//   - headers:        "standard" (STR subset, the default) | "all" (every tag, original order)
 //   - movetext:       keep verbatim | clean (per CleanupOptions)
 //   - diacritics:     keep | strip (whole output, export-time only)
+//   - player names:   keep verbatim | "Příjmení, Jméno" (the PGN spec form)
 //
 // Storage is always full/rich; these are export-time filters — nothing here mutates
 // the database.
@@ -15,6 +16,7 @@ import {
     removeDiacritics,
     syncMovetextResult,
 } from "./cleanup";
+import { toPgnName } from "./names";
 import { getTag, type PgnTags, serializeGame, splitGame } from "./tags";
 
 export type HeaderMode = "all" | "standard";
@@ -28,14 +30,23 @@ export type ExportOptions = {
     /** null = keep movetext verbatim; otherwise clean per these toggles. */
     cleanup: CleanupOptions | null;
     stripDiacritics: boolean;
+    /** Write `White`/`Black` as "Příjmení, Jméno". Off by default: this is the right
+     *  thing for a Czech league database (every source there is surname-first, no
+     *  comma), but a foreign PGN may carry a Western-order name that the rule would
+     *  mangle. The dialogs turn it on for competition/match files. */
+    normalizeNames?: boolean;
 };
 
 // The Seven Tag Roster, always present in a valid PGN (filled with defaults below).
 const SEVEN_TAG_ROSTER = ["Event", "Site", "Date", "Round", "White", "Black", "Result"];
 
-// The "standard" export subset: STR plus the widely-understood optional tags and the
-// team tags used by ŠSČR match files. Also the default pre-selection in the export
-// dialog's tag picker; everything else is dropped in "standard" mode.
+// The "standard" export subset — and the default: STR plus the four optional tags
+// every reader understands. This is exactly the tag set of the ŠSČR profile
+// (`utils/sscr/export.ts` re-exports it as `SSCR_TAGS`) and of pgn-base's
+// `headers=standard`, so "standard" means the same thing in all three places.
+// Everything else — team tags, ids, ratings other than Elo, Board, Termination —
+// is internal bookkeeping and is dropped unless the user asks for it in the tag
+// picker, which stays available on top of the preset.
 export const STANDARD_TAGS = [
     "Event",
     "Site",
@@ -48,8 +59,6 @@ export const STANDARD_TAGS = [
     "WhiteElo",
     "BlackElo",
     "PlyCount",
-    "WhiteTeam",
-    "BlackTeam",
 ];
 
 const STR_DEFAULTS: Record<string, string> = {
@@ -88,6 +97,16 @@ export function buildExportGame(gameText: string, opts: ExportOptions): string {
         : opts.headers === "standard"
           ? selectTags(tags, STANDARD_TAGS)
           : tags;
+
+    // The PGN surname comma is applied here, at export time, so nothing stored has
+    // to be migrated: a database filled before the rule existed still exports right.
+    if (opts.normalizeNames) {
+        for (const side of ["White", "Black"]) {
+            if (outTags.map[side] !== undefined) {
+                outTags.map[side] = toPgnName(outTags.map[side]);
+            }
+        }
+    }
 
     let moves = opts.cleanup ? cleanMovetext(movetext, opts.cleanup) : movetext;
     // Keep the movetext terminator in sync with the Result header (cleaning can

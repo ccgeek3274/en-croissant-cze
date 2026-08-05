@@ -23,6 +23,19 @@ describe("toPgnName", () => {
         expect(toPgnName("  Novák   Jan  ")).toBe("Novák, Jan");
     });
 
+    it("leaves board placeholders alone", () => {
+        // Digits mean a scaffold name — the export must not write "Domácí, 3".
+        expect(toPgnName("Domácí 3")).toBe("Domácí 3");
+        expect(toPgnName("Hosté 12")).toBe("Hosté 12");
+    });
+
+    it("is idempotent, so import + export can both run it", () => {
+        const once = toPgnName("Šimák Roman");
+        expect(toPgnName(once)).toBe(once);
+        expect(toPgnName("Novák,Jan")).toBe("Novák, Jan");
+        expect(toPgnName("Novák ,  Jan")).toBe("Novák, Jan");
+    });
+
     it("passes through what it cannot or must not split", () => {
         expect(toPgnName("Novák, Jan")).toBe("Novák, Jan");
         expect(toPgnName("Novák")).toBe("Novák");

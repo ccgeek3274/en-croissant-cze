@@ -91,10 +91,12 @@ Keep this list current. When merging, conflicts can only appear in the
   data-layer modules can use it without pulling in jotai atoms/tabs/bindings.
   `utils/files.ts` re-exports it, so existing call sites are unchanged.
 - `src/utils/pgn/*.ts` — database-agnostic PGN text layer (tags, cleanup, check,
-  merge, export) behind Kontrola / Export PGN / Import moves. Ported from pgn-base.
+  merge, export, `names.ts` = the "Příjmení, Jméno" rule, `namePattern.ts` = the
+  editable Event / file-name patterns) behind Kontrola / Export PGN / Import moves.
+  Ported from pgn-base.
 - `src/utils/sscr/*.ts` — the **competition-leader mode** (`docs/feat-vedouci-souteze.md`):
   `competitionXml.ts` (parser for the undocumented Swiss-Manager competition XML),
-  `names.ts`, `skeleton.ts` (XML → full-format PGN skeleton, keyed by
+  `skeleton.ts` (XML → full-format PGN skeleton, keyed by
   `Round` = kolo.zápas.šachovnice), `manifest.ts` (the `*.competition.json` sidecar),
   `sync.ts` (re-sync against a newer XML), `tree.ts` (the derived
   competition → round → match → game tree), `storage.ts` (Tauri I/O),

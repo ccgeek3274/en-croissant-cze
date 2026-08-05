@@ -42,6 +42,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { distinctTagValues, setGameTag, TAG_DEFS } from "@/utils/pgn/check";
 import { getTag, splitGame } from "@/utils/pgn/tags";
+import { labelMapFrom } from "@/utils/sscr/directory";
+import { defaultEventPrefix, exportFileBase } from "@/utils/sscr/export";
 import { isUninformative } from "@/utils/sscr/sync";
 import type { CompetitionManifest } from "@/utils/sscr/manifest";
 import { loadCompetition } from "@/utils/sscr/storage";
@@ -551,7 +553,7 @@ export function CompetitionView({
         pgnPath={file.path}
         indices={scope.indices}
         scopeLabel={scope.label}
-        defaultFileName={exportFileName(file.name, scope.id)}
+        defaultFileName={exportFileName(file.name, scope.id, tree, manifest)}
       />
     </Stack>
   );
@@ -667,10 +669,27 @@ function GameRow({
   );
 }
 
-/** Suggested export file name: the competition, narrowed by the selected node. */
-function exportFileName(base: string, scopeId: string): string {
-  if (scopeId === "competition") return base;
-  return `${base}-${scopeId.replace(/\./g, "-")}`;
+/** Suggested export file name for the selected node: the round's own pattern
+ *  ("ksa_01"), a match's Event, a game's players — see `exportFileBase`. */
+function exportFileName(
+  base: string,
+  scopeId: string,
+  tree: CompetitionNode,
+  manifest: CompetitionManifest | null,
+): string {
+  return exportFileBase(
+    scopeId,
+    tree,
+    {
+      prefix:
+        manifest?.options.eventPrefix ??
+        (manifest ? defaultEventPrefix(manifest.competition.name, manifest.competition.year) : ""),
+      eventPattern: manifest?.options.eventPattern,
+      filePattern: manifest?.options.filePattern,
+      labelByTeamName: manifest ? labelMapFrom(manifest) : undefined,
+    },
+    base,
+  );
 }
 
 /** Stats for a non-root scope, found by walking the tree for the matching node. */

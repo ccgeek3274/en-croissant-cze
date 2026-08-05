@@ -2,6 +2,8 @@
 // Ported from the pgn-base project (frontend/src/lib/chesscz.ts) and adapted for
 // en-croissant: diacritics are kept (the app is fully UTF-8), not stripped.
 
+import { toPgnName } from "@/utils/pgn/names";
+
 export const DEFAULT_BOARD_COUNT = 8;
 
 export type ChessczMember = {
@@ -149,16 +151,11 @@ export function isPlayablePairing(e: ChessczMatchPairing): boolean {
 
 const clean = (s: string | null | undefined): string => (s ?? "").trim();
 
-// chess.cz returns names as "Surname Given…" (surname first, no comma). Insert a
-// comma after the surname to get the PGN "Surname, Given" form. Only the first
-// whitespace token is treated as the surname — correct for the vast majority of
-// Czech names; multi-word surnames are the known exception.
-export function toPgnPlayerName(fullName: string | null | undefined): string {
-    const cleaned = clean(fullName).replace(/\s+/g, " ");
-    const sp = cleaned.indexOf(" ");
-    if (sp < 0) return cleaned; // single token — nothing to split
-    return `${cleaned.slice(0, sp)}, ${cleaned.slice(sp + 1)}`;
-}
+// chess.cz returns names as "Surname Given…" (surname first, no comma), exactly like
+// the Swiss-Manager XML — so both go through the same normalizer (`utils/pgn/names`),
+// which is also what the export applies on the way out. Kept as a named re-export
+// because the autocomplete imports it from here.
+export const toPgnPlayerName = toPgnName;
 
 // Match score "4:4" / "1.5:6.5" / "?:?" (when not yet played).
 export function formatMatchScore(

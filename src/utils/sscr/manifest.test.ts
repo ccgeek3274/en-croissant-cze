@@ -88,7 +88,12 @@ describe("buildManifest", () => {
             { fileName: "x.xml", xml: "<x/>" },
             { eloSource: "cze", eventPrefix: "KSA SSS 25/26", compId: 3005 },
         );
-        expect(m.options).toEqual({ eloSource: "cze", eventPrefix: "KSA SSS 25/26" });
+        expect(m.options).toEqual({
+            eloSource: "cze",
+            eventPrefix: "KSA SSS 25/26",
+            eventPattern: null,
+            filePattern: null,
+        });
         expect(m.competition.compId).toBe(3005);
     });
 });
@@ -99,7 +104,12 @@ describe("mergeManifest", () => {
         previous.teams[0].label = "Sedlčany A";
         previous.teams[0].site = "Sedlčany";
         previous.competition.compId = 3005;
-        previous.options = { eloSource: "cze", eventPrefix: "KSA SSS 25/26" };
+        previous.options = {
+            eloSource: "cze",
+            eventPrefix: "KSA SSS 25/26",
+            eventPattern: null,
+            filePattern: "{soutez}-{kolo}",
+        };
 
         const next = buildManifest(parseFixture(), {
             fileName: "3005-po-10-kole.XML",
@@ -120,7 +130,12 @@ describe("mergeManifest", () => {
             site: "Sedlčany",
         });
         expect(merged.competition.compId).toBe(3005);
-        expect(merged.options).toEqual({ eloSource: "cze", eventPrefix: "KSA SSS 25/26" });
+        expect(merged.options).toEqual({
+            eloSource: "cze",
+            eventPrefix: "KSA SSS 25/26",
+            eventPattern: null,
+            filePattern: "{soutez}-{kolo}",
+        });
     });
 
     it("drops customisation for a team that left the competition", () => {

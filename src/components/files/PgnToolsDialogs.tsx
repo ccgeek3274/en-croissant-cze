@@ -179,8 +179,14 @@ export function KontrolaModal({
   const [checkedValues, setCheckedValues] = useState<Set<string>>(new Set());
   const [desired, setDesired] = useState("");
   // Export-only: which tags to write out, and the Standardní/Plné pre-selection.
+  // "Standardní" is the default — an exported PGN is a deliverable for someone else,
+  // and the internal bookkeeping tags (ids, team names, Termination) are ours.
   const [exportTags, setExportTags] = useState<Set<string>>(new Set());
-  const [tagPreset, setTagPreset] = useState<"standard" | "full">("full");
+  const [tagPreset, setTagPreset] = useState<"standard" | "full">("standard");
+  // "Příjmení, Jméno" in White/Black. On for competition/match files, where every
+  // source writes the name surname-first without the comma; off for a foreign PGN,
+  // whose names may be in Western order and would come out wrong.
+  const [normalizeNames, setNormalizeNames] = useState(true);
 
   async function reload() {
     setLoading(true);
@@ -200,7 +206,8 @@ export function KontrolaModal({
     setTagKey("Event");
     setCheckedValues(new Set());
     setDesired("");
-    setTagPreset("full");
+    setTagPreset("standard");
+    setNormalizeNames(isMatch);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [opened, file, scope]);
 
@@ -289,6 +296,7 @@ export function KontrolaModal({
             keepTags: keep,
             cleanup: null,
             stripDiacritics: false,
+            normalizeNames,
           }),
         )
         .join("\n\n\n");
@@ -416,6 +424,13 @@ export function KontrolaModal({
                   <Text size="xs" c="dimmed">
                     {t("PgnTools.Export.Tags.Hint")}
                   </Text>
+                  <Checkbox
+                    size="xs"
+                    label={t("PgnTools.Export.NormalizeNames")}
+                    description={t("PgnTools.Export.NormalizeNamesHint")}
+                    checked={normalizeNames}
+                    onChange={(e) => setNormalizeNames(e.currentTarget.checked)}
+                  />
                   <ScrollArea.Autosize mah={200}>
                     <SimpleGrid cols={3} spacing={4} verticalSpacing={4}>
                       {displayTags.map((tag) => (

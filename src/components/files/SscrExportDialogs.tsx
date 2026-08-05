@@ -10,6 +10,7 @@ import {
   Alert,
   Button,
   Checkbox,
+  Divider,
   Group,
   Modal,
   Paper,
@@ -26,16 +27,25 @@ import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
+  buildEventFromPattern,
+  buildFileBaseFromPattern,
+  DEFAULT_EVENT_PATTERN,
+  DEFAULT_FILE_PATTERN,
+  PATTERN_VARS,
+} from "@/utils/pgn/namePattern";
+import {
   deriveDirectory,
   labelMapFrom,
   resolveDirectory,
   siteMapFrom,
 } from "@/utils/sscr/directory";
 import {
+  buildSscrEvent,
   buildSscrExport,
   DEFAULT_EXPORT_OPTIONS,
   defaultEventPrefix,
   exportPreflight,
+  readGameFacts,
   type SscrExportOptions,
 } from "@/utils/sscr/export";
 import type { CompetitionManifest } from "@/utils/sscr/manifest";
@@ -57,6 +67,8 @@ export function CompetitionLabelsDialog({
   const { t } = useTranslation();
   const [manifest, setManifest] = useState<CompetitionManifest | null>(null);
   const [prefix, setPrefix] = useState("");
+  const [eventPattern, setEventPattern] = useState("");
+  const [filePattern, setFilePattern] = useState("");
   const [labels, setLabels] = useState<Record<number, string>>({});
   const [sites, setSites] = useState<Record<number, string>>({});
   const [busy, setBusy] = useState(false);
@@ -71,6 +83,10 @@ export function CompetitionLabelsDialog({
       setPrefix(
         m.options.eventPrefix ?? defaultEventPrefix(m.competition.name, m.competition.year),
       );
+      // Empty field = "use the default", which is what an empty pattern means on
+      // save too — so the placeholder can show the default without pre-filling it.
+      setEventPattern(m.options.eventPattern ?? "");
+      setFilePattern(m.options.filePattern ?? "");
       // Resolved, not stored: a competition imported before the directory existed has
       // nothing on file, and the leader should still see what the export will write.
       const resolved = resolveDirectory(m);
@@ -102,6 +118,25 @@ export function CompetitionLabelsDialog({
     });
   }
 
+  // Live preview on this competition's own data — the first match of the first round,
+  // with the labels currently in the form, so a pattern is judged on real names.
+  const preview = useMemo(() => {
+    const round = manifest?.rounds[0];
+    const match = round?.matches[0];
+    const nameOf = (no: number | undefined) =>
+      labels[no ?? -1]?.trim() || manifest?.teams.find((team) => team.no === no)?.name || "";
+    const vars = {
+      zkratka: prefix,
+      domaci: nameOf(match?.homeTeamNo) || "Domácí",
+      hoste: nameOf(match?.awayTeamNo) || "Hosté",
+      kolo: round?.no ?? 1,
+    };
+    return {
+      event: buildEventFromPattern(eventPattern, vars),
+      file: buildFileBaseFromPattern(filePattern, vars),
+    };
+  }, [manifest, labels, prefix, eventPattern, filePattern]);
+
   async function apply() {
     if (!manifest) return;
     setBusy(true);
@@ -115,7 +150,14 @@ export function CompetitionLabelsDialog({
           label: labels[team.no]?.trim() || null,
           site: sites[team.no]?.trim() || null,
         })),
-        options: { ...loaded.manifest.options, eventPrefix: prefix.trim() || null },
+        options: {
+          ...loaded.manifest.options,
+          eventPrefix: prefix.trim() || null,
+          // An emptied pattern resets to the default rather than producing a blank
+          // Event / file name.
+          eventPattern: eventPattern.trim() || null,
+          filePattern: filePattern.trim() || null,
+        },
       };
       await saveCompetition(pgnPath, next, loaded.games);
       notifications.show({
@@ -148,6 +190,26 @@ export function CompetitionLabelsDialog({
           value={prefix}
           onChange={(e) => setPrefix(e.currentTarget.value)}
         />
+
+        <Divider label={t("Competition.Labels.Patterns")} labelPosition="left" />
+        <Text size="xs" c="dimmed">
+          {t("Competition.Labels.PatternsHelp")} {PATTERN_VARS.map((v) => `{${v.key}}`).join(" · ")}
+        </Text>
+        <TextInput
+          label={t("Competition.Labels.EventPattern")}
+          placeholder={DEFAULT_EVENT_PATTERN}
+          description={`${t("Competition.Labels.Preview")}: ${preview.event}`}
+          value={eventPattern}
+          onChange={(e) => setEventPattern(e.currentTarget.value)}
+        />
+        <TextInput
+          label={t("Competition.Labels.FilePattern")}
+          placeholder={DEFAULT_FILE_PATTERN}
+          description={`${t("Competition.Labels.Preview")}: ${preview.file}.pgn`}
+          value={filePattern}
+          onChange={(e) => setFilePattern(e.currentTarget.value)}
+        />
+
         <Group justify="space-between">
           <Text fw={600} size="sm">
             {t("Competition.Labels.Teams")}
@@ -268,6 +330,7 @@ export function SscrExportModal({
       prefix:
         manifest.options.eventPrefix ??
         defaultEventPrefix(manifest.competition.name, manifest.competition.year),
+      eventPattern: manifest.options.eventPattern,
       labelByTeamName: labelMapFrom(manifest),
       siteByTeamName: siteMapFrom(manifest),
       dropEmptyForfeits,
@@ -279,6 +342,23 @@ export function SscrExportModal({
     () => (options ? exportPreflight(games, options) : null),
     [games, options],
   );
+
+  // The Event of the first game actually being exported — a real one beats "PREFIX A-B",
+  // and it is the only place a mistyped pattern becomes visible before the file lands.
+  const sampleEvent = useMemo(() => {
+    if (!options) return "—";
+    for (const game of games) {
+      const facts = readGameFacts(game);
+      if (!facts) continue;
+      return buildSscrEvent(
+        options,
+        options.labelByTeamName.get(facts.homeTeam) ?? facts.homeTeam,
+        options.labelByTeamName.get(facts.awayTeam) ?? facts.awayTeam,
+        facts.roundNr,
+      );
+    }
+    return buildSscrEvent(options, "A", "B", 1);
+  }, [games, options]);
 
   async function saveExport() {
     if (!options) return;
@@ -324,10 +404,8 @@ export function SscrExportModal({
           <Paper withBorder p="sm">
             <Stack gap={4}>
               <Row label={t("Competition.Labels.Prefix")} value={options.prefix || "—"} />
-              <Row
-                label={t("Competition.Export.SampleEvent")}
-                value={`${options.prefix} A-B`.trim()}
-              />
+              <Row label={t("Competition.Export.SampleEvent")} value={sampleEvent} />
+              <Row label={t("Competition.Export.FileName")} value={`${defaultFileName}.pgn`} />
             </Stack>
           </Paper>
         )}

@@ -4,6 +4,7 @@
 // reads from D1 is instead bundled as JSON and indexed in-process. The gazetteer tier
 // is intentionally dropped (see MAINTAINING.md) — every registered ŠSČR club is already
 // in the mined dictionary, so `dict → heuristic` covers real league teams.
+import { buildEventFromPattern } from "@/utils/pgn/namePattern";
 import {
     getCompetitionDetails,
     getCompetitions,
@@ -149,7 +150,10 @@ export function shortenTeamNames(teams: TeamInput[]): Map<number, string> {
 }
 
 /** Compose the Event tag for one match: "<prefix> <home>-<away>", or the full
- * competition name when no prefix/labels are available. */
+ * competition name when no prefix/labels are available. The format itself lives in
+ * `utils/pgn/namePattern` (default pattern), so a chess.cz import and a competition
+ * export write the same shape; only the competition mode can edit the pattern,
+ * because that is where a manifest exists to store it in. */
 export function composeEventName(
     labels: CompetitionLabels | null,
     homeTeamId: number,
@@ -159,7 +163,9 @@ export function composeEventName(
     fallbackCompName: string,
 ): string {
     if (!labels?.prefix) return fallbackCompName;
-    const home = labels.labelByTeamId.get(homeTeamId) ?? homeTeamName;
-    const away = labels.labelByTeamId.get(awayTeamId) ?? awayTeamName;
-    return `${labels.prefix} ${home}-${away}`;
+    return buildEventFromPattern(null, {
+        zkratka: labels.prefix,
+        domaci: labels.labelByTeamId.get(homeTeamId) ?? homeTeamName,
+        hoste: labels.labelByTeamId.get(awayTeamId) ?? awayTeamName,
+    });
 }

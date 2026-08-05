@@ -9,10 +9,10 @@
 //
 // Diacritics are kept here; they are stripped at export time only.
 
+import { toPgnName } from "@/utils/pgn/names";
 import { type PgnTags, serializeGame } from "@/utils/pgn/tags";
 import type { Competition, RosterEntry, XmlBoard, XmlMatch } from "./competitionXml";
 import { indexRoster, rosterKey } from "./competitionXml";
-import { toPgnName } from "./names";
 
 export type GameKey = {
     roundNr: number;
