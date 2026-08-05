@@ -413,6 +413,14 @@ Ne-`.pgn` soubory se zahodí s hláškou. Posluchač volá handler přes ref: re
 se při otevření dialogu, kdy `targets` jsou ještě prázdné, a bez refu by párování
 běželo proti prázdnému seznamu.
 
+Samotný posluchač ale nestačí: `routes/__root.tsx` má **celoaplikační** handler na
+`TauriEvent.DRAG_DROP`, který každé přetažené PGN otevře jako novou databázi — a
+událost dostanou oba, takže dialog ji nemůže „spotřebovat“. Kdo přetažení vlastní,
+řeší `utils/fileDrop.ts`: dialog si ho po dobu svého života **zamluví**
+(`claimFileDrop`) a kořenový handler na zamluvený drop nesahá. Je to čítač, ne
+příznak — dva dialogy se při zavírací animaci můžou překrýt a ten mizející nesmí
+zamluvení vrátit za ten druhý.
+
 ### Šířka stromu
 
 Strom je hluboký (`11. kolo` → `Sedlčany A – Klokani z Kralup` → osm partií), takže
@@ -421,6 +429,13 @@ jedna napevno daná šířka nevyhoví. Dělicí čára mezi stromem a seznamem 
 `localStorage` globálně — je to zvyk uživatele, ne vlastnost soutěže. Táhne se přes
 `pointermove` na `window`, ne na tom 5px proužku: kurzor ho při rychlém tahu předběhne
 a drag by se ztratil. Šipky ←/→ dělají totéž z klávesnice po 16 px.
+
+Svislé posouvání stromu nešlo, dokud se neopravila **výška karty** v `BoardsPage.tsx`.
+`Tabs.Panel` měl `h="100%"`, což je 100 % celého sloupce karet — panel tedy začínal
+pod lištou karet a končil právě o tu lištu **pod spodním okrajem okna**. Šachovnici
+to nevadí (Mosaic se pozicuje sám), ale cokoli, co scrolluje, mělo viewport zasahující
+pod okraj obrazovky, takže se na poslední řádky nedalo dojet. Správně je `flex: 1`
+(+ `minHeight: 0`), tedy zbývající místo.
 
 ## Okrajové případy
 

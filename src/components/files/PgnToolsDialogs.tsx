@@ -51,6 +51,7 @@ import {
   type TeamsCard,
   type VariationsCard,
 } from "@/utils/pgn/check";
+import { claimFileDrop } from "@/utils/fileDrop";
 import { type CleanupOptions, FULL_CLEANUP } from "@/utils/pgn/cleanup";
 import { buildExportGame, STANDARD_TAGS } from "@/utils/pgn/export";
 import {
@@ -942,6 +943,9 @@ export function ImportGamesModal({
   const dropHandler = useRef<(paths: string[]) => void>(() => {});
   useEffect(() => {
     if (!opened) return;
+    // Claim first: the app-wide handler would otherwise open the same files as new
+    // databases behind this dialog.
+    const release = claimFileDrop();
     let unlisten: (() => void) | undefined;
     let cancelled = false;
     try {
@@ -960,6 +964,7 @@ export function ImportGamesModal({
     }
     return () => {
       cancelled = true;
+      release();
       unlisten?.();
     };
   }, [opened]);

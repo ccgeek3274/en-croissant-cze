@@ -22,6 +22,7 @@ import { SideBar } from "@/components/Sidebar";
 import TopBar from "@/components/TopBar";
 import { activeTabAtom, nativeBarAtom, tabsAtom } from "@/state/atoms";
 import { keyMapAtom } from "@/state/keybinds";
+import { isFileDropClaimed } from "@/utils/fileDrop";
 import { openFile } from "@/utils/files";
 import { createTab } from "@/utils/tabs";
 
@@ -333,6 +334,9 @@ function RootLayout() {
 
   useEffect(() => {
     const unlisten = getCurrentWindow().listen(TauriEvent.DRAG_DROP, (event) => {
+      // A dialog that asked for files handles the drop itself — opening the same
+      // files as new databases behind it is not what the user dropped them for.
+      if (isFileDropClaimed()) return;
       const payload = event.payload as { paths: string[] };
       if (payload?.paths) {
         const pgnFiles = payload.paths.filter((path) => path.toLowerCase().endsWith(".pgn"));

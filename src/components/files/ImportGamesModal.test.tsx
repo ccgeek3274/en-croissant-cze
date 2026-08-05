@@ -10,6 +10,7 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import enUS from "@/translation/en-US.json";
+import { isFileDropClaimed } from "@/utils/fileDrop";
 
 const { TARGET, drop, fileTexts } = vi.hoisted(() => ({
   TARGET: `[Event "Cup"]
@@ -168,6 +169,15 @@ describe("ImportGamesModal", () => {
     // One of them pairs with the single target; the other two are appended — which
     // only adds up if all three files were read.
     expect(screen.getByText(/2 imported games match no existing game/i)).toBeTruthy();
+  });
+
+  it("claims dropped files while open, so they are not opened as databases", async () => {
+    expect(isFileDropClaimed()).toBe(false);
+    const view = renderModal();
+    await screen.findByText("Import moves");
+    expect(isFileDropClaimed()).toBe(true);
+    view.unmount();
+    expect(isFileDropClaimed()).toBe(false);
   });
 
   it("takes dropped files, ignoring anything that is not a .pgn", async () => {

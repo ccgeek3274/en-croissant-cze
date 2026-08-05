@@ -250,8 +250,20 @@ export default function BoardsPage() {
           </Droppable>
         </DragDropContext>
       </ScrollArea>
+      {/* The panel is `flex: 1`, not `h="100%"`: 100% meant the height of the whole
+          tabs column, so the panel started below the tab strip and ended that much
+          past the bottom of the window. Invisible for a board (the Mosaic positions
+          itself), fatal for anything that scrolls — its viewport reached under the
+          screen edge, and the last rows could not be scrolled to. */}
       {tabs.map((tab) => (
-        <Tabs.Panel key={tab.value} value={tab.value} h="100%" w="100%" pb="sm" px="xs">
+        <Tabs.Panel
+          key={tab.value}
+          value={tab.value}
+          w="100%"
+          pb="sm"
+          px="xs"
+          style={{ flex: 1, minHeight: 0 }}
+        >
           <TabSwitch
             tab={tab}
             saveModalOpened={saveModalOpened}
