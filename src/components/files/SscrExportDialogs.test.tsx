@@ -44,7 +44,7 @@ vi.mock("@tauri-apps/plugin-fs", () => ({
 }));
 vi.mock("@mantine/notifications", () => ({ notifications: { show: vi.fn() } }));
 
-import { CompetitionLabelsDialog, SscrExportModal } from "./SscrExportDialogs";
+import { CompetitionLabelsDialog, MatchLabelsDialog, SscrExportModal } from "./SscrExportDialogs";
 
 beforeAll(async () => {
   window.matchMedia ??= ((query: string) => ({
@@ -309,5 +309,127 @@ describe("SscrExportModal", () => {
     await vi.waitFor(() => expect(files.get(SAVE_PATH)).toBeTruthy());
     expect(splitPgnGames(files.get(SAVE_PATH)!)).toHaveLength(192);
     expect(files.get(SAVE_PATH)).toContain("Šimák, Roman");
+  });
+});
+
+// ── Zkratky zápasu ──────────────────────────────────────────────────────────
+// The other half of the same directory, for a match imported from ŠSČR: no
+// manifest, so the pieces come out of the file's own Event and go into .info.
+
+const MATCH_PATH = "/docs/KSA-1-Sedlcany-Kralupy.pgn";
+const MATCH_INFO = "/docs/KSA-1-Sedlcany-Kralupy.info";
+const MATCH_HOME = "ŠK KDJS Sedlčany A";
+const MATCH_AWAY = "Klokani z Kralup";
+
+/** Eight boards as the ŠSČR import writes them: one Event, Site "chess.cz". */
+function seedMatch(event = "KSA SSS 25/26 Sedlcany A-Kralupy B") {
+  const games: string[] = [];
+  for (let board = 1; board <= 8; board++) {
+    const homeIsWhite = board % 2 === 1;
+    games.push(
+      [
+        `[Event "${event}"]`,
+        '[Site "chess.cz"]',
+        '[Date "2025.10.12"]',
+        `[Round "1.${board}"]`,
+        `[White "Bílý, Jan"]`,
+        `[Black "Černý, Petr"]`,
+        '[Result "*"]',
+        `[Board "${board}"]`,
+        `[WhiteTeam "${homeIsWhite ? MATCH_HOME : MATCH_AWAY}"]`,
+        `[BlackTeam "${homeIsWhite ? MATCH_AWAY : MATCH_HOME}"]`,
+        "",
+        "*",
+      ].join("\n"),
+    );
+  }
+  files.set(MATCH_PATH, games.join("\n\n\n") + "\n");
+  files.set(MATCH_INFO, JSON.stringify({ type: "tournament", tags: [] }));
+}
+
+describe("MatchLabelsDialog", () => {
+  function renderDialog(onSaved = () => {}, path = MATCH_PATH) {
+    return render(
+      <MantineProvider>
+        <MatchLabelsDialog opened onClose={() => {}} pgnPath={path} onSaved={onSaved} />
+      </MantineProvider>,
+    );
+  }
+
+  it("opens with the pieces the file's own Event was composed from", async () => {
+    seedMatch();
+    renderDialog();
+    expect(await screen.findByDisplayValue("KSA SSS 25/26")).toBeTruthy();
+    const home = screen.getByLabelText(`Short label — ${MATCH_HOME}`) as HTMLInputElement;
+    const away = screen.getByLabelText(`Short label — ${MATCH_AWAY}`) as HTMLInputElement;
+    // "Klokani z Kralup" shortens to "Klokani", but this file says "Kralupy B".
+    expect(home.value).toBe("Sedlcany A");
+    expect(away.value).toBe("Kralupy B");
+    expect((screen.getByLabelText(`Venue (Site) — ${MATCH_HOME}`) as HTMLInputElement).value).toBe(
+      "Sedlcany",
+    );
+    expect(screen.getByText("KSA SSS 25/26 Sedlcany A-Kralupy B")).toBeTruthy();
+    expect(document.body.textContent).not.toMatch(/Competition\.[A-Z]/);
+  });
+
+  it("rewrites Event and Site on every board and remembers the pieces", async () => {
+    seedMatch();
+    const onSaved = vi.fn();
+    renderDialog(onSaved);
+    await screen.findByDisplayValue("KSA SSS 25/26");
+
+    fireEvent.change(screen.getByLabelText(`Short label — ${MATCH_AWAY}`), {
+      target: { value: "Kralupy" },
+    });
+    fireEvent.change(screen.getByLabelText(`Venue (Site) — ${MATCH_HOME}`), {
+      target: { value: "Sedlčany" },
+    });
+    fireEvent.click(screen.getByText("Save and rewrite Event"));
+
+    await vi.waitFor(() => expect(onSaved).toHaveBeenCalled());
+    const games = splitPgnGames(files.get(MATCH_PATH)!);
+    expect(games).toHaveLength(8);
+    for (const game of games) {
+      expect(getTag(splitGame(game).tags, "Event")).toBe("KSA SSS 25/26 Sedlcany A-Kralupy");
+      expect(getTag(splitGame(game).tags, "Site")).toBe("Sedlčany");
+    }
+    // Player and team tags are none of this dialog's business.
+    expect(getTag(splitGame(games[0]).tags, "WhiteTeam")).toBe(MATCH_HOME);
+
+    const info = JSON.parse(files.get(MATCH_INFO)!);
+    expect(info.type).toBe("tournament"); // en-croissant's own field survives
+    expect(info.match).toMatchObject({ prefix: "KSA SSS 25/26", eventPattern: null });
+    expect(info.match.teams).toEqual([
+      { name: MATCH_HOME, label: "Sedlcany A", site: "Sedlčany" },
+      { name: MATCH_AWAY, label: "Kralupy", site: "Kralupy" },
+    ]);
+  });
+
+  it("reopens on what it stored, not on what the dictionary would say", async () => {
+    seedMatch();
+    files.set(
+      MATCH_INFO,
+      JSON.stringify({
+        type: "tournament",
+        tags: [],
+        match: {
+          prefix: "KSA 25/26",
+          eventPattern: "{zkratka} {domaci} vs {hoste}",
+          teams: [
+            { name: MATCH_HOME, label: "Sedlčany", site: "Sedlčany" },
+            { name: MATCH_AWAY, label: "Klokani", site: "" },
+          ],
+        },
+      }),
+    );
+    renderDialog();
+    expect(await screen.findByDisplayValue("KSA 25/26")).toBeTruthy();
+    expect(screen.getByText("KSA 25/26 Sedlčany vs Klokani")).toBeTruthy();
+  });
+
+  it("says so when the file is not a match", async () => {
+    files.set(MATCH_PATH, '[Event "Kasparov - Karpov"]\n[Result "*"]\n\n*\n');
+    renderDialog();
+    expect(await screen.findByText(/does not look like a match/)).toBeTruthy();
   });
 });

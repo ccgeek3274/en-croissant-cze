@@ -335,6 +335,48 @@ Adresář se uplatní **výhradně při exportu** — interní PGN drží plné 
 bere podle **domácího družstva** zápasu (tedy ne z uloženého tagu `Site`, který je
 zmrazený z importu, kdežto adresář vedoucí průběžně udržuje).
 
+### Zkratky zápasu — týž adresář pro soubor jednoho zápasu
+
+Zápas importovaný ze ŠSČR (`Import ze ŠSČR` v Nová databáze) je obyčejné PGN: osm
+partií se **společným `Event`**, který se poskládal jednou, při importu, ze zkratky
+soutěže a dvou zkratek družstev. Zpětně s ním nešlo hnout — jediná cesta byla
+přepsat tag na všech osmi šachovnicích. Vedoucí soutěže přitom má na tutéž věc
+dialog „Zkratky soutěže“.
+
+Zápas dostal tedy vlastní **„Zkratky zápasu“** (ikona štítků na kartě souboru;
+ukáže se u každého .pgn, jehož partie nesou `WhiteTeam`/`BlackTeam` a které není
+soutěž). Stejná pole, týž `namePattern`, živý náhled — a uložení přepíše `Event`
+(a `Site`) na všech partiích souboru naráz.
+
+**Kde to bydlí.** Ne v manifestu: `*.competition.json` vedle souboru znamená „tohle
+je soutěž“ a odemkl by re-sync z XML, který pro zápas nedává smysl. Dílky se proto
+ukládají do **`.info`**, sidecaru, který každá databáze v en-croissant má, pod klíč
+`match` (`{prefix, eventPattern, teams:[{name,label,site}]}`). Neznámé klíče v
+`.info` obě strany přenášejí beze změny, takže `type`/`tags` přežijí.
+
+**Odkud se berou výchozí hodnoty.** V tomto pořadí:
+
+1. **uložené** dílky (import je zapisuje rovnou, protože zkratky zná z celé
+   dvanáctičlenné soutěže),
+2. **rozebraný `Event` ze souboru** — soubor je autorita nad slovníkem: zkratky se
+   při importu lámou proti všem družstvům soutěže, kdežto dvoučlenný soubor by
+   dnes odvodil jiné (`Klokani z Kralup` → `Klokani`, i když v souboru stojí
+   `Kralupy B`),
+3. **slovník klubů** (`deriveDirectory`), když `Event` nic neříká.
+
+Rozebrání `Event` je jediné netriviální místo. „KSA SSS 25/26 Sedlcany A-Kralupy B“
+lze podle výchozího vzoru přečíst čtyřmi způsoby; `decomposeEvent` proto vygeneruje
+**všechna** čtení (literály vzoru se hledají na všech pozicích) a obodovává je proti
+plným názvům družstev z `WhiteTeam`/`BlackTeam`: slovo, které v plném názvu je,
+přidává bod, vymyšlené bere. `Sedlcany A` tak porazí `25/26 Sedlcany A` i samotné
+`A`. Když neobstojí žádné čtení (ručně psaný `Event`, nebo plný název soutěže,
+kterým import končí, když chess.cz nejede), nehádá se — vezme se slovník a vedoucí
+vidí vedle náhledu i to, co v souboru stojí dnes.
+
+`Site` se řídí domácím družstvem (jeden zápas = jedna hala). Importní `chess.cz`
+se bere jako „místo nevyplněno“, jinak vyhrává to, co v partiích už je; prázdné
+pole `Site` nepřepisuje, protože „nevím místo“ není pokyn zahodit, co soubor nese.
+
 ### Tagy, jména a vzory názvů (srovnáno s pgn-base, 2026-08-05)
 
 Tři věci, kterými se export dorovnal na aktuální stav pgn-base

@@ -32,6 +32,7 @@ import {
   isPlayablePairing,
   type ScaffoldGame,
 } from "@/utils/chesscz/pgn";
+import type { MatchLabels } from "@/utils/sscr/matchLabels";
 
 type CompetitionOption = { value: string; label: string; group: string; name: string };
 
@@ -42,7 +43,11 @@ export function ChessczImportDialog({
 }: {
   opened: boolean;
   onClose: () => void;
-  onImport: (pgn: string, suggestedName: string) => void;
+  /** `labels` are the pieces the Event was composed from, handed on so the created
+   *  file can keep them: the short labels come from the whole competition's team
+   *  list (collisions are broken across all 12 teams), which a two-team .pgn can no
+   *  longer re-derive on its own. */
+  onImport: (pgn: string, suggestedName: string, labels: MatchLabels) => void;
 }) {
   const { t } = useTranslation();
 
@@ -202,8 +207,28 @@ export function ChessczImportDialog({
           }),
         );
       }
+      // Team names exactly as the games spell them — that is the key the label
+      // editor looks them up by later.
+      const homeName = match?.homeTeamName ?? pairing.homeTeamName;
+      const awayName = match?.awayTeamName ?? pairing.awayTeamName;
+      const matchLabels: MatchLabels = {
+        prefix: labels?.prefix ?? null,
+        eventPattern: null,
+        teams: [
+          {
+            name: homeName,
+            label: labels?.labelByTeamId.get(pairing.homeTeamId) ?? null,
+            site: null,
+          },
+          {
+            name: awayName,
+            label: labels?.labelByTeamId.get(pairing.awayTeamId) ?? null,
+            site: null,
+          },
+        ],
+      };
       const pgn = gamesToPgn(games);
-      onImport(pgn, eventName);
+      onImport(pgn, eventName, matchLabels);
       onClose();
     } catch {
       setError(t("Chesscz.Import.LoadError"));

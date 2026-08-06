@@ -5,7 +5,8 @@ import { exists, mkdir, rename, writeTextFile } from "@tauri-apps/plugin-fs";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { createFile, sanitizeFilename } from "@/utils/files";
-import { renameCompetitionSidecars } from "@/utils/sscr/storage";
+import type { MatchLabels } from "@/utils/sscr/matchLabels";
+import { renameCompetitionSidecars, saveMatchLabels } from "@/utils/sscr/storage";
 import GenericCard from "../common/GenericCard";
 import { ChessczImportDialog } from "./ChessczImportDialog";
 import type { Directory, FileMetadata, FileType } from "./file";
@@ -40,6 +41,9 @@ export function CreateModal({
   const [pgn, setPgn] = useState("");
   const [error, setError] = useState("");
   const [importOpened, setImportOpened] = useState(false);
+  // Set by the ŠSČR import: the abbreviation and short labels its Event was built
+  // from, stored beside the new file so „Zkratky zápasu" can edit them later.
+  const [matchLabels, setMatchLabels] = useState<MatchLabels | null>(null);
   const { documentDir } = useLoaderData({ from: "/files" });
 
   async function addFile() {
@@ -68,12 +72,14 @@ export function CreateModal({
       if (newFile.isErr) {
         setError(newFile.error.message);
       } else {
+        if (matchLabels) await saveMatchLabels(newFile.value.path, matchLabels);
         setFiles([...files, newFile.value]);
         setSelected(newFile.value);
         setError("");
         setOpened(false);
         setFilename("");
         setFiletype("game");
+        setMatchLabels(null);
       }
     } catch (e) {
       // Surface the failure instead of silently doing nothing (e.g. an invalid
@@ -142,9 +148,10 @@ export function CreateModal({
       <ChessczImportDialog
         opened={importOpened}
         onClose={() => setImportOpened(false)}
-        onImport={(importedPgn, suggestedName) => {
+        onImport={(importedPgn, suggestedName, labels) => {
           setPgn(importedPgn);
           setFiletype("tournament");
+          setMatchLabels(labels);
           if (!filename.trim()) setFilename(sanitizeFilename(suggestedName));
         }}
       />

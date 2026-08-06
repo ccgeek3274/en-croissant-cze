@@ -26,7 +26,7 @@ import {
 import { notifications } from "@mantine/notifications";
 import { IconRestore } from "@tabler/icons-react";
 import { save } from "@tauri-apps/plugin-dialog";
-import { writeTextFile } from "@tauri-apps/plugin-fs";
+import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -36,12 +36,23 @@ import {
   DEFAULT_FILE_PATTERN,
   PATTERN_VARS,
 } from "@/utils/pgn/namePattern";
+import { splitPgnGames } from "@/utils/pgn/tags";
 import {
   deriveDirectory,
   labelMapFrom,
   resolveDirectory,
   siteMapFrom,
 } from "@/utils/sscr/directory";
+import {
+  applyMatchLabels,
+  matchEvent,
+  type MatchLabelsInput,
+  type MatchTeamEntry,
+  resolveMatchLabels,
+  type ResolvedMatchLabels,
+  toStoredMatchLabels,
+} from "@/utils/sscr/matchLabels";
+import { gamesToFile } from "@/utils/sscr/sync";
 import {
   buildSscrEvent,
   buildSscrExport,
@@ -52,7 +63,27 @@ import {
   type SscrExportOptions,
 } from "@/utils/sscr/export";
 import type { CompetitionManifest } from "@/utils/sscr/manifest";
-import { loadCompetition, saveCompetition } from "@/utils/sscr/storage";
+import {
+  loadCompetition,
+  loadMatchLabels,
+  saveCompetition,
+  saveMatchLabels,
+} from "@/utils/sscr/storage";
+
+/** One label/value line — the shape both the export preflight and the match-label
+ *  preview report their numbers in. */
+function Row({ label, value, warn }: { label: string; value: React.ReactNode; warn?: boolean }) {
+  return (
+    <Group justify="space-between" wrap="nowrap">
+      <Text size="xs" c={warn ? "orange" : "dimmed"}>
+        {label}
+      </Text>
+      <Text size="xs" fw={600} c={warn ? "orange" : undefined}>
+        {value}
+      </Text>
+    </Group>
+  );
+}
 
 // ── Zkratky soutěže ─────────────────────────────────────────────────────────
 
@@ -314,20 +345,217 @@ export function CompetitionLabelsDialog({
   );
 }
 
-// ── Export ŠSČR ─────────────────────────────────────────────────────────────
+// ── Zkratky zápasu ──────────────────────────────────────────────────────────
 
-function Row({ label, value, warn }: { label: string; value: React.ReactNode; warn?: boolean }) {
+/** The one-match counterpart of „Zkratky soutěže": a match imported from ŠSČR is a
+ *  plain .pgn whose `Event` was composed once, at import, and could then only be
+ *  fixed by retyping the tag on every board. Same fields, same pattern, same live
+ *  preview — but the pieces live in the `.info` sidecar (a match has no manifest,
+ *  and giving it one would turn it into a competition), and applying rewrites the
+ *  games straight away, because there is no export step to defer to. */
+export function MatchLabelsDialog({
+  opened,
+  onClose,
+  pgnPath,
+  onSaved,
+}: {
+  opened: boolean;
+  onClose: () => void;
+  pgnPath: string;
+  onSaved: () => void;
+}) {
+  const { t } = useTranslation();
+  const [games, setGames] = useState<string[]>([]);
+  const [resolved, setResolved] = useState<ResolvedMatchLabels | null>(null);
+  const [prefix, setPrefix] = useState("");
+  const [eventPattern, setEventPattern] = useState(DEFAULT_EVENT_PATTERN);
+  const [home, setHome] = useState<MatchTeamEntry | null>(null);
+  const [away, setAway] = useState<MatchTeamEntry | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    if (!opened) return;
+    let cancelled = false;
+    setLoading(true);
+    (async () => {
+      const [text, stored] = await Promise.all([readTextFile(pgnPath), loadMatchLabels(pgnPath)]);
+      if (cancelled) return;
+      const all = splitPgnGames(text);
+      const found = resolveMatchLabels(all, stored);
+      setGames(all);
+      setResolved(found);
+      if (found) {
+        setPrefix(found.prefix);
+        setEventPattern(found.eventPattern);
+        setHome(found.home);
+        setAway(found.away);
+      }
+      setLoading(false);
+    })().catch(() => {
+      if (!cancelled) {
+        setResolved(null);
+        setLoading(false);
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [opened, pgnPath]);
+
+  const input: MatchLabelsInput | null = useMemo(
+    () => (home && away ? { prefix, eventPattern, home, away } : null),
+    [prefix, eventPattern, home, away],
+  );
+  const preview = input ? matchEvent(input) : "";
+
+  async function apply() {
+    if (!input) return;
+    setBusy(true);
+    try {
+      await writeTextFile(pgnPath, gamesToFile(applyMatchLabels(games, input)));
+      await saveMatchLabels(pgnPath, toStoredMatchLabels(input));
+      notifications.show({
+        title: t("Competition.Match.Title"),
+        message: t("Competition.Labels.Saved"),
+        color: "teal",
+      });
+      onSaved();
+      onClose();
+    } catch (e) {
+      notifications.show({
+        title: t("Competition.Match.Title"),
+        message: String(e),
+        color: "red",
+      });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function teamRow(
+    role: string,
+    team: MatchTeamEntry,
+    setTeam: (next: MatchTeamEntry) => void,
+  ): React.ReactNode {
+    return (
+      <Table.Tr>
+        <Table.Td>
+          <Text size="xs" fw={600}>
+            {role}
+          </Text>
+          <Text size="xs" c="dimmed">
+            {team.name}
+          </Text>
+        </Table.Td>
+        <Table.Td>
+          <TextInput
+            size="xs"
+            aria-label={`${t("Competition.Labels.Label")} — ${team.name}`}
+            value={team.label}
+            onChange={(e) => setTeam({ ...team, label: e.currentTarget.value })}
+          />
+        </Table.Td>
+        <Table.Td>
+          <TextInput
+            size="xs"
+            aria-label={`${t("Competition.Labels.Site")} — ${team.name}`}
+            value={team.site}
+            onChange={(e) => setTeam({ ...team, site: e.currentTarget.value })}
+          />
+        </Table.Td>
+      </Table.Tr>
+    );
+  }
+
   return (
-    <Group justify="space-between" wrap="nowrap">
-      <Text size="xs" c={warn ? "orange" : "dimmed"}>
-        {label}
-      </Text>
-      <Text size="xs" fw={600} c={warn ? "orange" : undefined}>
-        {value}
-      </Text>
-    </Group>
+    <Modal opened={opened} onClose={onClose} title={t("Competition.Match.Title")} size="lg">
+      <Stack>
+        <Text size="sm" c="dimmed">
+          {t("Competition.Match.Help")}
+        </Text>
+
+        {!loading && !resolved && (
+          <Alert color="orange" variant="light">
+            {t("Competition.Match.NotAMatch")}
+          </Alert>
+        )}
+
+        {home && away && (
+          <>
+            <TextInput
+              label={t("Competition.Labels.Prefix")}
+              description={t("Competition.Labels.PrefixHelp")}
+              value={prefix}
+              onChange={(e) => setPrefix(e.currentTarget.value)}
+            />
+
+            <Table verticalSpacing={2}>
+              <Table.Thead>
+                <Table.Tr>
+                  <Table.Th>{t("Competition.Labels.TeamName")}</Table.Th>
+                  <Table.Th w={160}>{t("Competition.Labels.Label")}</Table.Th>
+                  <Table.Th w={160}>{t("Competition.Labels.Site")}</Table.Th>
+                </Table.Tr>
+              </Table.Thead>
+              <Table.Tbody>
+                {teamRow(t("Competition.Match.Home"), home, setHome)}
+                {teamRow(t("Competition.Match.Away"), away, setAway)}
+              </Table.Tbody>
+            </Table>
+            <Text size="xs" c="dimmed">
+              {t("Competition.Match.SiteHelp")}
+            </Text>
+
+            <Divider label={t("Competition.Labels.Patterns")} labelPosition="left" />
+            <TextInput
+              label={t("Competition.Labels.EventPattern")}
+              placeholder={DEFAULT_EVENT_PATTERN}
+              description={`${t("Competition.Labels.PatternsHelp")} ${PATTERN_VARS.map(
+                (v) => `{${v.key}}`,
+              ).join(" · ")}`}
+              value={eventPattern}
+              onChange={(e) => setEventPattern(e.currentTarget.value)}
+              rightSection={
+                <ResetPattern
+                  hidden={eventPattern === DEFAULT_EVENT_PATTERN}
+                  onReset={() => setEventPattern(DEFAULT_EVENT_PATTERN)}
+                />
+              }
+            />
+
+            <Paper withBorder p="sm">
+              <Stack gap={4}>
+                <Row label={t("Competition.Labels.Preview")} value={preview || "—"} />
+                {resolved?.currentEvent && resolved.currentEvent !== preview && (
+                  <Row label={t("Competition.Match.Current")} value={resolved.currentEvent} />
+                )}
+                <Row label={t("Competition.Match.Games")} value={games.length} />
+              </Stack>
+            </Paper>
+
+            {resolved?.mixedEvents && (
+              <Alert color="orange" variant="light">
+                {t("Competition.Match.Mixed")}
+              </Alert>
+            )}
+          </>
+        )}
+
+        <Group justify="flex-end">
+          <Button variant="default" onClick={onClose}>
+            {t("Common.Cancel")}
+          </Button>
+          <Button loading={busy} disabled={!input || games.length === 0} onClick={apply}>
+            {t("Competition.Match.Apply")}
+          </Button>
+        </Group>
+      </Stack>
+    </Modal>
   );
 }
+
+// ── Export ŠSČR ─────────────────────────────────────────────────────────────
 
 export function SscrExportModal({
   opened,

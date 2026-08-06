@@ -22,6 +22,7 @@ import { exists, mkdir, readTextFile, remove, rename, writeTextFile } from "@tau
 import { splitPgnGames } from "@/utils/pgn/tags";
 import { sanitizeFilename } from "@/utils/filename";
 import { prefillDirectory } from "./directory";
+import { type MatchLabels, matchLabelsSchema } from "./matchLabels";
 import { type Competition, type ParseIssue, parseCompetitionXml } from "./competitionXml";
 import {
     buildManifest,
@@ -126,6 +127,39 @@ export async function renameCompetitionSidecars(
             await rename(from, pathFor(newPgnPath));
         }
     }
+}
+
+// ── zkratky zápasu ──────────────────────────────────────────────────────────
+// One imported match is a plain .pgn with no manifest (see `matchLabels.ts`), so
+// its abbreviation, labels and venues ride in the `.info` sidecar every database
+// already has. Unknown keys survive a round trip through this pair, so en-croissant
+// (and a future upstream field) keeps whatever else it put there.
+
+type InfoSidecar = { type: string; tags: string[]; match?: MatchLabels } & Record<string, unknown>;
+
+async function readInfo(pgnPath: string): Promise<InfoSidecar> {
+    const path = infoPathFor(pgnPath);
+    if (await exists(path)) {
+        try {
+            const parsed = JSON.parse(await readTextFile(path));
+            if (parsed && typeof parsed === "object") return parsed as InfoSidecar;
+        } catch {
+            // A corrupt sidecar is not worth failing over — it is metadata, and the
+            // caller is about to write a valid one.
+        }
+    }
+    return { type: "other", tags: [] };
+}
+
+/** The stored label pieces of a match .pgn, or null when it has none yet. */
+export async function loadMatchLabels(pgnPath: string): Promise<MatchLabels | null> {
+    const parsed = matchLabelsSchema.safeParse((await readInfo(pgnPath)).match);
+    return parsed.success ? parsed.data : null;
+}
+
+export async function saveMatchLabels(pgnPath: string, labels: MatchLabels): Promise<void> {
+    const info = await readInfo(pgnPath);
+    await writeTextFile(infoPathFor(pgnPath), JSON.stringify({ ...info, match: labels }));
 }
 
 /** Keep a copy of every XML we imported, named by the round it brought in. */

@@ -15,6 +15,7 @@ import {
   IconFileImport,
   IconListCheck,
   IconRefresh,
+  IconTags,
   IconZoomCheck,
 } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
@@ -26,6 +27,7 @@ import { activeTabAtom, tabsAtom } from "@/state/atoms";
 import { openCompetitionTab } from "@/utils/competitionTab";
 import { openFile } from "@/utils/files";
 import { capitalize } from "@/utils/format";
+import { readMatchTeams } from "@/utils/sscr/matchLabels";
 import { isCompetitionFile } from "@/utils/sscr/storage";
 import { unwrap } from "@/utils/unwrap";
 import GamePreview from "../databases/GamePreview";
@@ -33,6 +35,7 @@ import GameSelector from "../panels/info/GameSelector";
 import { CompetitionResyncModal } from "./CompetitionDialogs";
 import type { FileMetadata } from "./file";
 import { ExportPgnModal, ImportGamesModal, KontrolaModal } from "./PgnToolsDialogs";
+import { MatchLabelsDialog } from "./SscrExportDialogs";
 
 function FileCard({
   selected,
@@ -59,8 +62,12 @@ function FileCard({
   const [exportOpen, setExportOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
   const [resyncOpen, setResyncOpen] = useState(false);
+  const [matchLabelsOpen, setMatchLabelsOpen] = useState(false);
   // A .pgn with a manifest beside it is a competition — it gets the XML actions.
   const [isCompetition, setIsCompetition] = useState(false);
+  // A .pgn whose games name both teams is one match (what the ŠSČR import writes) —
+  // it gets the small label editor. A competition has its own, richer one.
+  const [isMatch, setIsMatch] = useState(false);
 
   function onChanged() {
     setGames(new Map());
@@ -78,6 +85,23 @@ function FileCard({
     isCompetitionFile(selected.path).then((yes) => {
       if (!cancelled) setIsCompetition(yes);
     });
+    return () => {
+      cancelled = true;
+    };
+  }, [selected.path]);
+
+  useEffect(() => {
+    let cancelled = false;
+    setIsMatch(false);
+    // The first game is enough: one file is one match, and reading all of them
+    // just to decide whether to show a button would be wasteful on a season.
+    commands
+      .readGames(selected.path, 0, 0)
+      .then((result) => {
+        const first = unwrap(result)[0];
+        if (!cancelled) setIsMatch(!!first && readMatchTeams([first]) !== null);
+      })
+      .catch(() => {});
     return () => {
       cancelled = true;
     };
@@ -147,6 +171,13 @@ function FileCard({
               <IconFileExport />
             </ActionIcon>
           </Tooltip>
+          {isMatch && !isCompetition && (
+            <Tooltip label={t("Competition.Match.Title")}>
+              <ActionIcon size="sm" variant="default" onClick={() => setMatchLabelsOpen(true)}>
+                <IconTags />
+              </ActionIcon>
+            </Tooltip>
+          )}
           {isCompetition && (
             <Tooltip label={t("Competition.Sync.Title")}>
               <ActionIcon size="sm" variant="default" onClick={() => setResyncOpen(true)}>
@@ -194,6 +225,14 @@ function FileCard({
         file={selected}
         onChanged={onChanged}
       />
+      {isMatch && !isCompetition && (
+        <MatchLabelsDialog
+          opened={matchLabelsOpen}
+          onClose={() => setMatchLabelsOpen(false)}
+          pgnPath={selected.path}
+          onSaved={onChanged}
+        />
+      )}
       {isCompetition && (
         <CompetitionResyncModal
           opened={resyncOpen}
