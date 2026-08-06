@@ -186,6 +186,7 @@ const INTERP_KEYS: [string, Record<string, unknown>][] = [
     ["PgnTools.Check.Duplicates.Detail", { n: 2 }],
     ["PgnTools.Export.Done", { count: 2 }],
     ["PgnTools.Import.Done", { matched: 2, appended: 1 }],
+    ["PgnTools.Import.DoneEco", { count: 2 }],
     ["PgnTools.Import.WillAppend", { count: 2 }],
     ["PgnTools.Import.Loaded", { count: 3 }],
     ["Competition.RoundNr", { n: 3 }],

@@ -51,6 +51,7 @@ import {
   type TeamsCard,
   type VariationsCard,
 } from "@/utils/pgn/check";
+import { getEcoFromGame } from "@/utils/chess";
 import { claimFileDrop } from "@/utils/fileDrop";
 import { type CleanupOptions, FULL_CLEANUP } from "@/utils/pgn/cleanup";
 import { buildExportGame, STANDARD_TAGS } from "@/utils/pgn/export";
@@ -897,6 +898,32 @@ function sideLabel(s: PairSide): string {
   return `${s.white || "?"} – ${s.black || "?"}${rb ? ` (${rb})` : ""}`;
 }
 
+/** Recompute a game's ECO tag from its moves. A line that matches no book position
+ *  (or a game with no moves at all) keeps whatever code it already carried. */
+async function withEcoTag(game: string): Promise<string> {
+  const eco = await getEcoFromGame(game);
+  if (!eco || eco === getTag(splitGame(game).tags, "ECO")) return game;
+  return setGameTag(game, "ECO", eco);
+}
+
+/** How many games are sent to the backend for ECO lookup at once — each one costs a
+ *  couple of round trips and an import can be a whole tournament. */
+const ECO_BATCH = 16;
+
+/** ECO codes for a batch of games, in order, plus how many tags actually changed. */
+async function withEcoTags(games: string[]): Promise<{ games: string[]; filled: number }> {
+  const out: string[] = [];
+  let filled = 0;
+  for (let i = 0; i < games.length; i += ECO_BATCH) {
+    const done = await Promise.all(games.slice(i, i + ECO_BATCH).map(withEcoTag));
+    done.forEach((g, k) => {
+      if (g !== games[i + k]) filled++;
+      out.push(g);
+    });
+  }
+  return { games: out, filled };
+}
+
 export function ImportGamesModal({
   opened,
   onClose,
@@ -1004,17 +1031,32 @@ export function ImportGamesModal({
   async function apply() {
     setBusy(true);
     try {
+      const mergedInto: number[] = [];
       const merged = targets.map((g, t2) => {
         const j = assignment[t2];
-        return j != null ? applyMergedMovetext(g, imported[j]) : g;
+        if (j == null) return g;
+        mergedInto.push(t2);
+        return applyMergedMovetext(g, imported[j]);
       });
       const appended = leftovers.map((j) => imported[j]);
+
+      // The moves are new, so the ECO code is derived from them — for the games that
+      // just received movetext and for the imports appended whole.
+      const eco = await withEcoTags([...mergedInto.map((t2) => merged[t2]), ...appended]);
+      mergedInto.forEach((t2, k) => {
+        merged[t2] = eco.games[k];
+      });
+      const appendedWithEco = eco.games.slice(mergedInto.length);
+
       // Unmatched imports are appended to the file, never inserted into the scope.
-      const next = [...spliceScoped(allGames, scope, merged), ...appended];
+      const next = [...spliceScoped(allGames, scope, merged), ...appendedWithEco];
       await writeTextFile(file.path, next.join("\n\n\n") + "\n");
+      const done = t("PgnTools.Import.Done", { matched: matchedCount, appended: appended.length });
       notifications.show({
         title: t("PgnTools.Import.Title"),
-        message: t("PgnTools.Import.Done", { matched: matchedCount, appended: appended.length }),
+        message: eco.filled
+          ? `${done} ${t("PgnTools.Import.DoneEco", { count: eco.filled })}`
+          : done,
         color: "teal",
       });
       onChanged();

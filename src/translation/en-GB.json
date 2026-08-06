@@ -654,6 +654,8 @@
     "PgnTools.Export.Title": "",
     "PgnTools.Import.Apply": "",
     "PgnTools.Import.Done": "",
+    "PgnTools.Import.DoneEco_one": "",
+    "PgnTools.Import.DoneEco_other": "",
     "PgnTools.Import.DropHint": "",
     "PgnTools.Import.Help": "",
     "PgnTools.Import.ImportedGame": "",

@@ -47,9 +47,18 @@ vi.mock("@tauri-apps/api/webview", () => ({
 }));
 vi.mock("@tauri-apps/plugin-log", () => ({ error: vi.fn() }));
 vi.mock("@mantine/notifications", () => ({ notifications: { show: vi.fn() } }));
+// ECO lookup goes through the Rust opening book; stand in for it by reading the
+// first move, which is all the assertions below need.
+vi.mock("@/utils/chess", () => ({
+  getEcoFromGame: vi.fn(async (pgn: string) =>
+    pgn.includes("1. e4") ? "C20" : pgn.includes("1. d4") ? "D00" : "",
+  ),
+}));
 
 // The dialog is imported after the mocks are registered.
+import { notifications } from "@mantine/notifications";
 import { open as openDialog } from "@tauri-apps/plugin-dialog";
+import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { ImportGamesModal } from "./PgnToolsDialogs";
 
 const FILE = {
@@ -111,6 +120,8 @@ afterEach(() => {
   fileTexts.clear();
   drop.fire = null;
   vi.mocked(openDialog).mockReset();
+  vi.mocked(writeTextFile).mockClear();
+  vi.mocked(notifications.show).mockClear();
 });
 
 /** One game per file, the way captains actually send them. */
@@ -169,6 +180,28 @@ describe("ImportGamesModal", () => {
     // One of them pairs with the single target; the other two are appended — which
     // only adds up if all three files were read.
     expect(screen.getByText(/2 imported games match no existing game/i)).toBeTruthy();
+  });
+
+  it("writes an ECO tag computed from the imported moves, merged and appended alike", async () => {
+    renderModal();
+    await screen.findByText("Import moves");
+
+    fireEvent.change(screen.getByPlaceholderText(/paste PGN/i), {
+      target: { value: IMPORTED_TWO },
+    });
+    await screen.findByText("Both players");
+    fireEvent.click(screen.getByRole("button", { name: "Import" }));
+
+    await vi.waitFor(() => expect(writeTextFile).toHaveBeenCalled());
+    const written = vi.mocked(writeTextFile).mock.calls[0][1] as string;
+    // The target had no ECO; it gets the code of the moves it just received (1. e4),
+    // and the leftover import is appended with its own (1. d4).
+    expect(written).toMatch(/\[ECO "C20"\]/);
+    expect(written).toMatch(/\[ECO "D00"\]/);
+
+    // The summary says so, in resolved copy rather than a raw key.
+    const { message } = vi.mocked(notifications.show).mock.calls[0][0] as { message: string };
+    expect(message).toContain("ECO codes computed for 2 games.");
   });
 
   it("claims dropped files while open, so they are not opened as databases", async () => {
