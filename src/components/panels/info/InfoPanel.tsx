@@ -12,7 +12,7 @@ import {
 import { useToggle } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
 import { useAtom, useAtomValue } from "jotai";
-import { use, useState } from "react";
+import { use, useMemo, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useTranslation } from "react-i18next";
 import { useStore } from "zustand";
@@ -24,7 +24,7 @@ import { currentTabAtom } from "@/state/atoms";
 import { keyMapAtom } from "@/state/keybinds";
 import { parsePGN } from "@/utils/chess";
 import { formatNumber } from "@/utils/format";
-import { getTabFile, getTabGameNumber } from "@/utils/tabs";
+import { getTabFile, getTabGameNumber, scopedIndices } from "@/utils/tabs";
 import { unwrap } from "@/utils/unwrap";
 import FenSearch from "./FenSearch";
 import FileInfo from "./FileInfo";
@@ -151,23 +151,26 @@ function GameSelectorAccordion({
   const keyMap = useAtomValue(keyMapAtom);
   const { t } = useTranslation();
 
-  useHotkeys(
-    keyMap.NEXT_GAME.keys,
-    () => {
-      if (!tabFile?.numGames) return;
-      void setPage(Math.min(gameNumber + 1, tabFile.numGames - 1));
-    },
-    {
-      enabled: !!tabFile,
-    },
+  // Next/previous game walks the list the panel is actually showing, so on a tab
+  // scoped to one round it stays inside that round instead of stepping into the
+  // game that happens to sit next to it in the file.
+  const indices = useMemo(
+    () => scopedIndices(currentTab, tabFile?.numGames ?? 0),
+    [currentTab, tabFile?.numGames],
   );
 
-  useHotkeys(keyMap.PREVIOUS_GAME.keys, () => setPage(Math.max(0, gameNumber - 1)), {
-    enabled: !!tabFile,
-  });
+  useHotkeys(keyMap.NEXT_GAME.keys, () => step(1), { enabled: !!tabFile });
+  useHotkeys(keyMap.PREVIOUS_GAME.keys, () => step(-1), { enabled: !!tabFile });
 
   if (!tabFile) return null;
   const filePath = tabFile.path;
+
+  function step(delta: number) {
+    if (indices.length === 0) return;
+    const at = indices.indexOf(gameNumber);
+    const to = at === -1 ? 0 : Math.min(indices.length - 1, Math.max(0, at + delta));
+    if (indices[to] !== gameNumber) void setPage(indices[to]);
+  }
 
   async function setPage(page: number, forced?: boolean) {
     if (!forced && dirty) {
@@ -264,6 +267,7 @@ function GameSelectorAccordion({
                 path={filePath}
                 activePage={gameNumber || 0}
                 total={tabFile.numGames}
+                indices={currentTab?.gameScope ? indices : undefined}
               />
             </Box>
           </Accordion.Panel>

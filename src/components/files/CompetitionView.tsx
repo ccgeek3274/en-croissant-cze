@@ -2,10 +2,12 @@
 //
 // Left: the competition → round → match → game tree, every node showing how far
 // along it is (moves in / results in / placeholders left). Right: the games of the
-// selected node, plus the tools scoped to exactly that level. Selecting a node is
-// the only piece of state that matters — everything else is derived from it, which
-// is what makes "edit headers at match level, check at round level, export the
-// season" one mechanism instead of three.
+// selected node in the board's own "Hlavičky" grid, plus the tools scoped to exactly
+// that level. Selecting a node is the only piece of state that matters — everything
+// else is derived from it, which is what makes "edit headers at match level, check at
+// round level, export the season" one mechanism instead of three. That selection is
+// remembered per file and travels with a game onto the board, so drilling down is
+// never undone by switching tabs.
 
 import {
   ActionIcon,
@@ -19,7 +21,6 @@ import {
   ScrollArea,
   Select,
   Stack,
-  Table,
   Text,
   TextInput,
   Tooltip,
@@ -35,10 +36,9 @@ import {
   IconRefresh,
   IconTags,
   IconTrophy,
-  IconZoomCheck,
 } from "@tabler/icons-react";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { distinctTagValues, setGameTag, TAG_DEFS } from "@/utils/pgn/check";
 import { getTag, splitGame } from "@/utils/pgn/tags";
@@ -59,6 +59,8 @@ import {
   type RoundNode,
   type Scope,
 } from "@/utils/sscr/tree";
+import type { GameScope } from "@/utils/tabs";
+import { HeadersGrid } from "@/components/panels/headers/HeadersGrid";
 import { CompetitionResyncModal } from "./CompetitionDialogs";
 import type { FileMetadata } from "./file";
 import { ExportPgnModal, ImportGamesModal, KontrolaModal, type ToolScope } from "./PgnToolsDialogs";
@@ -145,6 +147,48 @@ const TREE_WIDTH_DEFAULT = 320;
 
 function clampTreeWidth(px: number): number {
   return Math.min(TREE_WIDTH_MAX, Math.max(TREE_WIDTH_MIN, Math.round(px)));
+}
+
+// ── remembering where you were ──────────────────────────────────────────────
+// Tab panels unmount when you switch away — BoardsPage renders them with
+// `keepMounted={false}` — so the mode used to come back at the root with every
+// branch collapsed. After eleven rounds that is a lot of clicking to get back to
+// the match you were working on. The selection *is* the state of this mode, so
+// remembering it and the open branches, per file, restores the whole view.
+
+const TREE_STATE_KEY = "competition-tree-state";
+/** How many competitions to remember. Enough for a season's worth of files. */
+const TREE_STATE_KEEP = 20;
+
+type TreeState = { selectedId: string; expanded: string[] };
+
+function readTreeStates(): [string, TreeState][] {
+  try {
+    const raw: unknown = JSON.parse(localStorage.getItem(TREE_STATE_KEY) ?? "{}");
+    if (!raw || typeof raw !== "object") return [];
+    return Object.entries(raw as Record<string, TreeState>).filter(
+      ([, v]) => typeof v?.selectedId === "string" && Array.isArray(v?.expanded),
+    );
+  } catch {
+    return [];
+  }
+}
+
+function loadTreeState(path: string): TreeState | undefined {
+  return readTreeStates().find(([p]) => p === path)?.[1];
+}
+
+function saveTreeState(path: string, state: TreeState): void {
+  // Object key order is insertion order, so re-appending the file we just touched
+  // makes the tail the most-recently-used and `slice` the eviction policy.
+  const kept = [...readTreeStates().filter(([p]) => p !== path), [path, state] as const].slice(
+    -TREE_STATE_KEEP,
+  );
+  try {
+    localStorage.setItem(TREE_STATE_KEY, JSON.stringify(Object.fromEntries(kept)));
+  } catch {
+    // A full quota is not worth failing a render over.
+  }
 }
 
 function useTreeWidth(): [number, (px: number) => void] {
@@ -244,17 +288,22 @@ export function CompetitionView({
   file: FileMetadata;
   /** The file on disk changed — refresh the surrounding file list. */
   onChanged: () => void;
-  /** Open one game on the board (game number = its index in the file). */
-  onOpenGame: (gameIndex: number) => void;
+  /** Open one game on the board (game number = its index in the file), carrying the
+   *  level it was opened from so the board lists that level and not the whole file. */
+  onOpenGame: (gameIndex: number, scope: GameScope) => void;
 }) {
   const { t } = useTranslation();
 
   const [games, setGames] = useState<string[] | null>(null);
   const [manifest, setManifest] = useState<CompetitionManifest | null>(null);
-  const [selectedId, setSelectedId] = useState("competition");
-  const [expanded, setExpanded] = useState<Set<string>>(new Set(["competition"]));
+  const [restored] = useState(() => loadTreeState(file.path));
+  const [selectedId, setSelectedId] = useState(restored?.selectedId ?? "competition");
+  const [expanded, setExpanded] = useState<Set<string>>(
+    () => new Set(restored?.expanded ?? ["competition"]),
+  );
   const [reloadKey, setReloadKey] = useState(0);
   const [treeWidth, setTreeWidth] = useTreeWidth();
+  const [tagsOpen, setTagsOpen] = useState(false);
 
   const [kontrolaOpen, setKontrolaOpen] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
@@ -282,6 +331,21 @@ export function CompetitionView({
     };
   }, [file.path, reloadKey]);
 
+  // One tab, one competition — but if this ever gets pointed at another file, the
+  // restored selection belongs to the old one.
+  const pathRef = useRef(file.path);
+  useEffect(() => {
+    if (pathRef.current === file.path) return;
+    pathRef.current = file.path;
+    const saved = loadTreeState(file.path);
+    setSelectedId(saved?.selectedId ?? "competition");
+    setExpanded(new Set(saved?.expanded ?? ["competition"]));
+  }, [file.path]);
+
+  useEffect(() => {
+    saveTreeState(file.path, { selectedId, expanded: [...expanded] });
+  }, [file.path, selectedId, expanded]);
+
   const tree: CompetitionNode | null = useMemo(
     () => (games ? buildTree(games, manifest) : null),
     [games, manifest],
@@ -291,6 +355,12 @@ export function CompetitionView({
     () => (tree ? (findScope(tree, selectedId) ?? findScope(tree, "competition")) : null),
     [tree, selectedId],
   );
+
+  // A remembered node can be gone — the file was re-synced, a round renumbered. Fall
+  // back to the whole competition rather than leaving a selection nothing matches.
+  useEffect(() => {
+    if (tree && !findScope(tree, selectedId)) setSelectedId("competition");
+  }, [tree, selectedId]);
 
   // The competition itself is not a match — its Event is uniform by construction and
   // colours alternate per match, not across the file.
@@ -303,12 +373,6 @@ export function CompetitionView({
     () => (games && scope ? scope.indices.map((i) => games[i]) : []),
     [games, scope],
   );
-  const scopedNodes = useMemo(() => {
-    if (!tree || !scope) return [];
-    const wanted = new Set(scope.indices);
-    return allGameNodes(tree).filter((n) => wanted.has(n.index));
-  }, [tree, scope]);
-
   const tagValues = useMemo(() => distinctTagValues(scopedGames, tagKey), [scopedGames, tagKey]);
 
   function refresh() {
@@ -475,136 +539,119 @@ export function CompetitionView({
             {scope.label}
           </Text>
 
-          <ScrollArea flex={1}>
-            <Table stickyHeader verticalSpacing={2} highlightOnHover>
-              <Table.Thead>
-                <Table.Tr>
-                  <Table.Th w={70}>{t("Competition.Col.Round")}</Table.Th>
-                  <Table.Th>{t("Competition.Col.White")}</Table.Th>
-                  <Table.Th>{t("Competition.Col.Black")}</Table.Th>
-                  <Table.Th w={80}>{t("Competition.Col.Result")}</Table.Th>
-                  <Table.Th w={70}>{t("Competition.Col.Moves")}</Table.Th>
-                  <Table.Th w={40} />
-                </Table.Tr>
-              </Table.Thead>
-              <Table.Tbody>
-                {scopedNodes.map((node) => (
-                  <Table.Tr key={node.id}>
-                    <Table.Td>
-                      <Text size="xs" c="dimmed">
-                        {node.id}
-                      </Text>
-                    </Table.Td>
-                    <Table.Td>
-                      <Text size="xs">{node.white}</Text>
-                    </Table.Td>
-                    <Table.Td>
-                      <Text size="xs">{node.black}</Text>
-                    </Table.Td>
-                    <Table.Td>
-                      <Text size="xs">
-                        {node.result}
-                        {node.forfeit && ` (${t("Competition.Forfeit")})`}
-                      </Text>
-                    </Table.Td>
-                    <Table.Td>
-                      <Text size="xs" c={node.hasMoves ? "teal" : "dimmed"}>
-                        {node.hasMoves ? t("Competition.Moves.Yes") : t("Competition.Moves.No")}
-                      </Text>
-                    </Table.Td>
-                    <Table.Td>
-                      <ActionIcon
-                        size="xs"
-                        variant="subtle"
-                        aria-label={t("Common.Open")}
-                        onClick={() => onOpenGame(node.index)}
-                      >
-                        <IconZoomCheck size={14} />
-                      </ActionIcon>
-                    </Table.Td>
-                  </Table.Tr>
-                ))}
-              </Table.Tbody>
-            </Table>
-          </ScrollArea>
+          {/* The same grid the board's "Hlavičky" tab uses, over the games of the
+              selected node — so one competition, one round, one match and one game
+              are four scopes of one view rather than four different screens. Opening
+              a game hands that scope to the board with it. */}
+          <HeadersGrid
+            path={file.path}
+            games={games ?? []}
+            rows={scope.indices}
+            onOpen={(index) =>
+              onOpenGame(index, {
+                label: scope.label,
+                indices: scope.indices,
+                matchLevel: isMatchScope,
+              })
+            }
+            onReload={refresh}
+            matchView={isMatchScope}
+            viewModeKey="competition-headers-view-mode"
+            toolbar={
+              <Button
+                size="xs"
+                variant={tagsOpen ? "light" : "default"}
+                onClick={() => setTagsOpen((o) => !o)}
+              >
+                {t("Competition.Headers.Title")}
+              </Button>
+            }
+          />
 
           {/* ── header editing, scoped to the selected node ─────────────── */}
-          <Paper withBorder p="xs">
-            <Stack gap="xs">
-              <Group justify="space-between">
-                <Text fw={600} size="xs">
-                  {t("Competition.Headers.Title")}
-                </Text>
-                <Text size="xs" c="dimmed">
-                  {t("Competition.Headers.Scope", {
-                    label: scope.label,
-                    count: scope.indices.length,
-                  })}
-                </Text>
-              </Group>
-              <Select
-                size="xs"
-                w={200}
-                label={t("PgnTools.Check.Tags.SelectTag")}
-                data={TAG_DEFS.filter((d) => d.replaceable).map((d) => d.key)}
-                value={tagKey}
-                onChange={(v) => {
-                  if (v) setTagKey(v);
-                  setChecked(new Set());
-                  setDesired("");
-                }}
-                comboboxProps={{ withinPortal: true }}
-                allowDeselect={false}
-              />
-              <ScrollArea.Autosize mah={140}>
-                <Stack gap={2}>
-                  {tagValues.map(({ value, count, suspicious }) => (
-                    <Group key={value || "∅"} gap="xs" wrap="nowrap">
-                      <Checkbox
-                        size="xs"
-                        checked={checked.has(value)}
-                        onChange={() =>
-                          setChecked((prev) => {
-                            const next = new Set(prev);
-                            if (next.has(value)) next.delete(value);
-                            else next.add(value);
-                            return next;
-                          })
-                        }
-                      />
-                      <Text size="xs" c={suspicious ? "red" : undefined} style={{ flex: 1 }}>
-                        {value || t("PgnTools.Check.Tags.Empty")}
-                      </Text>
-                      <Text size="xs" c="dimmed">
-                        {count}×
-                      </Text>
-                      {value !== "" && (
-                        <Button
-                          size="compact-xs"
-                          variant="subtle"
-                          onClick={() => setDesired(value)}
-                        >
-                          {t("PgnTools.Check.Tags.Take")}
-                        </Button>
-                      )}
-                    </Group>
-                  ))}
-                </Stack>
-              </ScrollArea.Autosize>
-              <Group gap="xs" align="flex-end">
-                <TextInput
-                  style={{ flex: 1 }}
+          {tagsOpen && (
+            <Paper withBorder p="xs">
+              <Stack gap="xs">
+                <Group justify="space-between">
+                  <Text fw={600} size="xs">
+                    {t("Competition.Headers.Title")}
+                  </Text>
+                  <Text size="xs" c="dimmed">
+                    {t("Competition.Headers.Scope", {
+                      label: scope.label,
+                      count: scope.indices.length,
+                    })}
+                  </Text>
+                </Group>
+                <Select
                   size="xs"
-                  placeholder={t("PgnTools.Check.Tags.Desired")}
-                  value={desired}
-                  onChange={(e) => setDesired(e.currentTarget.value)}
+                  w={200}
+                  label={t("PgnTools.Check.Tags.SelectTag")}
+                  data={TAG_DEFS.filter((d) => d.replaceable).map((d) => d.key)}
+                  value={tagKey}
+                  onChange={(v) => {
+                    if (v) setTagKey(v);
+                    setChecked(new Set());
+                    setDesired("");
+                  }}
+                  comboboxProps={{ withinPortal: true }}
+                  allowDeselect={false}
                 />
-                <Button size="xs" loading={busy} disabled={checked.size === 0} onClick={replaceTag}>
-                  {t("PgnTools.Check.Tags.Replace", { n: checked.size })}
-                </Button>
-              </Group>
-            </Stack>
-          </Paper>
+                <ScrollArea.Autosize mah={140}>
+                  <Stack gap={2}>
+                    {tagValues.map(({ value, count, suspicious }) => (
+                      <Group key={value || "∅"} gap="xs" wrap="nowrap">
+                        <Checkbox
+                          size="xs"
+                          checked={checked.has(value)}
+                          onChange={() =>
+                            setChecked((prev) => {
+                              const next = new Set(prev);
+                              if (next.has(value)) next.delete(value);
+                              else next.add(value);
+                              return next;
+                            })
+                          }
+                        />
+                        <Text size="xs" c={suspicious ? "red" : undefined} style={{ flex: 1 }}>
+                          {value || t("PgnTools.Check.Tags.Empty")}
+                        </Text>
+                        <Text size="xs" c="dimmed">
+                          {count}×
+                        </Text>
+                        {value !== "" && (
+                          <Button
+                            size="compact-xs"
+                            variant="subtle"
+                            onClick={() => setDesired(value)}
+                          >
+                            {t("PgnTools.Check.Tags.Take")}
+                          </Button>
+                        )}
+                      </Group>
+                    ))}
+                  </Stack>
+                </ScrollArea.Autosize>
+                <Group gap="xs" align="flex-end">
+                  <TextInput
+                    style={{ flex: 1 }}
+                    size="xs"
+                    placeholder={t("PgnTools.Check.Tags.Desired")}
+                    value={desired}
+                    onChange={(e) => setDesired(e.currentTarget.value)}
+                  />
+                  <Button
+                    size="xs"
+                    loading={busy}
+                    disabled={checked.size === 0}
+                    onClick={replaceTag}
+                  >
+                    {t("PgnTools.Check.Tags.Replace", { n: checked.size })}
+                  </Button>
+                </Group>
+              </Stack>
+            </Paper>
+          )}
         </Stack>
       </Group>
 

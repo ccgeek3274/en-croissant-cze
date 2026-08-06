@@ -31,11 +31,12 @@ export default function CompetitionTab({ tab }: { tab: Tab }) {
     <CompetitionView
       file={file}
       onChanged={() => {}}
-      onOpenGame={async (gameIndex) => {
+      onOpenGame={async (gameIndex, scope) => {
         const data = unwrap(await commands.readGames(file.path, gameIndex, gameIndex));
         await openFile(file, setTabs, setActiveTab, {
           gameNumber: gameIndex,
           pgn: data[0] ?? "",
+          scope,
         });
       }}
     />

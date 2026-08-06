@@ -448,6 +448,39 @@ to nevadí (Mosaic se pozicuje sám), ale cokoli, co scrolluje, mělo viewport z
 pod okraj obrazovky, takže se na poslední řádky nedalo dojet. Správně je `flex: 1`
 (+ `minHeight: 0`), tedy zbývající místo.
 
+### Pravý panel je „Hlavičky“
+
+Pravá část dřív měla vlastní tabulku (kolo / bílý / černý / výsledek / tahy) — pátý
+pohled na tytéž partie, který uměl míň než ostatní čtyři. Teď je to **stejný grid
+jako blok „Hlavičky“ na šachovnici** (`components/panels/headers/HeadersGrid.tsx`),
+vytažený z `HeadersPanel` tak, aby ho oba mohly sdílet.
+
+Grid o výběru nerozhoduje sám: `games` je **vždy celý soubor**, indexově zarovnaný
+s ním, a `rows` říká, které z těch indexů zobrazit. Každý index, který grid vydá
+(`onOpen`, `onWritten`, mapa rozeditovaných buněk), je proto index do souboru —
+zúžený grid zapisuje na přesně stejná místa jako nezúžený a hostitel nic
+nepřepočítává. Výběr ve stromu tak dává čtyři varianty jednoho pohledu: 1 partie /
+zápas / kolo / celá soutěž. Hromadná náhrada hodnot tagu zůstala, ale schovala se
+pod tlačítko, aby na grid zbylo místo.
+
+### Výběr se pamatuje a cestuje s partií
+
+`BoardsPage` renderuje karty s `keepMounted={false}`, takže se `CompetitionView` při
+přepnutí karty odmountuje. Výběr uzlu a rozbalené větve se proto ukládají do
+`localStorage` **per soubor** (`competition-tree-state`, posledních 20 souborů) a při
+návratu se obnoví. Uzel, který mezitím ze stromu zmizel (re-sync, přečíslované kolo),
+spadne zpátky na celou soutěž.
+
+Proklik na partii navíc předá **úroveň, ze které se otevřela**: karta nese nepovinný
+`gameScope` (`utils/tabs.ts`) a `scopedIndices` z něj dělá seznam indexů, který
+respektuje jak grid „Hlavičky“, tak výběr partií v `InfoPanel` včetně klávesových
+zkratek na další/předchozí partii. Na šachovnici se tedy neukáže celé PGN sezóny, ale
+jen to kolo nebo zápas, ve kterém uživatel pracuje. `GameScope` má tvar `ToolScope`,
+takže se stejným zúžením běží i Kontrola, Import a Export; příznak `matchLevel` říká,
+jestli dávají smysl zápasové kontroly (jednotný `Event`, střídání barev). Zúžení je
+vždy vidět jako štítek s křížkem (`GameScopeChip`) — krátký seznam bez vysvětlení
+vypadá jako ztracená data.
+
 ## Okrajové případy
 
 - **XML neobsahuje kolo, které už proběhlo** (data ve Swiss-Manageru zaostávají) —

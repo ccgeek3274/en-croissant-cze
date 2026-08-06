@@ -55,14 +55,33 @@ const gameOriginSchema = z.discriminatedUnion("kind", [
     }),
 ]);
 
+/** A subset of a file's games the tab is working on, and what to call it.
+ *
+ *  A game opened out of the competition-leader mode belongs to a round or a match,
+ *  not to the whole season file — listing all 192 games next to it is the wrong
+ *  context. The scope travels with the tab so the Headers panel and the game
+ *  selector both narrow to the same games, and it survives a session restore. It is
+ *  a view filter, never a constraint on what can be edited: `indices` point into the
+ *  file, so anything that drifts is clamped away rather than trusted. */
+const gameScopeSchema = z.object({
+    label: z.string(),
+    indices: z.array(z.number()),
+    /** The scope is one match (or one of its boards), so the match-only Kontrola
+     *  checks — uniform Event, colours alternating across boards — apply. Above
+     *  match level they do not, and running them there is all false positives. */
+    matchLevel: z.boolean().optional(),
+});
+
 export const tabSchema = z.object({
     name: z.string(),
     value: z.string(),
     type: z.enum(["new", "play", "analysis", "puzzles", "competition"]),
     gameOrigin: gameOriginSchema,
+    gameScope: gameScopeSchema.optional(),
 });
 
 export type GameOrigin = z.infer<typeof gameOriginSchema>;
+export type GameScope = z.infer<typeof gameScopeSchema>;
 export type Tab = z.infer<typeof tabSchema>;
 
 export function getTabFile(tab?: Tab | null): FileMetadata | undefined {
@@ -79,6 +98,22 @@ export function getTabGameNumber(tab?: Tab | null): number {
         return tab.gameOrigin.gameNumber;
     }
     return 0;
+}
+
+export function getTabScope(tab?: Tab | null): GameScope | undefined {
+    return tab?.gameScope;
+}
+
+/** The games a tab lists, as absolute indices into its file, in display order.
+ *  Without a scope that is every game. A scope that no longer matches the file —
+ *  games were imported or removed under it — is clamped, and if nothing survives we
+ *  fall back to the whole file rather than showing an empty list. */
+export function scopedIndices(tab: Tab | null | undefined, numGames: number): number[] {
+    const all = () => Array.from({ length: Math.max(0, numGames) }, (_, i) => i);
+    const scope = tab?.gameScope;
+    if (!scope) return all();
+    const inFile = scope.indices.filter((i) => Number.isInteger(i) && i >= 0 && i < numGames);
+    return inFile.length > 0 ? inFile : all();
 }
 
 export function isPersistentGameOrigin(tab?: Tab | null): boolean {

@@ -19,6 +19,7 @@ export default function GameSelector({
   setGames,
   setPage,
   total,
+  indices,
   path,
   activePage,
   deleteGame,
@@ -27,45 +28,59 @@ export default function GameSelector({
   setGames: React.Dispatch<React.SetStateAction<Map<number, string>>>;
   setPage: (v: number) => void;
   total: number;
+  /** Show only these games, in this order, as indices into the file. Omitted =
+   *  every game, where a row number and a file index are the same thing. */
+  indices?: number[];
   path: string;
   activePage: number;
   deleteGame?: (index: number) => void;
 }) {
-  function isRowLoaded(index: number) {
-    return games.has(index);
-  }
+  // A row on screen and a game in the file stop being the same number the moment
+  // a scope is in play. Everything the selector hands out or compares — the games
+  // map, `activePage`, `setPage`, `deleteGame` — speaks file indices; only the
+  // virtualiser speaks rows, and this is the one place they meet.
+  const fileIndex = useCallback((row: number) => (indices ? indices[row] : row), [indices]);
+  const rowCount = indices ? indices.length : total;
 
   const loadMoreRows = useCallback(
-    async (startIndex: number, stopIndex: number) => {
-      const data = unwrap(await commands.readGames(path, startIndex, stopIndex));
-      const newGames = new Map(games);
-      data.forEach(async (game, index) => {
-        const { headers } = await parsePGN(game);
-        newGames.set(startIndex + index, getGameName(headers));
+    async (startRow: number, stopRow: number) => {
+      const first = fileIndex(startRow);
+      const last = fileIndex(stopRow);
+      if (first === undefined || last === undefined) return;
+      // One read spanning the visible window: with a scope it can cover a few
+      // games that are not on screen, which is far cheaper than a call per row.
+      const data = unwrap(await commands.readGames(path, first, last));
+      const names = await Promise.all(
+        data.map(async (game) => getGameName((await parsePGN(game)).headers)),
+      );
+      setGames((prev) => {
+        const next = new Map(prev);
+        names.forEach((name, i) => next.set(first + i, name));
+        return next;
       });
-      setGames(newGames);
     },
-    [games, path, setGames],
+    [fileIndex, path, setGames],
   );
 
   const fontSize = useAtomValue(fontSizeAtom);
 
   const parentRef = useRef<HTMLDivElement>(null);
   const rowVirtualizer = useVirtualizer({
-    count: total,
+    count: rowCount,
     estimateSize: () => 30 * (fontSize / 100),
     getScrollElement: () => parentRef.current!,
   });
 
   useEffect(() => {
+    if (rowCount === 0) return;
     if (games.size === 0) {
-      loadMoreRows(0, 10);
+      loadMoreRows(0, Math.min(10, rowCount - 1));
     }
     const items = rowVirtualizer.getVirtualItems();
-    if (items.some((item) => !isRowLoaded(item.index))) {
+    if (items.length > 0 && items.some((item) => !games.has(fileIndex(item.index)))) {
       loadMoreRows(items[0].index, items[items.length - 1].index);
     }
-  }, [games.size, loadMoreRows, rowVirtualizer.getVirtualItems()]);
+  }, [games, fileIndex, rowCount, loadMoreRows, rowVirtualizer.getVirtualItems()]);
 
   return (
     <ScrollArea viewportRef={parentRef} h="100%">
@@ -79,8 +94,8 @@ export default function GameSelector({
         {rowVirtualizer.getVirtualItems().map((virtualRow) => (
           <GameRow
             key={virtualRow.index}
-            index={virtualRow.index}
-            game={games.get(virtualRow.index)}
+            index={fileIndex(virtualRow.index)}
+            game={games.get(fileIndex(virtualRow.index))}
             setGames={setGames}
             setPage={setPage}
             deleteGame={deleteGame}

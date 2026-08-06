@@ -1,7 +1,8 @@
-// Render test for the competition-leader mode: the tree, the scoped detail table
-// and the scoped header editor. What matters here is that selecting a node really
-// narrows what the right-hand side operates on — that is the whole point of the
-// mode, and it is invisible to the pure tree tests.
+// Render test for the competition-leader mode: the tree, the scoped games grid and
+// the scoped header editor. What matters here is that selecting a node really
+// narrows what the right-hand side operates on, that the selection survives the tab
+// unmounting, and that it reaches the board with the game — that is the whole point
+// of the mode, and it is invisible to the pure tree tests.
 
 import { MantineProvider } from "@mantine/core";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
@@ -13,6 +14,7 @@ import { splitPgnGames } from "@/utils/pgn/tags";
 import { competitionXml, parseFixture } from "@/utils/sscr/__fixtures__";
 import { buildManifest, manifestPathFor, serializeManifest } from "@/utils/sscr/manifest";
 import { buildSkeleton, skeletonToPgn } from "@/utils/sscr/skeleton";
+import type { GameScope } from "@/utils/tabs";
 
 const PGN_PATH = "/docs/KSA.pgn";
 
@@ -79,6 +81,10 @@ beforeAll(async () => {
 });
 
 beforeEach(() => {
+  // The view remembers the selected node per file (see `saveTreeState`), and jsdom's
+  // localStorage outlives a single test — without this, each test would start on
+  // whatever node the previous one clicked.
+  localStorage.clear();
   files.clear();
   const comp = parseFixture();
   files.set(PGN_PATH, skeletonToPgn(buildSkeleton(comp, { eloSource: "fide" })));
@@ -90,12 +96,22 @@ beforeEach(() => {
 
 afterEach(cleanup);
 
-function renderView(onOpenGame = () => {}) {
+function renderView(onOpenGame: (index: number, scope: GameScope) => void = () => {}) {
   return render(
     <MantineProvider>
       <CompetitionView file={FILE} onChanged={() => {}} onOpenGame={onOpenGame} />
     </MantineProvider>,
   );
+}
+
+/** The scoped tag editor sits behind a disclosure so the grid has the room. */
+function openTagEditor() {
+  fireEvent.click(screen.getByRole("button", { name: "Headers at this level" }));
+}
+
+/** Data rows of the games grid, header row excluded. */
+function gameRows() {
+  return within(screen.getByRole("table")).getAllByRole("row").slice(1);
 }
 
 describe("CompetitionView", () => {
@@ -144,22 +160,61 @@ describe("CompetitionView", () => {
     expect(await screen.findByText("1. Šimák, Roman – Hánl, František")).toBeTruthy();
   });
 
-  it("narrows the detail table to the selected node", async () => {
+  it("narrows the games grid to the selected node", async () => {
     renderView();
     await screen.findByText("Whole competition");
 
     // Competition scope: every game is listed.
-    const rows = () => within(screen.getByRole("table")).getAllByRole("row").length - 1;
-    expect(rows()).toBe(192);
+    expect(gameRows()).toHaveLength(192);
 
     fireEvent.click(screen.getByText(/Round 1 · 2025-10-12/));
     expect(await screen.findByText("1. kolo")).toBeTruthy();
-    expect(rows()).toBe(48);
+    expect(gameRows()).toHaveLength(48);
+
+    // …down to the eight boards of one match.
+    fireEvent.click(screen.getAllByText("ŠK KDJS Sedlčany A – Klokani z Kralup")[0]);
+    await vi.waitFor(() => expect(gameRows()).toHaveLength(8));
+  });
+
+  // The grid is the board's "Hlavičky" view, so the tag columns come with it — the
+  // point of reusing it is that a leader edits headers here in the same shape they
+  // see on the board.
+  it("shows the games as the Headers grid, with its tag columns", async () => {
+    renderView();
+    await screen.findByText("Whole competition");
+
+    const head = within(screen.getByRole("table")).getAllByRole("row")[0];
+    expect(within(head).getByText("Event")).toBeTruthy();
+    expect(within(head).getByText("Round")).toBeTruthy();
+    expect(within(head).getByText("ECO")).toBeTruthy();
+
+    // Row 1 is board 1 of match 1.1, and it carries the file's game number.
+    const first = gameRows()[0];
+    expect(within(first).getByText("1")).toBeTruthy();
+    expect(within(first).getByText("Šimák, Roman")).toBeTruthy();
+    expect(within(first).getByText("1.1.1")).toBeTruthy();
+  });
+
+  // Tab panels unmount on switch (`keepMounted={false}`), so this is the difference
+  // between coming back where you left off and coming back at the root.
+  it("comes back to the node it was left on", async () => {
+    const first = renderView();
+    await screen.findByText("Whole competition");
+    fireEvent.click(screen.getByText(/Round 1 · 2025-10-12/));
+    fireEvent.click(await screen.findByText("ŠK KDJS Sedlčany A – Klokani z Kralup"));
+    await vi.waitFor(() => expect(gameRows()).toHaveLength(8));
+    first.unmount();
+
+    renderView();
+    // Straight back to the match: its eight boards, without touching the tree.
+    await vi.waitFor(() => expect(gameRows()).toHaveLength(8));
+    expect(screen.getAllByText("ŠK KDJS Sedlčany A – Klokani z Kralup").length).toBeGreaterThan(0);
   });
 
   it("scopes the header editor to the selection", async () => {
     renderView();
     await screen.findByText("Whole competition");
+    openTagEditor();
 
     // Event is uniform across the whole file, so one value covering all 192 games.
     expect(screen.getByText("192×")).toBeTruthy();
@@ -174,6 +229,7 @@ describe("CompetitionView", () => {
     renderView();
     await screen.findByText("Whole competition");
     fireEvent.click(screen.getByText(/Round 1 · 2025-10-12/));
+    openTagEditor();
     await screen.findByText(/· 48 games/);
 
     // Tick the single Event value in scope and give it a new one.
@@ -197,9 +253,28 @@ describe("CompetitionView", () => {
     renderView(onOpenGame);
     await screen.findByText("Whole competition");
 
-    fireEvent.click(
-      within(screen.getByRole("table")).getAllByRole("row")[1].querySelector("button")!,
+    fireEvent.click(gameRows()[0]);
+    expect(onOpenGame).toHaveBeenCalledWith(
+      0,
+      expect.objectContaining({ indices: expect.any(Array) }),
     );
-    expect(onOpenGame).toHaveBeenCalledWith(0);
+  });
+
+  // Opening a game out of a match should not drop the leader onto a board listing
+  // all 192 games of the season: the level travels with the game.
+  it("hands the selected level to the board along with the game", async () => {
+    const onOpenGame = vi.fn();
+    renderView(onOpenGame);
+    await screen.findByText("Whole competition");
+    fireEvent.click(screen.getByText(/Round 1 · 2025-10-12/));
+    fireEvent.click(await screen.findByText("ŠK KDJS Sedlčany A – Klokani z Kralup"));
+    await vi.waitFor(() => expect(gameRows()).toHaveLength(8));
+
+    fireEvent.click(gameRows()[2]);
+    const [index, scope] = onOpenGame.mock.calls[0];
+    expect(scope.indices).toHaveLength(8);
+    expect(scope.indices).toContain(index);
+    expect(scope.matchLevel).toBe(true);
+    expect(scope.label).toContain("Sedlčany");
   });
 });

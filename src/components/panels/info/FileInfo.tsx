@@ -3,6 +3,7 @@ import { IconReload } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
 import { commands } from "@/bindings";
+import { GameScopeChip } from "@/components/common/GameScopeChip";
 import { currentTabAtom } from "@/state/atoms";
 import { formatNumber } from "@/utils/format";
 import { getTabFile } from "@/utils/tabs";
@@ -21,12 +22,17 @@ function FileInfo({
   return (
     <>
       <Group justify="space-between" py="sm" px="md">
-        <Text>
-          {t("Files.GameCountSuffix", {
-            count: tabFile.numGames ?? 0,
-            number: formatNumber(tabFile.numGames ?? 0),
-          })}
-        </Text>
+        <Group gap="xs" wrap="nowrap" style={{ minWidth: 0 }}>
+          <Text>
+            {t("Files.GameCountSuffix", {
+              count: tabFile.numGames ?? 0,
+              number: formatNumber(tabFile.numGames ?? 0),
+            })}
+          </Text>
+          {/* The file has this many games; the tab may be listing only some of
+              them. Saying so here is what stops the short list looking like loss. */}
+          <GameScopeChip />
+        </Group>
         <Group>
           <Tooltip label={tabFile.path}>
             <Code>{tabFile.path.split(/[\\/]/).pop()}</Code>

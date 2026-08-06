@@ -11,7 +11,7 @@ import { addRecentFileAtom, tabFamily } from "@/state/atoms";
 import { unwrap } from "@/utils/unwrap";
 import { parsePGN } from "./chess";
 import { sanitizeFilename } from "./filename";
-import { createTab, isInTempDir, type Tab } from "./tabs";
+import { createTab, type GameScope, isInTempDir, type Tab } from "./tabs";
 import { getGameName } from "./treeReducer";
 
 export { sanitizeFilename };
@@ -30,6 +30,8 @@ export async function openFile(
     options?: {
         gameNumber?: number;
         pgn?: string;
+        /** Narrow the tab to a subset of the file's games — see `GameScope`. */
+        scope?: GameScope;
     },
 ) {
     const store = getDefaultStore();
@@ -81,6 +83,7 @@ export async function openFile(
         tab: {
             name: tabName,
             type: "analysis",
+            gameScope: options?.scope,
         },
         setTabs,
         setActiveTab,
