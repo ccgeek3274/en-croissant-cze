@@ -64,6 +64,12 @@ import type { FileMetadata } from "./file";
 import { ExportPgnModal, ImportGamesModal, KontrolaModal, type ToolScope } from "./PgnToolsDialogs";
 import { CompetitionLabelsDialog, SscrExportModal } from "./SscrExportDialogs";
 
+/** A Badge's own text sits this far inside its right edge — 6px of `xs` padding
+ *  plus the 1px transparent border. Right slots that are plain text pad by the
+ *  same amount, so a game's result lines up with the progress badges of the
+ *  match and round above it instead of hanging past them. */
+const BADGE_TEXT_INSET = 7;
+
 /** "12/48" style progress, coloured by how done it is. */
 function Progress({ done, total }: { done: number; total: number }) {
   const color = total === 0 ? "gray" : done === total ? "teal" : done === 0 ? "gray" : "orange";
@@ -750,7 +756,7 @@ function GameRow({
       onClick={onSelect}
       label={`${game.boardNr}. ${game.white} – ${game.black}`}
       right={
-        <Text size="xs" c={game.hasMoves ? "teal" : "dimmed"}>
+        <Text size="xs" pr={BADGE_TEXT_INSET} c={game.hasMoves ? "teal" : "dimmed"}>
           {game.result}
         </Text>
       }
