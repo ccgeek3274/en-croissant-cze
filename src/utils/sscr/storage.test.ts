@@ -1,7 +1,6 @@
-// Where a competition's files land, and how one written before the working
-// directory existed is moved into it. Only the Tauri fs boundary is mocked — a
-// path→content map plus a set of directories, with `rename` moving a whole subtree
-// the way the real one does.
+// Where a competition's files land: one directory per competition, everything in it.
+// Only the Tauri fs boundary is mocked — a path→content map plus a set of
+// directories, with `rename` moving a whole subtree the way the real one does.
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { competitionXml, parseFixture } from "./__fixtures__";
@@ -27,6 +26,12 @@ vi.mock("@tauri-apps/plugin-fs", () => ({
     writeTextFile: vi.fn(async (p: string, text: string) => {
         files.set(p, text);
     }),
+    remove: vi.fn(async (p: string) => {
+        if ([...files.keys()].some((f) => f.startsWith(`${p}/`))) {
+            throw new Error(`directory not empty: ${p}`);
+        }
+        dirs.delete(p);
+    }),
     rename: vi.fn(async (from: string, to: string) => {
         if (files.has(from)) {
             files.set(to, files.get(from)!);
@@ -51,10 +56,16 @@ vi.mock("@tauri-apps/plugin-fs", () => ({
 
 // Imported after the mocks are registered.
 import { buildManifest, serializeManifest } from "./manifest";
-import { createCompetition, isCompetitionFile, loadCompetition } from "./storage";
+import {
+    createCompetition,
+    isCompetitionFile,
+    loadCompetition,
+    renameCompetitionSidecars,
+} from "./storage";
 
-const PGN_PATH = "/docs/KSA.pgn";
-const WORK_DIR = "/docs/KSA.competition";
+const DIR = "/docs/KSA";
+const PGN_PATH = `${DIR}/KSA.pgn`;
+const STAMP = new Date().toISOString().slice(0, 10);
 
 beforeEach(() => {
     files.clear();
@@ -72,29 +83,22 @@ function create() {
     });
 }
 
-/** A competition as it was written before the working directory existed. */
-function seedLegacyCompetition() {
-    files.set(PGN_PATH, "");
-    files.set(
-        "/docs/KSA.competition.json",
-        serializeManifest(buildManifest(parseFixture(), { fileName: "3005.XML", xml: "<old/>" })),
-    );
-    dirs.add("/docs/KSA.xml-archiv");
-    files.set("/docs/KSA.xml-archiv/2026-03-15-3005.xml", competitionXml);
+function manifestJson() {
+    return serializeManifest(buildManifest(parseFixture(), { fileName: "3005.XML", xml: "<x/>" }));
 }
 
 describe("createCompetition", () => {
-    it("keeps everything but the .pgn and the .info in the working directory", async () => {
+    it("puts the whole competition in a directory of its own", async () => {
         const { pgnPath } = await create();
-        const stamp = new Date().toISOString().slice(0, 10);
 
         expect(pgnPath).toBe(PGN_PATH);
+        expect(dirs.has(DIR)).toBe(true);
         expect([...files.keys()].sort()).toEqual(
             [
                 PGN_PATH,
-                "/docs/KSA.info",
-                `${WORK_DIR}/competition.json`,
-                `${WORK_DIR}/xml/${stamp}-3005.xml`,
+                `${DIR}/KSA.info`,
+                `${DIR}/KSA.competition.json`,
+                `${DIR}/KSA.xml-archiv/${STAMP}-3005.xml`,
             ].sort(),
         );
     });
@@ -107,33 +111,67 @@ describe("createCompetition", () => {
         expect(loaded?.manifest.source.fileName).toBe("3005.XML");
         expect(loaded?.games.length).toBe(192);
     });
+
+    it("refuses to write over a directory that is already there", async () => {
+        dirs.add(DIR);
+        await expect(create()).rejects.toThrow("File already exists");
+    });
 });
 
-describe("a competition written before the working directory existed", () => {
-    it("is still recognised as one", async () => {
-        seedLegacyCompetition();
+describe("a competition outside a directory of its own", () => {
+    // Everything is keyed off the .pgn's path, so competitions imported before the
+    // directory existed keep working exactly where they are.
+    it("is loaded from beside its .pgn", async () => {
+        files.set("/docs/KSA.pgn", "");
+        files.set("/docs/KSA.competition.json", manifestJson());
+
+        expect(await isCompetitionFile("/docs/KSA.pgn")).toBe(true);
+        expect((await loadCompetition("/docs/KSA.pgn"))?.manifest.competition.teamCount).toBe(12);
+    });
+});
+
+describe("a competition written into a `.competition/` working directory", () => {
+    // The layout of one build in between: it is undone on first contact.
+    function seed() {
+        files.set(PGN_PATH, "");
+        files.set(`${DIR}/KSA.competition/competition.json`, manifestJson());
+        dirs.add(`${DIR}/KSA.competition`);
+        dirs.add(`${DIR}/KSA.competition/xml`);
+        files.set(`${DIR}/KSA.competition/xml/2026-03-15-3005.xml`, competitionXml);
+    }
+
+    it("is still recognised as a competition", async () => {
+        seed();
         expect(await isCompetitionFile(PGN_PATH)).toBe(true);
     });
 
-    it("moves into the working directory when it is opened, and still loads", async () => {
-        seedLegacyCompetition();
+    it("moves back beside its .pgn, and the empty directory goes", async () => {
+        seed();
 
         const loaded = await loadCompetition(PGN_PATH);
 
         expect(loaded?.manifest.source.fileName).toBe("3005.XML");
-        expect(files.has("/docs/KSA.competition.json")).toBe(false);
-        expect(files.has(`${WORK_DIR}/competition.json`)).toBe(true);
-        expect(dirs.has("/docs/KSA.xml-archiv")).toBe(false);
-        expect(files.get(`${WORK_DIR}/xml/2026-03-15-3005.xml`)).toBe(competitionXml);
+        expect(files.has(`${DIR}/KSA.competition.json`)).toBe(true);
+        expect(files.get(`${DIR}/KSA.xml-archiv/2026-03-15-3005.xml`)).toBe(competitionXml);
+        expect(dirs.has(`${DIR}/KSA.competition`)).toBe(false);
+    });
+});
+
+describe("renameCompetitionSidecars", () => {
+    it("takes the manifest and the XML archive along", async () => {
+        await create();
+
+        await renameCompetitionSidecars(PGN_PATH, `${DIR}/KSA 25-26.pgn`);
+
+        expect(files.has(`${DIR}/KSA 25-26.competition.json`)).toBe(true);
+        expect(files.has(`${DIR}/KSA.competition.json`)).toBe(false);
+        expect(files.has(`${DIR}/KSA 25-26.xml-archiv/${STAMP}-3005.xml`)).toBe(true);
     });
 
-    it("is left alone once the working directory already holds a manifest", async () => {
-        seedLegacyCompetition();
-        files.set(`${WORK_DIR}/competition.json`, files.get("/docs/KSA.competition.json")!);
-
-        await loadCompetition(PGN_PATH);
-
-        // The newer manifest wins and the stale one is neither read nor destroyed.
-        expect(files.has("/docs/KSA.competition.json")).toBe(true);
+    it("does nothing for a database that is not a competition", async () => {
+        files.set("/docs/hry.pgn", "");
+        await expect(
+            renameCompetitionSidecars("/docs/hry.pgn", "/docs/partie.pgn"),
+        ).resolves.toBeUndefined();
     });
 });

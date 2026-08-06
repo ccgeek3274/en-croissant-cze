@@ -129,7 +129,10 @@ describe("CompetitionImportModal", () => {
 
     await vi.waitFor(() => expect(onCreated).toHaveBeenCalled());
     const pgnPath = onCreated.mock.calls[0][0] as string;
-    expect(pgnPath).toBe("/docs/Krajská soutěž SŠS 2025-26 - skupina A.pgn");
+    // The competition gets a directory of its own, named after it.
+    expect(pgnPath).toBe(
+      "/docs/Krajská soutěž SŠS 2025-26 - skupina A/Krajská soutěž SŠS 2025-26 - skupina A.pgn",
+    );
     expect(files.get(pgnPath)).toContain('[Round "1.1.1"]');
     expect(JSON.parse(files.get(pgnPath.replace(".pgn", ".info"))!)).toEqual({
       type: "tournament",

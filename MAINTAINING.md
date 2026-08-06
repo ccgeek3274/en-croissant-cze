@@ -97,8 +97,7 @@ Keep this list current. When merging, conflicts can only appear in the
 - `src/utils/sscr/*.ts` — the **competition-leader mode** (`docs/feat-vedouci-souteze.md`):
   `competitionXml.ts` (parser for the undocumented Swiss-Manager competition XML),
   `skeleton.ts` (XML → full-format PGN skeleton, keyed by
-  `Round` = kolo.zápas.šachovnice), `manifest.ts` (the manifest schema and the
-  `<name>.competition/` working-directory layout),
+  `Round` = kolo.zápas.šachovnice), `manifest.ts` (the `*.competition.json` sidecar),
   `sync.ts` (re-sync against a newer XML), `tree.ts` (the derived
   competition → round → match → game tree), `storage.ts` (Tauri I/O),
   `export.ts` (the ŠSČR export profile).
@@ -127,19 +126,18 @@ Keep this list current. When merging, conflicts can only appear in the
   reworks the header grid, re-apply the swap.
 - `src/components/files/Modals.tsx` — adds the "Import from ŠSČR" button above the
   PGN textarea and mounts `<ChessczImportDialog>` (one import + one `Group` + state);
-  renaming a .pgn also renames its `<name>.competition/` directory, if it has one.
+  renaming a .pgn also renames a competition's manifest and XML archive with it.
 - `src/components/files/FileCard.tsx` — adds the Kontrola / Import / Export actions,
-  and (for a .pgn with a `<name>.competition/` directory beside it) the re-sync action
-  plus the button that opens the competition-leader tab.
-- `src/components/files/FilesPage.tsx` — adds the "Nová soutěž z XML" action and
-  mounts `<CompetitionImportModal>`.
+  and (for a .pgn with a `*.competition.json` beside it) the re-sync action plus the
+  button that opens the competition-leader tab.
+- `src/components/files/FilesPage.tsx` — adds the "Nová soutěž z XML" action, mounts
+  `<CompetitionImportModal>`, and expands the created competition's directory.
 - `src/components/tabs/BoardsPage.tsx` — one `.with("competition", …)` arm in
   `renderTabContent`. `match(...).exhaustive()` means a new upstream tab type will
   fail the type-check here rather than silently render nothing.
 - `src/components/tabs/NewTabHome.tsx` — a recent file that is a competition opens in
   competition mode instead of on a board.
-- `src/components/files/file.ts` — skips `*.competition` (and legacy `*.xml-archiv`)
-  sidecar directories, and drops
+- `src/components/files/file.ts` — skips `*.xml-archiv` sidecar directories, and drops
   the `baseDir: AppLocalData` that upstream passes to `readDir` alongside an already
   absolute path (it throws, and one throw rejects the whole listing).
 - `src/utils/files.ts` — `sanitizeFilename` moved to `utils/filename.ts` and

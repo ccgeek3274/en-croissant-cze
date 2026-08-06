@@ -280,7 +280,7 @@
     "Competition.Import.Created_one": "Competition created ({{count}} game).",
     "Competition.Import.Created_other": "Competition created ({{count}} games).",
     "Competition.Import.Help": "Pick the competition XML Swiss-Manager writes into its own directory. It becomes the skeleton: one game per board of every match of every round.",
-    "Competition.Import.Name": "File name",
+    "Competition.Import.Name": "Competition name (its directory and files)",
     "Competition.Import.Title": "New competition from XML",
     "Competition.Issue.BoardCountMismatch": "Match with an unexpected number of boards",
     "Competition.Issue.ByeSkipped": "Bye — nothing to import",

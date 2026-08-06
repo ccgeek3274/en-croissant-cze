@@ -1,7 +1,7 @@
-// The competition manifest — the JSON file in the competition's working directory
-// that holds what is *not* per-game and could not be reconstructed from the PGN:
-// where the XML came from, the draw, and the team-label directory used to compose
-// ŠSČR-style Event tags on export.
+// The competition manifest — the JSON sidecar next to the competition's .pgn (both
+// of them inside the competition's own directory) that holds what is *not* per-game
+// and could not be reconstructed from the PGN: where the XML came from, the draw,
+// and the team-label directory used to compose ŠSČR-style Event tags on export.
 //
 // Pure: schema, derivation and path helpers only. Reading and writing the file is
 // the storage layer's job, so this module stays unit-testable.
@@ -11,14 +11,8 @@ import type { Competition } from "./competitionXml";
 
 export const MANIFEST_VERSION = 1;
 
-/** Working directory of a competition — everything the mode keeps for itself lives
- *  in it, so the leader's folder holds the season and nothing else:
- *  `KSA_2025_26.pgn` → `KSA_2025_26.competition/`. */
-export const WORK_DIR_SUFFIX = ".competition";
-
-/** Where the manifest sat before the working directory existed. Read-only: the
- *  storage layer moves such a competition over the first time it opens it. */
-export const LEGACY_MANIFEST_SUFFIX = ".competition.json";
+/** Sidecar extension. `KSA_2025_26.pgn` → `KSA_2025_26.competition.json`. */
+export const MANIFEST_SUFFIX = ".competition.json";
 
 export const manifestTeamSchema = z.object({
     no: z.number().int().positive(),
@@ -88,27 +82,9 @@ export const competitionManifestSchema = z.object({
 export type CompetitionManifest = z.infer<typeof competitionManifestSchema>;
 export type ManifestTeam = z.infer<typeof manifestTeamSchema>;
 
-/** Working directory of a competition .pgn. */
-export function workDirFor(pgnPath: string): string {
-    return pgnPath.replace(/\.pgn$/i, "") + WORK_DIR_SUFFIX;
-}
-
-/** A path inside the working directory. These helpers stay synchronous — they are
- *  used in plain predicates and in tests — so the separator is read off the path
- *  itself rather than asked of Tauri: Windows paths carry backslashes, the rest "/". */
-export function workFilePathFor(pgnPath: string, name: string): string {
-    const dir = workDirFor(pgnPath);
-    return dir + (dir.includes("\\") ? "\\" : "/") + name;
-}
-
-/** Manifest path for a competition .pgn. */
+/** Sidecar path for a competition .pgn. */
 export function manifestPathFor(pgnPath: string): string {
-    return workFilePathFor(pgnPath, "competition.json");
-}
-
-/** Manifest path of a competition created before the working directory existed. */
-export function legacyManifestPathFor(pgnPath: string): string {
-    return pgnPath.replace(/\.pgn$/i, "") + LEGACY_MANIFEST_SUFFIX;
+    return pgnPath.replace(/\.pgn$/i, "") + MANIFEST_SUFFIX;
 }
 
 /** FNV-1a (32-bit), hex. Not a security hash — just "did this file change?". */

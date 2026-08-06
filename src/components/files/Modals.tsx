@@ -5,7 +5,7 @@ import { exists, mkdir, rename, writeTextFile } from "@tauri-apps/plugin-fs";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { createFile, sanitizeFilename } from "@/utils/files";
-import { workDirFor } from "@/utils/sscr/manifest";
+import { renameCompetitionSidecars } from "@/utils/sscr/storage";
 import GenericCard from "../common/GenericCard";
 import { ChessczImportDialog } from "./ChessczImportDialog";
 import type { Directory, FileMetadata, FileType } from "./file";
@@ -183,10 +183,9 @@ export function EditModal({
 
     await rename(metadata.path, newPGNPath);
     await rename(metadataPath.replace(".pgn", ".info"), newPGNPath.replace(".pgn", ".info"));
-    // A competition's working directory is named after the .pgn, so it has to follow
-    // it — left behind, the manifest is orphaned and the file stops being a competition.
-    const workDir = workDirFor(metadata.path);
-    if (await exists(workDir)) await rename(workDir, workDirFor(newPGNPath));
+    // A competition's manifest and XML archive are named after its .pgn, so they have
+    // to follow it — left behind, the file silently stops being a competition.
+    await renameCompetitionSidecars(metadata.path, newPGNPath);
 
     mutate();
     setSelected((selected) =>

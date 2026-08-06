@@ -23,10 +23,13 @@ import {
   IconTrophy,
 } from "@tabler/icons-react";
 import { useLoaderData } from "@tanstack/react-router";
+import { dirname } from "@tauri-apps/api/path";
 import { readDir, remove } from "@tauri-apps/plugin-fs";
+import { useSetAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useSWR from "swr";
+import { expandedDirectoriesAtom } from "@/state/atoms";
 import { capitalize } from "@/utils/format";
 import ConfirmModal from "../common/ConfirmModal";
 import OpenFolderButton from "../common/OpenFolderButton";
@@ -81,6 +84,7 @@ function FilesPage() {
   const { t } = useTranslation();
 
   const { documentDir } = useLoaderData({ from: "/files" });
+  const setExpandedDirectories = useSetAtom(expandedDirectoriesAtom);
   const { files, isLoading, error, mutate } = useFileDirectory(documentDir);
 
   const [search, setSearch] = useState("");
@@ -253,6 +257,10 @@ function FilesPage() {
           const next = await mutate();
           const entry = next ? findEntryByPath(next, pgnPath) : null;
           if (entry) setSelected(entry);
+          // The competition lands in a directory of its own; open it, so the season
+          // is where the leader is looking rather than one click away.
+          const dir = await dirname(pgnPath);
+          setExpandedDirectories((prev) => (prev.includes(dir) ? prev : [...prev, dir]));
         }}
       />
       {selected && files && selected.type === "file" && (

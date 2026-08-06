@@ -292,7 +292,7 @@
     "Competition.Import.Created_many": "Soutěž založena ({{count}} partie).",
     "Competition.Import.Created_other": "Soutěž založena ({{count}} partií).",
     "Competition.Import.Help": "Vyber XML soutěže, které si Swiss-Manager ukládá do svého adresáře. Vznikne z něj kostra: jedna partie na každou šachovnici každého zápasu každého kola.",
-    "Competition.Import.Name": "Název souboru",
+    "Competition.Import.Name": "Název soutěže (adresáře i souborů)",
     "Competition.Import.Title": "Nová soutěž z XML",
     "Competition.Issue.BoardCountMismatch": "Zápas s nečekaným počtem šachovnic",
     "Competition.Issue.ByeSkipped": "Volný los — není co importovat",

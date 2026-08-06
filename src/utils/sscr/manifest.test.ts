@@ -3,7 +3,6 @@ import { competitionXml, parseFixture } from "./__fixtures__";
 import {
     buildManifest,
     contentHash,
-    legacyManifestPathFor,
     manifestPathFor,
     mergeManifest,
     parseManifest,
@@ -20,23 +19,13 @@ function fixtureManifest() {
 }
 
 describe("manifestPathFor", () => {
-    it("puts the manifest in the competition's working directory", () => {
-        expect(manifestPathFor("/docs/KSA.pgn")).toBe("/docs/KSA.competition/competition.json");
-        expect(manifestPathFor("/docs/KSA.PGN")).toBe("/docs/KSA.competition/competition.json");
+    it("swaps the .pgn extension for the sidecar suffix", () => {
+        expect(manifestPathFor("/docs/KSA/KSA.pgn")).toBe("/docs/KSA/KSA.competition.json");
+        expect(manifestPathFor("/docs/KSA/KSA.PGN")).toBe("/docs/KSA/KSA.competition.json");
     });
 
     it("leaves a path without the extension alone", () => {
-        expect(manifestPathFor("/docs/KSA")).toBe("/docs/KSA.competition/competition.json");
-    });
-
-    it("keeps the separator the path already uses", () => {
-        expect(manifestPathFor("C:\\Docs\\KSA.pgn")).toBe(
-            "C:\\Docs\\KSA.competition\\competition.json",
-        );
-    });
-
-    it("still knows where a pre-directory competition kept its manifest", () => {
-        expect(legacyManifestPathFor("/docs/KSA.pgn")).toBe("/docs/KSA.competition.json");
+        expect(manifestPathFor("/docs/KSA")).toBe("/docs/KSA.competition.json");
     });
 });
 

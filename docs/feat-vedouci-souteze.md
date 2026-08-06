@@ -170,19 +170,20 @@ i výsledky se generují, nepíšou.
 
 ```
 <dokumenty>/
-  KSA_2025_26.pgn                 ← 528 partií, plný formát, jediný zdroj pravdy
-  KSA_2025_26.info                ← stávající sidecar en-croissant ({type:"tournament"})
-  KSA_2025_26.competition/        ← pracovní adresář režimu (nový)
-    competition.json              ← manifest soutěže
-    xml/                          ← kopie importovaných XML (audit + rollback)
+  KSA_2025_26/                    ← adresář soutěže: dovnitř patří všechno
+    KSA_2025_26.pgn               ← 528 partií, plný formát, jediný zdroj pravdy
+    KSA_2025_26.info              ← stávající sidecar en-croissant ({type:"tournament"})
+    KSA_2025_26.competition.json  ← manifest soutěže (nový)
+    KSA_2025_26.xml-archiv/       ← kopie importovaných XML (audit + rollback)
 ```
 
-**Pracovní soubory jsou v jednom adresáři**, ne rozsypané kolem PGN: ve složce
-vedoucího je vidět sezóna a nic jiného (adresář se ze seznamu souborů vynechává,
-viz níže). Vedle `.pgn` zůstává jen `.info` — tam si ho hledá samo en-croissant.
-Soutěž založená dřív (manifest vedle PGN, archiv v `*.xml-archiv/`) se do
-pracovního adresáře **přesune při prvním otevření**; obě půlky se jen přejmenují,
-a jen když je nové místo volné, takže se nikdy nic nepřepíše ani nesmaže.
+**Jedna soutěž = jeden adresář**: ve složce vedoucího přibude na sezónu jedna
+položka, ne čtyři. Adresář zakládá import; **kód na něm nestojí** — všechny cesty
+se odvozují z cesty `.pgn` (manifest je `<jméno>.competition.json` vedle něj, ne
+`competition.json` v adresáři, aby se exportovaný bulletin uložený do téže složky
+nikdy nespletl se soutěží). Proto soutěž funguje i mimo svůj adresář: ty založené
+dřív běží dál tam, kde jsou, nic se nemigruje, a vedoucí smí složku v průzkumníku
+přejmenovat nebo přesunout.
 
 **Proč jeden soubor a ne 66** (pgn-base má DB na zápas): pgn-base má relační
 databázi, kde je kontejner přirozený. Tady je kontejnerem souborový systém a
@@ -233,7 +234,7 @@ Diakritika se **drží** (en-croissant je plně UTF-8); shazuje se až v exportu
 XML nenese FIDE ID, takže `WhiteFideId` neumíme — jen `WhiteCzeId`. Doplnění
 FIDE ID z api.chess.cz je možné později, klient už v repu je.
 
-### Manifest (`*.competition/competition.json`)
+### Manifest (`*.competition.json`)
 
 Drží to, co není per-partie a co by se z PGN nedalo spolehlivě rekonstruovat:
 
@@ -297,9 +298,11 @@ jediný `openCompetitionTab()`:
 Jedna soutěž = jedna karta: druhé otevření zaostří tu existující. Karta nedrží strom
 tahů, takže její zavření se nikdy neptá na uložení.
 
-Pracovní adresář `*.competition/` (a u nepřevedených soutěží i starý `*.xml-archiv/`)
-se ze seznamu souborů **vynechává** — je to účetnictví, ne databáze, a složka na
-místě, kde vedoucí čeká sezónu, mate.
+Adresář soutěže se v seznamu souborů **ukazuje** (je v něm sezóna), archiv
+`*.xml-archiv/` uvnitř něj se **vynechává** — je to účetnictví, ne databáze, a
+prázdná složka vedle sezóny mate. Přejmenování `.pgn` v seznamu souborů táhne
+manifest i archiv s sebou (`renameCompetitionSidecars`); samotný adresář si jméno
+nechá, nic na něm nestojí.
 
 ### Adresář družstev (zkratky a místa konání)
 
