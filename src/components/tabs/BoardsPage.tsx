@@ -10,7 +10,7 @@ import { match } from "ts-pattern";
 import { commands } from "@/bindings";
 import { activeTabAtom, tabsAtom } from "@/state/atoms";
 import { keyMapAtom } from "@/state/keybinds";
-import { createTab, genID, isPersistentGameOrigin, type Tab } from "@/utils/tabs";
+import { createTab, genID, needsSaveConfirmation, type Tab } from "@/utils/tabs";
 import { unwrap } from "@/utils/unwrap";
 import BoardAnalysis from "../boards/BoardAnalysis";
 import BoardGame from "../boards/BoardGame";
@@ -49,8 +49,7 @@ export default function BoardsPage() {
     async (value: string | null, forced?: boolean) => {
       if (value !== null) {
         const closedTab = tabs.find((tab) => tab.value === value);
-        const tabState = JSON.parse(sessionStorage.getItem(value) || "{}");
-        if (tabState && isPersistentGameOrigin(closedTab) && tabState.state.dirty && !forced) {
+        if (!forced && needsSaveConfirmation(closedTab, sessionStorage.getItem(value))) {
           toggleSaveModal();
           return;
         }

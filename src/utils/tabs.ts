@@ -121,6 +121,31 @@ export function isPersistentGameOrigin(tab?: Tab | null): boolean {
     return tab.gameOrigin.kind !== "none";
 }
 
+/** Tab types that hold a move tree, and so can have unsaved moves worth a prompt.
+ *  The competition tab edits the file through its own dialogs and keeps no tree. */
+const TREE_TAB_TYPES: ReadonlySet<Tab["type"]> = new Set(["analysis", "play"]);
+
+/** Whether closing `tab` has to stop and ask about unsaved moves. `storedState` is
+ *  the raw sessionStorage entry for the tab id, as written by `createTab`.
+ *
+ *  A tab that never held a move tree has no entry at all, so the parsed value has no
+ *  `state`. Reading `.dirty` off it threw, and because `closeTab` is async the throw
+ *  vanished into a rejected promise: the competition tab simply refused to close, by
+ *  the X, by the menu or by the keyboard. */
+export function needsSaveConfirmation(
+    tab: Tab | undefined | null,
+    storedState: string | null,
+): boolean {
+    if (!isPersistentGameOrigin(tab) || !tab || !TREE_TAB_TYPES.has(tab.type)) return false;
+    let parsed: { state?: { dirty?: boolean } } | null;
+    try {
+        parsed = JSON.parse(storedState || "{}");
+    } catch {
+        return false;
+    }
+    return Boolean(parsed?.state?.dirty);
+}
+
 export function genID() {
     function S4() {
         return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
