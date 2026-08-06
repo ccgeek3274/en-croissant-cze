@@ -172,9 +172,17 @@ i výsledky se generují, nepíšou.
 <dokumenty>/
   KSA_2025_26.pgn                 ← 528 partií, plný formát, jediný zdroj pravdy
   KSA_2025_26.info                ← stávající sidecar en-croissant ({type:"tournament"})
-  KSA_2025_26.competition.json    ← manifest soutěže (nový)
-  KSA_2025_26.xml-archiv/         ← kopie importovaných XML (audit + rollback)
+  KSA_2025_26.competition/        ← pracovní adresář režimu (nový)
+    competition.json              ← manifest soutěže
+    xml/                          ← kopie importovaných XML (audit + rollback)
 ```
+
+**Pracovní soubory jsou v jednom adresáři**, ne rozsypané kolem PGN: ve složce
+vedoucího je vidět sezóna a nic jiného (adresář se ze seznamu souborů vynechává,
+viz níže). Vedle `.pgn` zůstává jen `.info` — tam si ho hledá samo en-croissant.
+Soutěž založená dřív (manifest vedle PGN, archiv v `*.xml-archiv/`) se do
+pracovního adresáře **přesune při prvním otevření**; obě půlky se jen přejmenují,
+a jen když je nové místo volné, takže se nikdy nic nepřepíše ani nesmaže.
 
 **Proč jeden soubor a ne 66** (pgn-base má DB na zápas): pgn-base má relační
 databázi, kde je kontejner přirozený. Tady je kontejnerem souborový systém a
@@ -225,7 +233,7 @@ Diakritika se **drží** (en-croissant je plně UTF-8); shazuje se až v exportu
 XML nenese FIDE ID, takže `WhiteFideId` neumíme — jen `WhiteCzeId`. Doplnění
 FIDE ID z api.chess.cz je možné později, klient už v repu je.
 
-### Manifest (`*.competition.json`)
+### Manifest (`*.competition/competition.json`)
 
 Drží to, co není per-partie a co by se z PGN nedalo spolehlivě rekonstruovat:
 
@@ -289,8 +297,9 @@ jediný `openCompetitionTab()`:
 Jedna soutěž = jedna karta: druhé otevření zaostří tu existující. Karta nedrží strom
 tahů, takže její zavření se nikdy neptá na uložení.
 
-Archiv `*.xml-archiv/` se ze seznamu souborů **vynechává** — je to účetnictví, ne
-databáze, a prázdná složka na místě, kde vedoucí čeká sezónu, mate.
+Pracovní adresář `*.competition/` (a u nepřevedených soutěží i starý `*.xml-archiv/`)
+se ze seznamu souborů **vynechává** — je to účetnictví, ne databáze, a složka na
+místě, kde vedoucí čeká sezónu, mate.
 
 ### Adresář družstev (zkratky a místa konání)
 

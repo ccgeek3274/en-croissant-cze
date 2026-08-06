@@ -65,11 +65,13 @@ export type Directory = {
     name: string;
 };
 
-/** A competition keeps its imported XML snapshots in `<name>.xml-archiv/` beside the
- *  .pgn. That is bookkeeping, not a database: listing it puts an empty folder in the
- *  user's file tree where they expect the season. */
+/** A competition keeps its manifest and its imported XML snapshots in
+ *  `<name>.competition/` beside the .pgn (`<name>.xml-archiv/` before that directory
+ *  existed, until the competition is next opened). That is bookkeeping, not a
+ *  database: listing it puts a folder in the user's file tree where they expect the
+ *  season. */
 function isSidecarDir(name: string): boolean {
-    return name.endsWith(".xml-archiv");
+    return name.endsWith(".competition") || name.endsWith(".xml-archiv");
 }
 
 export async function processEntriesRecursively(parent: string, entries: DirEntry[]) {

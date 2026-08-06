@@ -3,8 +3,15 @@
 //
 //   KSA_2025_26.pgn                 the whole season, full format, single source of truth
 //   KSA_2025_26.info                en-croissant's own sidecar ({ type: "tournament" })
-//   KSA_2025_26.competition.json    the manifest — draw, team labels, venues, source stamp
-//   KSA_2025_26.xml-archiv/         every imported XML, kept for audit
+//   KSA_2025_26.competition/        the working directory — the mode's own bookkeeping
+//     competition.json              the manifest — draw, team labels, venues, source stamp
+//     xml/                          every imported XML, kept for audit
+//
+// The leader's folder therefore shows the season and nothing else: the manifest and
+// the XML archive are in one directory the file list hides, and only the `.info`
+// stays beside the .pgn, because that is where en-croissant itself looks for it.
+// Competitions created before the working directory existed are moved into it the
+// first time they are opened — see `migrateLegacyLayout`.
 //
 // One file rather than one per match: the tree (competition → round → match →
 // game) is a filter over the `Round` tag, so header work, Kontrola and export all
@@ -12,7 +19,7 @@
 // ~400 kB.
 
 import { resolve } from "@tauri-apps/api/path";
-import { exists, mkdir, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
+import { exists, mkdir, readTextFile, rename, writeTextFile } from "@tauri-apps/plugin-fs";
 import { splitPgnGames } from "@/utils/pgn/tags";
 import { sanitizeFilename } from "@/utils/filename";
 import { prefillDirectory } from "./directory";
@@ -21,17 +28,25 @@ import {
     buildManifest,
     type CompetitionManifest,
     contentHash,
+    legacyManifestPathFor,
     manifestPathFor,
     mergeManifest,
     parseManifest,
     serializeManifest,
     siteByTeamNo,
+    workDirFor,
+    workFilePathFor,
 } from "./manifest";
 import { buildSkeleton, type SkeletonGame, skeletonToPgn } from "./skeleton";
 import { applySync, gamesToFile, planSync, type SyncPlan } from "./sync";
 
 /** Directory holding the imported XML snapshots for one competition. */
 export function archiveDirFor(pgnPath: string): string {
+    return workFilePathFor(pgnPath, "xml");
+}
+
+/** Where those snapshots lived before the working directory existed. */
+function legacyArchiveDirFor(pgnPath: string): string {
     return pgnPath.replace(/\.pgn$/i, "") + ".xml-archiv";
 }
 
@@ -41,16 +56,54 @@ export type LoadedCompetition = {
     games: string[];
 };
 
-/** True when this .pgn is a competition (i.e. it has a manifest beside it). */
+async function ensureDir(path: string): Promise<void> {
+    if (!(await exists(path))) await mkdir(path, { recursive: true });
+}
+
+/** The manifest of this .pgn, wherever it currently is: in the working directory, or
+ *  — for a competition that has not been opened since the directory existed — beside
+ *  the .pgn. Null when this is not a competition at all. */
+async function findManifest(pgnPath: string): Promise<string | null> {
+    const current = manifestPathFor(pgnPath);
+    if (await exists(current)) return current;
+    const legacy = legacyManifestPathFor(pgnPath);
+    return (await exists(legacy)) ? legacy : null;
+}
+
+/** Move a competition written before the working directory existed into it. Both
+ *  halves are *renamed*, and only into a place that is still free, so nothing the
+ *  leader has is overwritten or deleted; a competition that is already migrated pays
+ *  two `exists` calls and stops. */
+async function migrateLegacyLayout(pgnPath: string): Promise<void> {
+    const legacyManifest = legacyManifestPathFor(pgnPath);
+    const legacyArchive = legacyArchiveDirFor(pgnPath);
+    const [hasManifest, hasArchive] = await Promise.all([
+        exists(legacyManifest),
+        exists(legacyArchive),
+    ]);
+    if (!hasManifest && !hasArchive) return;
+
+    await ensureDir(workDirFor(pgnPath));
+    if (hasArchive && !(await exists(archiveDirFor(pgnPath)))) {
+        await rename(legacyArchive, archiveDirFor(pgnPath));
+    }
+    if (hasManifest && !(await exists(manifestPathFor(pgnPath)))) {
+        await rename(legacyManifest, manifestPathFor(pgnPath));
+    }
+}
+
+/** True when this .pgn is a competition (i.e. it has a manifest). */
 export async function isCompetitionFile(pgnPath: string): Promise<boolean> {
-    return exists(manifestPathFor(pgnPath));
+    return (await findManifest(pgnPath)) !== null;
 }
 
 /** Load a competition. Returns null when the file has no (readable) manifest — the
- *  caller then treats it as an ordinary database. */
+ *  caller then treats it as an ordinary database. Opening is also where an older
+ *  competition moves into its working directory. */
 export async function loadCompetition(pgnPath: string): Promise<LoadedCompetition | null> {
-    const manifestPath = manifestPathFor(pgnPath);
-    if (!(await exists(manifestPath))) return null;
+    await migrateLegacyLayout(pgnPath);
+    const manifestPath = await findManifest(pgnPath);
+    if (!manifestPath) return null;
     const manifest = parseManifest(await readTextFile(manifestPath));
     if (!manifest) return null;
     return { pgnPath, manifest, games: splitPgnGames(await readTextFile(pgnPath)) };
@@ -65,13 +118,14 @@ export async function saveCompetition(
     games: string[],
 ): Promise<void> {
     await writeTextFile(pgnPath, gamesToFile(games));
+    await ensureDir(workDirFor(pgnPath));
     await writeTextFile(manifestPathFor(pgnPath), serializeManifest(manifest));
 }
 
 /** Keep a copy of every XML we imported, named by the round it brought in. */
 async function archiveXml(pgnPath: string, sourceName: string, xml: string): Promise<void> {
     const dir = archiveDirFor(pgnPath);
-    if (!(await exists(dir))) await mkdir(dir, { recursive: true });
+    await ensureDir(dir);
     const stamp = new Date().toISOString().slice(0, 10);
     const base = sanitizeFilename(sourceName.replace(/\.xml$/i, "")) || "soutez";
     await writeTextFile(await resolve(dir, `${stamp}-${base}.xml`), xml);
