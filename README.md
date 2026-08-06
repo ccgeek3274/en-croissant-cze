@@ -1,3 +1,25 @@
+# En Croissant CZ — počeštěná verze
+
+Tohle je **downstream fork** programu
+[En Croissant](https://github.com/franciscoBSalgueiro/en-croissant) (GPL-3.0):
+tentýž šachový program v češtině, doplněný o funkce pro české soutěže (ŠSČR).
+
+- **Stránka této verze:** [encroissant.sachytynec.cz](https://encroissant.sachytynec.cz)
+  (zdroj stránky je v adresáři [`web/`](./web))
+- **Původní program a jeho dokumentace:** [encroissant.org](https://www.encroissant.org)
+- **Co je navíc:** české rozhraní, import zápasu ze ŠSČR (api.chess.cz), režim
+  _Vedoucí soutěže_ (celý ročník z XML Swiss-Manageru, re-sync, kontrola, export ve
+  formátu ŠSČR), zkratky družstev a vzory názvů, doplňování hráčů z databáze ŠSČR.
+  Podrobněji v [`docs/feat-vedouci-souteze.md`](./docs/feat-vedouci-souteze.md).
+- **Jak se fork udržuje:** [`MAINTAINING.md`](./MAINTAINING.md)
+
+Instaluje a aktualizuje se samostatně, nezávisle na originálu; vydání najdete
+v [Releases](https://github.com/ccgeek3274/en-croissant-cze/releases).
+
+---
+
+Původní README:
+
 <br />
 <div align="center">
   <a href="https://github.com/franciscoBSalgueiro/en-croissant">

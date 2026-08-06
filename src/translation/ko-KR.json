@@ -1,6 +1,9 @@
 {
   "translation": {
     "…Level${n}": "",
+    "About.Fork": "",
+    "About.Original": "",
+    "About.ThisBuild": "",
     "Annotate.Attack": "공격",
     "Annotate.BlackAdvantage": "흑이 명확히 유리",
     "Annotate.BlackEdge": "흑이 약간 유리",

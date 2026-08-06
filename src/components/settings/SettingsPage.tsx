@@ -62,6 +62,7 @@ import {
   telemetryEnabledAtom,
 } from "@/state/atoms";
 import { keyMapAtom } from "@/state/keybinds";
+import { APP_NAME } from "@/utils/appInfo";
 import FileInput from "../common/FileInput";
 import BoardSelect from "./BoardSelect";
 import ColorControl from "./ColorControl";
@@ -801,7 +802,7 @@ export default function Page() {
         <ScrollArea flex={1} px="md">
           {renderSearchResults()}
           <Text size="xs" c="dimmed" ta="right" py="md">
-            En Croissant v{version}
+            {APP_NAME} v{version}
           </Text>
         </ScrollArea>
       ) : (
@@ -966,7 +967,7 @@ export default function Page() {
               </Card>
             </ScrollArea>
             <Text size="xs" c="dimmed" ta="right">
-              En Croissant v{version}
+              {APP_NAME} v{version}
             </Text>
           </Stack>
         </Tabs>

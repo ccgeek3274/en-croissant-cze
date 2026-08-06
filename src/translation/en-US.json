@@ -1,6 +1,9 @@
 {
   "translation": {
     "…Level${n}": "",
+    "About.Fork": "{{app}} is the Czech build of {{original}}: the same program in Czech, with the ŠSČR features added (import from chess.cz, competition-leader mode, ŠSČR export). It is installed and updated separately from the original.",
+    "About.Original": "the original program and its documentation",
+    "About.ThisBuild": "this build — download and news",
     "Annotate.Attack": "Attack",
     "Annotate.BlackAdvantage": "Black has a clear advantage",
     "Annotate.BlackEdge": "Black has a slight advantage",

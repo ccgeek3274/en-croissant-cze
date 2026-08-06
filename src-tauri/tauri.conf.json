@@ -24,8 +24,8 @@
       }
     },
     "publisher": "Francisco Salgueiro",
-    "shortDescription": "Ultimate Chess Toolkit",
-    "longDescription": "",
+    "shortDescription": "En Croissant CZ — šachový program v češtině",
+    "longDescription": "Počeštěná verze programu En Croissant s podporou ŠSČR: import zápasů z chess.cz, režim Vedoucí soutěže (soutěž z XML Swiss-Manageru) a export PGN ve formátu ŠSČR. Podrobnosti na encroissant.sachytynec.cz, původní program na www.encroissant.org.",
     "macOS": {
       "entitlements": null,
       "exceptionDomain": "",
@@ -69,7 +69,7 @@
     "withGlobalTauri": false,
     "windows": [
       {
-        "title": "En Croissant",
+        "title": "En Croissant CZ",
         "visible": false,
         "decorations": true
       }

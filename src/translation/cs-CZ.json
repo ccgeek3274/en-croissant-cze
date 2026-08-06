@@ -1,6 +1,9 @@
 {
   "translation": {
     "…Level${n}": "",
+    "About.Fork": "{{app}} je počeštěná verze programu {{original}}: tentýž program v češtině a s funkcemi pro ŠSČR (import ze chess.cz, režim Vedoucí soutěže, export ŠSČR). Instaluje a aktualizuje se samostatně, nezávisle na originálu.",
+    "About.Original": "původní program a jeho dokumentace",
+    "About.ThisBuild": "tato verze — ke stažení a novinky",
     "Annotate.Attack": "Útok",
     "Annotate.BlackAdvantage": "Černý má jasnou výhodu",
     "Annotate.BlackEdge": "Černý má mírnou výhodu",

@@ -100,7 +100,11 @@ Keep this list current. When merging, conflicts can only appear in the
   `Round` = kolo.zápas.šachovnice), `manifest.ts` (the `*.competition.json` sidecar),
   `sync.ts` (re-sync against a newer XML), `tree.ts` (the derived
   competition → round → match → game tree), `storage.ts` (Tauri I/O),
-  `export.ts` (the ŠSČR export profile).
+  `export.ts` (the ŠSČR export profile), `matchLabels.ts` (the same label directory
+  for a **single imported match**, stored in the `.info` sidecar — see below).
+- `src/utils/appInfo.ts` — the fork's own identity (name, its site, the upstream
+  site). Everywhere the program names itself reads it, so the Czech build never
+  claims to be the original.
 - `src/utils/sscr/__fixtures__/` — real trimmed data (`competition.xml`) plus the PGN
   Swiss-Manager exported from the same tournament (`swissmanager.pgn`). The golden
   test in `skeleton.test.ts` diffs the two; **they must always come from the same
@@ -114,10 +118,13 @@ Keep this list current. When merging, conflicts can only appear in the
 - `src/utils/competitionTab.ts` — `openCompetitionTab()`, the single entry point every
   caller uses (file list, Headers panel, Recent files); focuses an existing tab rather
   than stacking duplicates
-- `src/components/files/SscrExportDialogs.tsx` — the label directory + the ŠSČR export
+- `src/components/files/SscrExportDialogs.tsx` — the label directory + the ŠSČR export,
+  and „Zkratky zápasu" (`MatchLabelsDialog`) for a one-match .pgn
 - `src/components/panels/headers/HeadersPanel.tsx` — the pgn-base-style header grid
 - `docs/feat-vedouci-souteze.md` — the reverse-engineered XML schema, the verification
   counts against Swiss-Manager's own PGN, and the data-model rationale
+- `web/` — the source of `encroissant.sachytynec.cz` (one self-contained
+  `index.html`, deployed to Cloudflare Pages; see `web/README.md`)
 
 ### Modified upstream files — structural (watch these on upstream refactors)
 
@@ -126,10 +133,14 @@ Keep this list current. When merging, conflicts can only appear in the
   reworks the header grid, re-apply the swap.
 - `src/components/files/Modals.tsx` — adds the "Import from ŠSČR" button above the
   PGN textarea and mounts `<ChessczImportDialog>` (one import + one `Group` + state);
-  renaming a .pgn also renames a competition's manifest and XML archive with it.
+  stores the imported match's label pieces beside the new file; renaming a .pgn also
+  renames a competition's manifest and XML archive with it.
 - `src/components/files/FileCard.tsx` — adds the Kontrola / Import / Export actions,
-  and (for a .pgn with a `*.competition.json` beside it) the re-sync action plus the
-  button that opens the competition-leader tab.
+  „Zkratky zápasu" for a .pgn whose games name both teams, and (for a .pgn with a
+  `*.competition.json` beside it) the re-sync action plus the button that opens the
+  competition-leader tab.
+- `src/components/About.tsx` — says which build this is (Czech fork), with links to
+  this build's site and to the original.
 - `src/components/files/FilesPage.tsx` — adds the "Nová soutěž z XML" action, mounts
   `<CompetitionImportModal>`, and expands the created competition's directory.
 - `src/components/tabs/BoardsPage.tsx` — one `.with("competition", …)` arm in
@@ -151,8 +162,16 @@ Keep this list current. When merging, conflicts can only appear in the
 - `i18next.config.ts` — add `"cs-CZ"` to `locales`; add `Headers.Col.*` and
   `Competition.Issue.*` to `preservePatterns` (both are rendered via dynamic keys,
   so `extract` would otherwise prune them)
-- `src/components/settings/SettingsPage.tsx` — add the `Čeština` language option
+- `src/components/settings/SettingsPage.tsx` — add the `Čeština` language option; the
+  version line reads `APP_NAME` instead of the hard-coded "En Croissant"
 - `src-tauri/capabilities/main.json` — allow `https://api.chess.cz/**` in `http:default`
+- `src-tauri/tauri.conf.json` — window title "En Croissant CZ" + Czech bundle
+  descriptions. `productName`, `mainBinaryName` and `identifier` are **deliberately
+  left as upstream's**: they name the app bundle, the installed data directory and
+  the updater artifacts, so changing them would orphan every existing install.
+  **Known gap:** `plugins.updater` still points at upstream's endpoint and public
+  key, so "Check for updates" offers the *original* build (and `0.15.0` beats our
+  `0.15.0-cs` by semver). Until the endpoint is ours, releases are manual downloads.
 
 ### Modified upstream files — translation JSONs (additive; rerere handles repeats)
 

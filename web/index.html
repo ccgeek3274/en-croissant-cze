@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>En Croissant CZ — šachový program v češtině pro soutěže ŠSČR</title>
+    <meta
+      name="description"
+      content="Počeštěná verze šachového programu En Croissant s funkcemi pro soutěže ŠSČR: import zápasů z chess.cz, režim Vedoucí soutěže a export PGN ve formátu ŠSČR."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♞</text></svg>"
+    />
+    <style>
+      :root {
+        --bg: #fbfaf8;
+        --panel: #ffffff;
+        --line: #e5e0d8;
+        --ink: #1c1a17;
+        --muted: #6a635a;
+        --accent: #8a5a2b;
+        --accent-soft: #f3ece2;
+        --radius: 14px;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #14130f;
+          --panel: #1c1a16;
+          --line: #322e27;
+          --ink: #f0ece5;
+          --muted: #a49b8d;
+          --accent: #e0a969;
+          --accent-soft: #2a241b;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font: 16px/1.65 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+      }
+      .wrap {
+        max-width: 62rem;
+        margin: 0 auto;
+        padding: 0 1.25rem;
+      }
+      a {
+        color: var(--accent);
+      }
+      h1,
+      h2,
+      h3 {
+        line-height: 1.25;
+        letter-spacing: -0.01em;
+      }
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.9em;
+        background: var(--accent-soft);
+        border-radius: 5px;
+        padding: 0.1em 0.35em;
+      }
+
+      /* ── hlavička ─────────────────────────────────────────── */
+      header {
+        padding: 4.5rem 0 3rem;
+        border-bottom: 1px solid var(--line);
+      }
+      .badge {
+        display: inline-block;
+        font-size: 0.8rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--accent);
+        background: var(--accent-soft);
+        border-radius: 999px;
+        padding: 0.3rem 0.8rem;
+        margin-bottom: 1.25rem;
+      }
+      header h1 {
+        font-size: clamp(2.1rem, 6vw, 3.4rem);
+        margin: 0 0 0.6rem;
+      }
+      .lede {
+        font-size: clamp(1.05rem, 2.4vw, 1.25rem);
+        color: var(--muted);
+        max-width: 42rem;
+        margin: 0 0 2rem;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+      .btn {
+        display: inline-block;
+        padding: 0.7rem 1.3rem;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        border: 1px solid var(--line);
+        color: var(--ink);
+        background: var(--panel);
+      }
+      .btn.primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+      }
+      @media (prefers-color-scheme: dark) {
+        .btn.primary {
+          color: #14130f;
+        }
+      }
+      .btn:hover {
+        filter: brightness(0.96);
+      }
+
+      /* ── sekce ────────────────────────────────────────────── */
+      section {
+        padding: 3.25rem 0;
+        border-bottom: 1px solid var(--line);
+      }
+      section h2 {
+        font-size: 1.5rem;
+        margin: 0 0 0.5rem;
+      }
+      section > .wrap > p {
+        max-width: 46rem;
+        color: var(--muted);
+      }
+      section > .wrap > p strong {
+        color: var(--ink);
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+        gap: 1rem;
+        margin-top: 1.75rem;
+      }
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 1.25rem 1.35rem;
+      }
+      .card h3 {
+        margin: 0 0 0.45rem;
+        font-size: 1.05rem;
+      }
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+      .card .tag {
+        display: block;
+        font-size: 0.78rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 0.6rem;
+      }
+
+      ul.plain {
+        margin: 1.25rem 0 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 0.6rem;
+        max-width: 46rem;
+      }
+      ul.plain li {
+        padding-left: 1.5rem;
+        position: relative;
+        color: var(--muted);
+      }
+      ul.plain li::before {
+        content: "♟";
+        position: absolute;
+        left: 0;
+        color: var(--accent);
+      }
+      ul.plain li strong {
+        color: var(--ink);
+      }
+
+      .note {
+        margin-top: 1.5rem;
+        padding: 1rem 1.2rem;
+        border-left: 3px solid var(--accent);
+        background: var(--accent-soft);
+        border-radius: 0 10px 10px 0;
+        font-size: 0.95rem;
+        max-width: 46rem;
+      }
+      .note p {
+        margin: 0.4rem 0 0;
+      }
+      .note p:first-child {
+        margin-top: 0;
+      }
+
+      footer {
+        padding: 2.5rem 0 4rem;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+      footer p {
+        max-width: 46rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <span class="badge">Počeštěná verze</span>
+        <h1>En Croissant CZ</h1>
+        <p class="lede">
+          Šachový program <strong>En Croissant</strong> v češtině — a s funkcemi, které
+          potřebují čeští hráči, kapitáni družstev a vedoucí soutěží ŠSČR.
+        </p>
+        <div class="actions">
+          <a class="btn primary" href="https://github.com/ccgeek3274/en-croissant-cze/releases"
+            >Stáhnout</a
+          >
+          <a class="btn" href="https://www.encroissant.org/docs">Dokumentace programu</a>
+          <a class="btn" href="https://github.com/ccgeek3274/en-croissant-cze">Zdrojový kód</a>
+        </div>
+      </div>
+    </header>
+
+    <section>
+      <div class="wrap">
+        <h2>Co to je</h2>
+        <p>
+          En Croissant je open-source šachový program (analýza s enginy, databáze partií,
+          repertoár, otevírací příprava). <strong>En Croissant CZ</strong> je jeho odvozená
+          verze: tentýž program s kompletním českým rozhraním a s nadstavbou pro soutěže
+          Šachového svazu České republiky. Instaluje a aktualizuje se samostatně, nezávisle
+          na originálu.
+        </p>
+        <p>
+          Popis samotného programu a jeho možností najdete na
+          <a href="https://www.encroissant.org">encroissant.org</a> — tahle stránka popisuje
+          jen to, co je v české verzi navíc.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2>Co je navíc</h2>
+        <p>Všechno níže pracuje s obyčejnými PGN soubory — nic se nezavírá do vlastního formátu.</p>
+
+        <div class="cards">
+          <div class="card">
+            <span class="tag">Jazyk</span>
+            <h3>České rozhraní</h3>
+            <p>
+              Celý program v češtině, včetně nápověd a hlášek. Jazyk se přepíná v Nastavení,
+              takže se dá kdykoli vrátit k angličtině.
+            </p>
+          </div>
+
+          <div class="card">
+            <span class="tag">Zápas</span>
+            <h3>Import zápasu ze ŠSČR</h3>
+            <p>
+              Z databáze chess.cz se vybere soutěž, kolo a zápas; vznikne PGN s vyplněnými
+              hlavičkami všech šachovnic (hráči, Elo, výsledky, barvy). Tahy chess.cz
+              neposkytuje — ty se doplní od kapitánů.
+            </p>
+          </div>
+
+          <div class="card">
+            <span class="tag">Zápas</span>
+            <h3>Zkratky zápasu</h3>
+            <p>
+              Tag <code>Event</code> ve tvaru „zkratka soutěže + zkratky družstev“ se skládá
+              automaticky, ale zkratky, místo konání i vzor názvu se dají kdykoli upravit —
+              a přepíší se na všech šachovnicích najednou.
+            </p>
+          </div>
+
+          <div class="card">
+            <span class="tag">Soutěž</span>
+            <h3>Režim Vedoucí soutěže</h3>
+            <p>
+              Z XML souboru Swiss-Manageru vznikne kostra celého ročníku (všechna kola ×
+              zápasy × šachovnice) v jednom PGN. Strom soutěž → kolo → zápas → partie, každý
+              nástroj umí pracovat jen na vybrané úrovni.
+            </p>
+          </div>
+
+          <div class="card">
+            <span class="tag">Soutěž</span>
+            <h3>Aktualizace po každém kole</h3>
+            <p>
+              Po odehraném kole se soutěž znovu načte z novějšího XML: doplní se sestavy,
+              výsledky i kontumace. Tahy, které už dorazily, se nikdy nepřepíšou — sporné
+              případy se ukážou k odsouhlasení.
+            </p>
+          </div>
+
+          <div class="card">
+            <span class="tag">Partie</span>
+            <h3>Import tahů od kapitánů</h3>
+            <p>
+              Osm jednopartiových PGN najednou, přetažením myší nebo výběrem souborů. Partie
+              se spárují podle hráčů a šachovnic, ECO se dopočítá z tahů.
+            </p>
+          </div>
+
+          <div class="card">
+            <span class="tag">Partie</span>
+            <h3>Kontrola před zveřejněním</h3>
+            <p>
+              Jedním pohledem: chybějící tahy a výsledky, rozpory mezi hlavičkou a zápisem
+              partie, duplicity, diakritika, jednotný <code>Event</code>, střídání barev po
+              šachovnicích. Opravy se dají provést hromadně.
+            </p>
+          </div>
+
+          <div class="card">
+            <span class="tag">Výstup</span>
+            <h3>Export ve formátu ŠSČR</h3>
+            <p>
+              Bulletin kola nebo celého ročníku: zkrácený <code>Event</code>,
+              <code>Site</code> s místem konání, dvojúrovňové <code>Round</code>, bez
+              diakritiky a se standardní sadou tagů. Před uložením se ukáže, co v souboru
+              chybí.
+            </p>
+          </div>
+
+          <div class="card">
+            <span class="tag">Hlavičky</span>
+            <h3>Doplňování hráčů</h3>
+            <p>
+              Jméno hráče se našeptává z databáze ŠSČR přímo v hlavičce partie a doplní se
+              i s aktuálním Elo. Jména se zapisují jednotně jako „Příjmení, Jméno“.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2>Instalace</h2>
+        <ul class="plain">
+          <li>
+            <strong>Windows</strong> — instalátor <code>.exe</code> z
+            <a href="https://github.com/ccgeek3274/en-croissant-cze/releases">Releases</a>.
+          </li>
+          <li>
+            <strong>macOS</strong> — <code>.dmg</code> zvlášť pro Apple Silicon a Intel.
+            Balíček není podepsaný, takže při prvním spuštění klikněte na aplikaci pravým
+            tlačítkem a zvolte <em>Otevřít</em>.
+          </li>
+          <li><strong>Linux</strong> — <code>.AppImage</code> a <code>.deb</code>.</li>
+        </ul>
+        <div class="note">
+          <p>
+            <strong>Aktualizace se stahují ručně</strong> z Releases — česká verze vychází
+            nezávisle na původním programu.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2>Všechno ostatní</h2>
+        <p>
+          Analýza s enginy, databáze partií, hledání pozic, repertoár a trénink,
+          import z lichess.org a chess.com, nastavení šachovnice — to všechno je společné
+          s původním programem a je popsané v jeho dokumentaci.
+        </p>
+        <div class="actions" style="margin-top: 1.5rem">
+          <a class="btn" href="https://www.encroissant.org/docs">Dokumentace na encroissant.org</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="wrap">
+        <p>
+          En Croissant CZ je odvozená verze programu
+          <a href="https://github.com/franciscoBSalgueiro/en-croissant">En Croissant</a>
+          (autor Francisco Salgueiro), šířená pod licencí GPL-3.0. Není oficiálním vydáním
+          původního programu a jeho autor za ni neodpovídá.
+        </p>
+        <p>
+          Data o soutěžích a hráčích pocházejí z veřejného rozhraní
+          <a href="https://www.chess.cz">chess.cz</a> Šachového svazu ČR.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
