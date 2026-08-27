@@ -10,6 +10,8 @@ import type { Color } from "chessops";
 import { match } from "ts-pattern";
 import { getMaterialDiff } from "@/utils/chess";
 
+export type MaterialDisplay = "diff" | "all" | "none";
+
 export default function ShowMaterial({
   fen,
   color,
@@ -17,11 +19,11 @@ export default function ShowMaterial({
 }: {
   fen: string;
   color: Color;
-  mode?: "diff" | "all";
+  mode?: MaterialDisplay;
 }) {
   const materialDiff = getMaterialDiff(fen);
 
-  if (!materialDiff) {
+  if (mode === "none" || !materialDiff) {
     return null;
   }
 

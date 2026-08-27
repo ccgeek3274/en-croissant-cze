@@ -67,6 +67,8 @@ const LARGE_BRUSH = 11;
 const MEDIUM_BRUSH = 7.5;
 const SMALL_BRUSH = 4;
 const BAR_HEIGHT = "1.9rem";
+/** Enough for the player-name line alone, once the bar carries nothing else. */
+const NAME_ONLY_BAR_HEIGHT = "1.55rem";
 
 interface ChessboardProps {
   editingMode: boolean;
@@ -322,6 +324,11 @@ function Board({
     !!headers.white_time_control ||
     !!headers.black_time_control;
 
+  // Material shares its row with the player name, so hiding it only buys the
+  // slack the taller bar was holding for the icons, the clock and the input.
+  const barsCarryMoreThanNames = materialDisplay !== "none" || hasClock || moveInput;
+  const barHeight = barsCarryMoreThanNames ? BAR_HEIGHT : NAME_ONLY_BAR_HEIGHT;
+
   const practiceLock = !!practicing && !deck.positions.find((c) => c.fen === currentNode.fen);
 
   const movableColor: "white" | "black" | "both" | undefined = useMemo(() => {
@@ -393,7 +400,7 @@ function Board({
               // 100cqh is the pane height; subtract only the chrome inside this
               // pane so the square board fills the remaining vertical space:
               //     top bar        bottom bar     two 0.5rem flex gaps  + eval bar (25px) + its gap
-              `calc(100cqh - ${BAR_HEIGHT} - ${BAR_HEIGHT} - 1rem + 1.563rem + var(--mantine-spacing-sm))`,
+              `calc(100cqh - ${barHeight} - ${barHeight} - 1rem + 1.563rem + var(--mantine-spacing-sm))`,
           }}
         >
           <BoardBar
@@ -406,7 +413,7 @@ function Board({
                 setWhiteFideOpen(true);
               }
             }}
-            height={BAR_HEIGHT}
+            height={barHeight}
           >
             <ShowMaterial
               fen={currentNode.fen}
@@ -610,7 +617,7 @@ function Board({
                 setBlackFideOpen(true);
               }
             }}
-            height={BAR_HEIGHT}
+            height={barHeight}
           >
             {error && (
               <Text ta="center" c="red">

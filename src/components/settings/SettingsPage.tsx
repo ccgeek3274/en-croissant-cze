@@ -62,6 +62,7 @@ import {
   telemetryEnabledAtom,
 } from "@/state/atoms";
 import { keyMapAtom } from "@/state/keybinds";
+import type { MaterialDisplay } from "@/components/common/ShowMaterial";
 import type { MoveNotationType } from "@/utils/annotation";
 import { APP_NAME } from "@/utils/appInfo";
 import FileInput from "../common/FileInput";
@@ -344,16 +345,17 @@ export default function Page() {
         category: "board",
         title: t("Settings.MaterialDisplay"),
         description: t("Settings.MaterialDisplay.Desc"),
-        keywords: ["material", "captured", "pieces", "difference"],
+        keywords: ["material", "captured", "pieces", "difference", "hide"],
         render: () => (
           <Select
             data={[
               { label: t("Settings.MaterialDisplay.Diff"), value: "diff" },
               { label: t("Settings.MaterialDisplay.All"), value: "all" },
+              { label: t("Settings.MaterialDisplay.None"), value: "none" },
             ]}
             allowDeselect={false}
             value={materialDisplay}
-            onChange={(val) => setMaterialDisplay(val as "diff" | "all")}
+            onChange={(val) => setMaterialDisplay(val as MaterialDisplay)}
           />
         ),
       },
