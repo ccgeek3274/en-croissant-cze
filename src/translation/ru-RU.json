@@ -828,6 +828,7 @@
     "Settings.MoveNotation": "",
     "Settings.MoveNotation.Desc": "",
     "Settings.MoveNotation.Letters": "",
+    "Settings.MoveNotation.LettersCs": "",
     "Settings.MoveNotation.Symbols": "",
     "Settings.PieceDest": "Пункты назначения фигур",
     "Settings.PieceDest.Desc": "Показать возможные ходы для каждой фигуры",

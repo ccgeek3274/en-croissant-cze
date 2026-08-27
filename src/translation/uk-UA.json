@@ -814,6 +814,7 @@
     "Settings.MoveNotation": "",
     "Settings.MoveNotation.Desc": "",
     "Settings.MoveNotation.Letters": "",
+    "Settings.MoveNotation.LettersCs": "",
     "Settings.MoveNotation.Symbols": "",
     "Settings.PieceDest": "Місця призначення фігур",
     "Settings.PieceDest.Desc": "Показати можливі ходи для кожної фігури",

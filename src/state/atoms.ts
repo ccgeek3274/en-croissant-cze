@@ -18,6 +18,7 @@ import type { BestMoves, GoMode } from "@/bindings";
 import { DEFAULT_TIME_CONTROL, type OpponentSettings } from "@/components/boards/OpponentForm";
 import { type Position, positionSchema } from "@/components/files/opening";
 import type { LocalOptions } from "@/components/panels/database/DatabasePanel";
+import type { MoveNotationType } from "@/utils/annotation";
 import { positionFromFen, swapMove } from "@/utils/chessops";
 import type { SuccessDatabaseInfo } from "@/utils/db";
 import { type Engine, type EngineSettings, engineSchema } from "@/utils/engines";
@@ -167,7 +168,7 @@ export const fontSizeAtom = atomWithStorage(
     Number.parseInt(document.documentElement.style.fontSize) || 100,
 );
 
-export const moveNotationTypeAtom = atomWithStorage<"letters" | "symbols">("letters", "symbols");
+export const moveNotationTypeAtom = atomWithStorage<MoveNotationType>("letters", "symbols");
 export const moveMethodAtom = atomWithStorage<"drag" | "select" | "both">("move-method", "both");
 export const spellCheckAtom = atomWithStorage<boolean>("spell-check", false);
 export const moveInputAtom = atomWithStorage<boolean>("move-input", false);

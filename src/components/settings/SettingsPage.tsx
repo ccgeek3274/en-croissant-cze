@@ -62,6 +62,7 @@ import {
   telemetryEnabledAtom,
 } from "@/state/atoms";
 import { keyMapAtom } from "@/state/keybinds";
+import type { MoveNotationType } from "@/utils/annotation";
 import { APP_NAME } from "@/utils/appInfo";
 import FileInput from "../common/FileInput";
 import BoardSelect from "./BoardSelect";
@@ -222,16 +223,17 @@ export default function Page() {
         category: "board",
         title: t("Settings.MoveNotation"),
         description: t("Settings.MoveNotation.Desc"),
-        keywords: ["notation", "letters", "symbols", "pieces"],
+        keywords: ["notation", "letters", "symbols", "pieces", "czech"],
         render: () => (
           <Select
             data={[
-              { label: t("Settings.MoveNotation.Letters"), value: "letters" },
               { label: t("Settings.MoveNotation.Symbols"), value: "symbols" },
+              { label: t("Settings.MoveNotation.LettersCs"), value: "letters-cs" },
+              { label: t("Settings.MoveNotation.Letters"), value: "letters" },
             ]}
             allowDeselect={false}
             value={moveNotationType}
-            onChange={(val) => setMoveNotationType(val as "letters" | "symbols")}
+            onChange={(val) => setMoveNotationType(val as MoveNotationType)}
           />
         ),
       },

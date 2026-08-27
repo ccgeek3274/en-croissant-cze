@@ -779,6 +779,7 @@
     "Settings.MoveNotation": "",
     "Settings.MoveNotation.Desc": "",
     "Settings.MoveNotation.Letters": "",
+    "Settings.MoveNotation.LettersCs": "",
     "Settings.MoveNotation.Symbols": "",
     "Settings.PieceDest": "棋子可走位置",
     "Settings.PieceDest.Desc": "顯示棋子可走位置",

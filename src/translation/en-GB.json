@@ -804,6 +804,7 @@
     "Settings.MoveNotation": "",
     "Settings.MoveNotation.Desc": "",
     "Settings.MoveNotation.Letters": "",
+    "Settings.MoveNotation.LettersCs": "",
     "Settings.MoveNotation.Symbols": "",
     "Settings.PieceDest": "Piece Destinations",
     "Settings.PieceDest.Desc": "Show possible moves for each piece",

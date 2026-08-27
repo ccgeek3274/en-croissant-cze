@@ -1,12 +1,25 @@
 import type { MantineColor } from "@mantine/core";
 
-const pieceChars = { K: "♔", Q: "♕", R: "♖", B: "♗", N: "♘" };
+export type MoveNotationType = "symbols" | "letters" | "letters-cs";
 
-export function addPieceSymbol(move: string): string {
-    const pieceChar = pieceChars[move[0] as keyof typeof pieceChars];
+/** Solid glyphs: the outlined ones (♔♕♖♗♘) blur together at notation sizes. */
+const PIECE_SYMBOLS = { K: "♚", Q: "♛", R: "♜", B: "♝", N: "♞" };
+const CZECH_PIECE_LETTERS = { K: "K", Q: "D", R: "V", B: "S", N: "J" };
 
-    if (typeof pieceChar === "undefined") return move;
-    return pieceChar + move.slice(1);
+/** Every glyph PIECE_SYMBOLS can produce, for splitting a formatted move. */
+export const PIECE_SYMBOL_SPLIT = /([♚♛♜♝♞])/;
+
+/** Matches a piece letter where SAN can hold one: leading, or after a promotion "=". */
+const PIECE_LETTER = /(^|=)([KQRBN])/g;
+
+function replacePieceLetters(move: string, table: Record<string, string>): string {
+    return move.replace(PIECE_LETTER, (_, prefix: string, piece: string) => prefix + table[piece]);
+}
+
+export function formatMove(move: string, notation: MoveNotationType): string {
+    if (notation === "symbols") return replacePieceLetters(move, PIECE_SYMBOLS);
+    if (notation === "letters-cs") return replacePieceLetters(move, CZECH_PIECE_LETTERS);
+    return move;
 }
 
 export type Annotation =

@@ -2,9 +2,10 @@ import { Box, rgba, useMantineTheme } from "@mantine/core";
 import { IconFlag } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import type { ReactNode, RefObject } from "react";
-import { currentShowCommentsAtom, moveNotationTypeAtom } from "@/state/atoms";
-import { ANNOTATION_INFO, type Annotation, addPieceSymbol } from "@/utils/annotation";
+import { currentShowCommentsAtom } from "@/state/atoms";
+import { ANNOTATION_INFO, type Annotation } from "@/utils/annotation";
 import classes from "./MoveCell.module.css";
+import MoveNotation from "./MoveNotation";
 
 interface MoveCellProps {
   annotations: Annotation[];
@@ -19,7 +20,6 @@ interface MoveCellProps {
 }
 
 function MoveCell(props: MoveCellProps) {
-  const [moveNotationType] = useAtom(moveNotationTypeAtom);
   const [showComments] = useAtom(currentShowCommentsAtom);
   const visualAnnotation = showComments ? props.annotations[0] : "";
 
@@ -65,7 +65,7 @@ function MoveCell(props: MoveCellProps) {
     >
       <Box component="span" className={classes.moveText}>
         {props.isStart && <IconFlag style={{ marginRight: 5 }} size="0.875rem" />}
-        {moveNotationType === "symbols" ? addPieceSymbol(props.move) : props.move}
+        <MoveNotation move={props.move} />
         {showComments ? props.annotations.join("") : ""}
       </Box>
       {props.rightAccessory && (
