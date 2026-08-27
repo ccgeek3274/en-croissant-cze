@@ -67,8 +67,6 @@ const LARGE_BRUSH = 11;
 const MEDIUM_BRUSH = 7.5;
 const SMALL_BRUSH = 4;
 const BAR_HEIGHT = "1.9rem";
-/** Enough for the player-name line alone, once the bar carries nothing else. */
-const NAME_ONLY_BAR_HEIGHT = "1.55rem";
 
 interface ChessboardProps {
   editingMode: boolean;
@@ -324,10 +322,11 @@ function Board({
     !!headers.white_time_control ||
     !!headers.black_time_control;
 
-  // Material shares its row with the player name, so hiding it only buys the
-  // slack the taller bar was holding for the icons, the clock and the input.
-  const barsCarryMoreThanNames = materialDisplay !== "none" || hasClock || moveInput;
-  const barHeight = barsCarryMoreThanNames ? BAR_HEIGHT : NAME_ONLY_BAR_HEIGHT;
+  // Hiding the material drops the bars entirely and hands their height to the
+  // board — but only once nothing else needs them. The names go with them.
+  const showBars = materialDisplay !== "none" || hasClock || moveInput || !!error;
+  // Two bars plus the two 0.5rem flex gaps they sit in; nothing once they go.
+  const barsChrome = showBars ? `${BAR_HEIGHT} + ${BAR_HEIGHT} + 1rem` : "0rem";
 
   const practiceLock = !!practicing && !deck.positions.find((c) => c.fen === currentNode.fen);
 
@@ -399,36 +398,38 @@ function Board({
             maxWidth:
               // 100cqh is the pane height; subtract only the chrome inside this
               // pane so the square board fills the remaining vertical space:
-              //     top bar        bottom bar     two 0.5rem flex gaps  + eval bar (25px) + its gap
-              `calc(100cqh - ${barHeight} - ${barHeight} - 1rem + 1.563rem + var(--mantine-spacing-sm))`,
+              //     player bars and their gaps  + eval bar (25px) + its gap
+              `calc(100cqh - (${barsChrome}) + 1.563rem + var(--mantine-spacing-sm))`,
           }}
         >
-          <BoardBar
-            name={topPlayer}
-            rating={orientation === "white" ? headers.black_elo : headers.white_elo}
-            onNameClick={() => {
-              if (orientation === "white") {
-                setBlackFideOpen(true);
-              } else {
-                setWhiteFideOpen(true);
-              }
-            }}
-            height={barHeight}
-          >
-            <ShowMaterial
-              fen={currentNode.fen}
-              color={orientation === "white" ? "black" : "white"}
-              mode={materialDisplay}
-            />
-            {hasClock && (
-              <Clock
-                color={orientation === "black" ? "white" : "black"}
-                turn={turn}
-                whiteTime={whiteTime}
-                blackTime={blackTime}
+          {showBars && (
+            <BoardBar
+              name={topPlayer}
+              rating={orientation === "white" ? headers.black_elo : headers.white_elo}
+              onNameClick={() => {
+                if (orientation === "white") {
+                  setBlackFideOpen(true);
+                } else {
+                  setWhiteFideOpen(true);
+                }
+              }}
+              height={BAR_HEIGHT}
+            >
+              <ShowMaterial
+                fen={currentNode.fen}
+                color={orientation === "white" ? "black" : "white"}
+                mode={materialDisplay}
               />
-            )}
-          </BoardBar>
+              {hasClock && (
+                <Clock
+                  color={orientation === "black" ? "white" : "black"}
+                  turn={turn}
+                  whiteTime={whiteTime}
+                  blackTime={blackTime}
+                />
+              )}
+            </BoardBar>
+          )}
           <Group
             style={{
               position: "relative",
@@ -607,31 +608,38 @@ function Board({
               />
             </Box>
           </Group>
-          <BoardBar
-            name={bottomPlayer}
-            rating={orientation === "white" ? headers.white_elo : headers.black_elo}
-            onNameClick={() => {
-              if (orientation === "white") {
-                setWhiteFideOpen(true);
-              } else {
-                setBlackFideOpen(true);
-              }
-            }}
-            height={barHeight}
-          >
-            {error && (
-              <Text ta="center" c="red">
-                {t(chessopsError(error))}
-              </Text>
-            )}
+          {showBars && (
+            <BoardBar
+              name={bottomPlayer}
+              rating={orientation === "white" ? headers.white_elo : headers.black_elo}
+              onNameClick={() => {
+                if (orientation === "white") {
+                  setWhiteFideOpen(true);
+                } else {
+                  setBlackFideOpen(true);
+                }
+              }}
+              height={BAR_HEIGHT}
+            >
+              {error && (
+                <Text ta="center" c="red">
+                  {t(chessopsError(error))}
+                </Text>
+              )}
 
-            {moveInput && <MoveInput currentNode={currentNode} />}
+              {moveInput && <MoveInput currentNode={currentNode} />}
 
-            <ShowMaterial fen={currentNode.fen} color={orientation} mode={materialDisplay} />
-            {hasClock && (
-              <Clock color={orientation} turn={turn} whiteTime={whiteTime} blackTime={blackTime} />
-            )}
-          </BoardBar>
+              <ShowMaterial fen={currentNode.fen} color={orientation} mode={materialDisplay} />
+              {hasClock && (
+                <Clock
+                  color={orientation}
+                  turn={turn}
+                  whiteTime={whiteTime}
+                  blackTime={blackTime}
+                />
+              )}
+            </BoardBar>
+          )}
         </Box>
       </Box>
       <FideInfo opened={whiteFideOpen} setOpened={setWhiteFideOpen} name={headers.white} />
