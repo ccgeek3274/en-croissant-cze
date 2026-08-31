@@ -25,6 +25,12 @@ import zh_TW from "./translation/zh-TW.json";
 import { setAutoFreeze } from "immer";
 import LanguageDetector from "i18next-browser-languagedetector";
 
+// The Czech build starts in Czech; the detector only ever looked at
+// localStorage, so a fresh install had nothing to detect and fell through to
+// fallbackLng. Read that same key here and let it decide instead, which keeps
+// English as the missing-key fallback for every other locale.
+const storedLanguage = localStorage.getItem("i18nextLng");
+
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
@@ -52,6 +58,7 @@ i18n
       order: ["localStorage"],
       caches: ["localStorage"],
     },
+    lng: storedLanguage ?? "cs-CZ",
     fallbackLng: "en-US",
     returnEmptyString: false,
   });
